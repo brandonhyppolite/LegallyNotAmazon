@@ -7,6 +7,7 @@ public class Buyer extends User{
     public Buyer(String username, String email, String password, CreditCard card) {
         super(username, email, password);
         this.card = card;
+        this.cart = new Cart();
     }
 
     public CreditCard getCard(){
