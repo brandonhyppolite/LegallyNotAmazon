@@ -4,11 +4,16 @@ import javax.swing.*;
 
 public class ShoppingCartApp extends JFrame {
 
-    public ShoppingCartApp(EntryScreen e){
-        add(e);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(600,600);
-        setTitle("Amazon");
-        setVisible(true);
+    public ShoppingCartApp(){
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        this.setSize(800, 600);
+
+        JPanel mainPanel = new JPanel();
+        this.add(mainPanel);
+
+        ViewManager viewManager = new ViewManager(mainPanel);
+
+        this.setVisible(true);
+
     }
 }
