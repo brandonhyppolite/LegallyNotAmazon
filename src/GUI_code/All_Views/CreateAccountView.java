@@ -49,7 +49,7 @@ public class CreateAccountView {
                 char[] passwordText = password.getPassword();
                 String emailText = email.getText();
 
-                if (firstNameText == "" || lastNameText == "" || usernameText == "" || passwordText.length ==0 || emailText == "") {
+                if (firstNameText == "" || lastNameText == "" || usernameText == "" || passwordText.length ==0 || emailText == "" || accountType == "") {
                     createAccountWarningLabel.setText("Please fill out all the fields!");
                     createAccountWarningLabel.setForeground(Color.RED);
 
