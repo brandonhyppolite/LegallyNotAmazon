@@ -33,10 +33,12 @@ public class ViewManager {
     }
 
     public void showEntryView() {
+        entryView.resetFields();
         cardLayout.show(mainPanel, "entryView");
     }
 
     public void showCreateAccountView() {
+        createAccount.resetFields();
         cardLayout.show(mainPanel, "createAccountView");
     }
 }

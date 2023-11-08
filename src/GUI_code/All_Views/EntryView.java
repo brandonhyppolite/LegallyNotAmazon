@@ -45,4 +45,9 @@ public class EntryView {
     public JPanel getEntryViewMainPanel() {
         return entryViewMainPanel;
     }
+
+    public void resetFields(){
+        username.setText("");
+        password.setText("");
+    }
 }
