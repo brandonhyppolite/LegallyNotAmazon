@@ -1,10 +1,12 @@
 package src.GUI_code.All_Views;
 
+import src.Backend.ShoppingSystem;
 import src.GUI_code.ViewManager;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 
 public class EntryView {
     private JPanel entryViewMainPanel;
@@ -16,7 +18,7 @@ public class EntryView {
     private JLabel passwordLabel;
     private JPanel entryButtonPanel;
     private ViewManager vm;
-
+    private ShoppingSystem system;
 
     private JButton loginButton;
     private JButton createAccountButton;
@@ -24,6 +26,7 @@ public class EntryView {
 
     public EntryView(ViewManager viewManager) {
         this.vm = viewManager;
+        this.system = ShoppingSystem.getInstance();
         createAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -33,7 +36,7 @@ public class EntryView {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                system.loginUser(username.getText(), Arrays.toString(password.getPassword()));
             }
         });
 

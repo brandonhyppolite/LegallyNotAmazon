@@ -11,8 +11,9 @@ public class ViewManager {
     private JPanel mainPanel;
     private EntryView entryView;
     private CreateAccountView createAccount;
+    private static ViewManager instance;
 
-    public ViewManager(JPanel mainPanel) {
+    private ViewManager(JPanel mainPanel) {
         this.mainPanel = mainPanel;
         cardLayout = new CardLayout();
         mainPanel.setLayout(cardLayout);
@@ -24,6 +25,13 @@ public class ViewManager {
         mainPanel.add(createAccount.getCreateAccountMainPanel(), "createAccountView");
     }
 
+    public static ViewManager getInstance(JPanel mainPanel) {
+        if (instance == null) {
+            instance = new ViewManager(mainPanel);
+        }
+        return instance;
+    }
+
     public void showEntryView() {
         cardLayout.show(mainPanel, "entryView");
     }
@@ -31,6 +39,4 @@ public class ViewManager {
     public void showCreateAccountView() {
         cardLayout.show(mainPanel, "createAccountView");
     }
-
-
 }

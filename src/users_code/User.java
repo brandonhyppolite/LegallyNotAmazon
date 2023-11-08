@@ -4,12 +4,32 @@ public abstract class User {
     private String username;
     private String email;
     private String password;
-    private String name;
+    private String firstName;
+    private String lastName;
 
-    public User(String username, String email, String password) {
+
+
+    public User(String firstName,String lastName,String username, String password, String email) {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -36,12 +56,15 @@ public abstract class User {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                '}';
     }
 }
 

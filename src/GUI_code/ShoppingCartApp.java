@@ -11,7 +11,7 @@ public class ShoppingCartApp extends JFrame {
         JPanel mainPanel = new JPanel();
         this.add(mainPanel);
 
-        ViewManager viewManager = new ViewManager(mainPanel);
+        ViewManager viewManager = ViewManager.getInstance(mainPanel);
 
         this.setVisible(true);
 
