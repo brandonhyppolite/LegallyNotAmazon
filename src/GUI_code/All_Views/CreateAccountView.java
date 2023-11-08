@@ -54,8 +54,12 @@ public class CreateAccountView {
                     createAccountWarningLabel.setForeground(Color.RED);
 
                 } else {
-                    system.createNewUser(firstNameText, lastNameText, usernameText, Arrays.toString(passwordText), emailText, accountType);
+                    String password = String.valueOf(passwordText);
+                    system.createNewUser(firstNameText, lastNameText, usernameText, password, emailText, accountType);
+                    createAccountWarningLabel.setText("Successfully created account! Go back and login!");
+                    createAccountWarningLabel.setForeground(Color.GREEN);
                     System.out.println(system);
+                    System.out.println(system.getUserByUsername(usernameText).getPassword());
                 }
             }
         });

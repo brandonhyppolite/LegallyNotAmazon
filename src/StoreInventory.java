@@ -1,16 +1,25 @@
 package src;
 
+import src.Backend.ShoppingSystem;
+
 import java.util.ArrayList;
 
 public class StoreInventory {
-    ArrayList<Product> inventory;
-
-    public StoreInventory() {
+    private ArrayList<Product> inventory;
+    private static StoreInventory instance;
+    private StoreInventory() {
         this.inventory = new ArrayList<>();
     }
 
     public StoreInventory(ArrayList<Product> inventory) {
         this.inventory = inventory;
+    }
+
+    public static StoreInventory getInstance() {
+        if (instance == null) {
+            instance = new StoreInventory();
+        }
+        return instance;
     }
     public void addProduct(Product p){
         if(!this.inventory.contains(p.getID())){

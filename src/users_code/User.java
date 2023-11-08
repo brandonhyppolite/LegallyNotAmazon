@@ -8,7 +8,6 @@ public abstract class User {
     private String lastName;
 
 
-
     public User(String firstName,String lastName,String username, String password, String email) {
         this.username = username;
         this.email = email;

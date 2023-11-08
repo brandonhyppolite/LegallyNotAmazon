@@ -36,7 +36,9 @@ public class EntryView {
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                system.loginUser(username.getText(), Arrays.toString(password.getPassword()));
+                char[] passwordArray = password.getPassword();
+                String password = String.valueOf(passwordArray);
+                system.loginUser(username.getText(), password);
             }
         });
 
