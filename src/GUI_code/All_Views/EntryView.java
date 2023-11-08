@@ -8,18 +8,19 @@ import java.awt.event.ActionListener;
 
 public class EntryView {
     private JPanel entryViewMainPanel;
-    private JLabel welcomeLabel;
+    private JLabel entryText;
+    private JPanel entryInfoPanel;
+    private JTextField username;
+    private JPasswordField password;
     private JLabel usernameLabel;
-    private JTextField usernameField;
+    private JLabel passwordLabel;
+    private JPanel entryButtonPanel;
     private ViewManager vm;
 
 
-    private JPasswordField passwordPasswordField;
-    private JLabel passwordLabel;
     private JButton loginButton;
     private JButton createAccountButton;
-    private JPanel loginPanel;
-    private JButton forgotPasswordButton;
+
 
     public EntryView(ViewManager viewManager) {
         this.vm = viewManager;
@@ -35,12 +36,7 @@ public class EntryView {
 
             }
         });
-        forgotPasswordButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
     }
 
     public JPanel getEntryViewMainPanel() {
