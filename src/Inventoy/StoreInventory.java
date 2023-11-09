@@ -1,6 +1,4 @@
-package src;
-
-import src.Backend.ShoppingSystem;
+package src.Inventoy;
 
 import java.util.ArrayList;
 
