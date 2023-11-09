@@ -108,18 +108,19 @@ public class ShoppingSystem {
         }
     }
 
-    public void loginUser(String username,String password){
+    public boolean loginUser(String username,String password){
         for(User u: users){
             if(u.getUsername().equals(username)){
                 if(u.getPassword().equals(password)){
                     System.out.println("Logged in user " + u);
+                    return true;
                 }else{
                     System.out.println("Incorrect Password");
                 }
-                return;
             }
         }
         System.out.println("No such user!");
+        return false;
     }
 
     public User getUserByUsername(String username){

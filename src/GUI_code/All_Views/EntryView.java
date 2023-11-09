@@ -38,8 +38,10 @@ public class EntryView {
             public void actionPerformed(ActionEvent e) {
                 char[] passwordArray = password.getPassword();
                 String password = String.valueOf(passwordArray);
-                system.loginUser(username.getText(), password);
-                vm.showSellerHomePageView();
+                if(system.loginUser(username.getText(), password)){
+                    // Show new View depending on Seller or Buyer account
+                }
+
             }
         });
 
