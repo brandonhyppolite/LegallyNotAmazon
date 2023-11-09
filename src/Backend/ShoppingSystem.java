@@ -1,6 +1,7 @@
 package src.Backend;
 
-import src.Inventoy.StoreInventory;
+import src.Inventory.Product;
+import src.Inventory.StoreInventory;
 import src.users_code.Buyer;
 import src.users_code.Seller;
 import src.users_code.User;
@@ -134,5 +135,9 @@ public class ShoppingSystem {
         for(User u: users){
             System.out.println(u);
         }
+    }
+
+    public ArrayList<Product> getStoreInventory() {
+        return this.storeInventory.getInventory();
     }
 }

@@ -2,6 +2,7 @@ package src.GUI_code;
 
 import src.GUI_code.All_Views.CreateAccountView;
 import src.GUI_code.All_Views.EntryView;
+import src.GUI_code.All_Views.SellerHomePageView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +12,7 @@ public class ViewManager {
     private JPanel mainPanel;
     private EntryView entryView;
     private CreateAccountView createAccount;
+    private SellerHomePageView sellerView;
     private static ViewManager instance;
 
     private ViewManager(JPanel mainPanel) {
@@ -23,6 +25,8 @@ public class ViewManager {
 
         createAccount = new CreateAccountView(this);
         mainPanel.add(createAccount.getCreateAccountMainPanel(), "createAccountView");
+        sellerView = new SellerHomePageView(this);
+        mainPanel.add(sellerView.getMainPanel(), "sellerHomePageView");
     }
 
     public static ViewManager getInstance(JPanel mainPanel) {
@@ -40,5 +44,8 @@ public class ViewManager {
     public void showCreateAccountView() {
         createAccount.resetFields();
         cardLayout.show(mainPanel, "createAccountView");
+    }
+    public void showSellerHomePageView(){
+        cardLayout.show(mainPanel,"sellerHomePageView");
     }
 }

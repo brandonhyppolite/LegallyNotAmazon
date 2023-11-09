@@ -1,4 +1,4 @@
-package src.Inventoy;
+package src.Inventory;
 
 
 
@@ -56,5 +56,15 @@ public class Product {
         if(getQuantity() < 0){
             setQuantity(0);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                ", ID='" + ID + '\'' +
+                '}';
     }
 }

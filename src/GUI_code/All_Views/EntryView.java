@@ -39,6 +39,7 @@ public class EntryView {
                 char[] passwordArray = password.getPassword();
                 String password = String.valueOf(passwordArray);
                 system.loginUser(username.getText(), password);
+                vm.showSellerHomePageView();
             }
         });
 
