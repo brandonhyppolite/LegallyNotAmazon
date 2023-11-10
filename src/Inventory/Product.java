@@ -1,6 +1,7 @@
 package src.Inventory;
 
 
+import java.util.Random;
 
 public class Product {
     private String name;
@@ -17,6 +18,7 @@ public class Product {
         this.name = name;
         this.price = price;
         this.quantity = quantity;
+        this.ID = generateProductID();
     }
 
     public String getName() {
@@ -66,5 +68,19 @@ public class Product {
                 ", quantity=" + quantity +
                 ", ID='" + ID + '\'' +
                 '}';
+    }
+
+    private String generateProductID(){
+        String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        Random random = new Random();
+        StringBuilder stringBuilder = new StringBuilder(5);
+
+        for (int i = 0; i < 5; i++) {
+            int randomIndex = random.nextInt(CHARACTERS.length());
+            char randomChar = CHARACTERS.charAt(randomIndex);
+            stringBuilder.append(randomChar);
+        }
+
+        return stringBuilder.toString();
     }
 }

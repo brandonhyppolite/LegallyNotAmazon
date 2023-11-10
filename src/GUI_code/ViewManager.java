@@ -3,6 +3,8 @@ package src.GUI_code;
 import src.GUI_code.All_Views.CreateAccountView;
 import src.GUI_code.All_Views.EntryView;
 import src.GUI_code.All_Views.SellerHomePageView;
+import src.users_code.Seller;
+import src.users_code.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +47,8 @@ public class ViewManager {
         createAccount.resetFields();
         cardLayout.show(mainPanel, "createAccountView");
     }
-    public void showSellerHomePageView(){
+    public void showSellerHomePageView(Seller u){
         cardLayout.show(mainPanel,"sellerHomePageView");
+        sellerView.displaySellerProducts(u.getUsername());
     }
 }

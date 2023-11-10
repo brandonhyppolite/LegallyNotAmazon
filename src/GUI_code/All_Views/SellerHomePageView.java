@@ -3,9 +3,13 @@ package src.GUI_code.All_Views;
 import src.Backend.ShoppingSystem;
 import src.GUI_code.ViewManager;
 import src.Inventory.Product;
+import src.users_code.Seller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SellerHomePageView {
     private JPanel sellerHomePageMainPanel;
@@ -15,37 +19,34 @@ public class SellerHomePageView {
     private JButton salesDataButton;
     private JButton addANewProductButton;
     private JButton logOutButton;
-    private JPanel productsPanel;
+    private SellerProductsPanel productsPanel;
     private ViewManager vm;
     private ShoppingSystem system;
 
     public SellerHomePageView(ViewManager v){
         this.vm = v;
         this.system = ShoppingSystem.getInstance();
-        setSellerValues();
+
+        logOutButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                vm.showEntryView();
+            }
+        });
     }
 
     public JPanel getMainPanel(){
         return sellerHomePageMainPanel;
     }
 
-    private void setSellerValues() {
+    public void displaySellerProducts(String username) {
+        Seller seller = (Seller) this.system.getUserByUsername(username);
+        sellerHomePageInfoPanel.setLayout(new GridLayout(0, 1));
+        productsPanel = new SellerProductsPanel();
+        productsPanel.displayProducts(seller);
+        sellerHomePageInfoPanel.add(productsPanel);
+        welcomeUserLabel.setText("Welcome, " + seller.getUsername() + "!");
 
-        productsPanel.removeAll();
-//        productsPanel.setLayout(new GridLayout());
-
-        // Iterate through the list of products
-        for (Product product : this.system.getStoreInventory()) {
-            // Create a visual representation for each product
-
-            JLabel productLabel = new JLabel(product.toString());
-
-            // Add the visual representation to the productsPanel
-            productsPanel.add(productLabel);
-        }
-
-        // Repaint the productsPanel to reflect the changes
-        productsPanel.revalidate();
-        productsPanel.repaint();
     }
+
 }

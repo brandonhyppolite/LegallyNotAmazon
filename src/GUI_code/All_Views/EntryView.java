@@ -2,6 +2,9 @@ package src.GUI_code.All_Views;
 
 import src.Backend.ShoppingSystem;
 import src.GUI_code.ViewManager;
+import src.users_code.Seller;
+import src.users_code.Buyer;
+import src.users_code.User;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -39,7 +42,14 @@ public class EntryView {
                 char[] passwordArray = password.getPassword();
                 String password = String.valueOf(passwordArray);
                 if(system.loginUser(username.getText(), password)){
-                    // Show new View depending on Seller or Buyer account
+                    User u = system.getUserByUsername(username.getText());
+                    if(u instanceof Seller){
+                        vm.showSellerHomePageView((Seller) u);
+                    }else if(u instanceof Buyer){
+                        //Showe Buyer View
+                    }
+                }else{
+                    //Show an Error for logging in
                 }
 
             }
