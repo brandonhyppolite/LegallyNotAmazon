@@ -6,16 +6,17 @@ import javax.swing.*;
 
 public class ShoppingCartApp extends JFrame {
     private ShoppingSystem system;
-    public ShoppingCartApp(){
+    private ViewManager viewManager;
+
+    public ShoppingCartApp() {
         this.system = ShoppingSystem.getInstance();
+        this.setTitle("Not Amazon");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setSize(800, 600);
-
         JPanel mainPanel = new JPanel();
         this.add(mainPanel);
-
-        ViewManager viewManager = ViewManager.getInstance(mainPanel);
-        viewManager.showEntryView();
+        this.viewManager = ViewManager.getInstance(this);
+        this.viewManager.showEntryView();
         this.setVisible(true);
 
     }

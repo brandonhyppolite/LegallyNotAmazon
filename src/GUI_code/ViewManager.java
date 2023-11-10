@@ -10,45 +10,36 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ViewManager {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
-    private EntryView entryView;
-    private CreateAccountView createAccount;
-    private SellerHomePageView sellerView;
     private static ViewManager instance;
-
-    private ViewManager(JPanel mainPanel) {
-        this.mainPanel = mainPanel;
-        cardLayout = new CardLayout();
-        mainPanel.setLayout(cardLayout);
-
-        entryView = new EntryView(this);
-        mainPanel.add(entryView.getEntryViewMainPanel(), "entryView");
-
-        createAccount = new CreateAccountView(this);
-        mainPanel.add(createAccount.getCreateAccountMainPanel(), "createAccountView");
-        sellerView = new SellerHomePageView(this);
-        mainPanel.add(sellerView.getMainPanel(), "sellerHomePageView");
+    private static ShoppingCartApp sp;
+    private ViewManager(ShoppingCartApp sp) {
+        this.sp = sp;
     }
 
-    public static ViewManager getInstance(JPanel mainPanel) {
+    public static ViewManager getInstance(ShoppingCartApp app) {
         if (instance == null) {
-            instance = new ViewManager(mainPanel);
+            instance = new ViewManager(app);
         }
         return instance;
     }
 
     public void showEntryView() {
-        entryView.resetFields();
-        cardLayout.show(mainPanel, "entryView");
+        this.sp.getContentPane().removeAll();
+        this.sp.getContentPane().add(new EntryView(this).getEntryViewMainPanel());
+        this.sp.revalidate();
+        this.sp.repaint();
     }
 
     public void showCreateAccountView() {
-        createAccount.resetFields();
-        cardLayout.show(mainPanel, "createAccountView");
+        this.sp.getContentPane().removeAll();
+        this.sp.getContentPane().add(new CreateAccountView(this).getCreateAccountMainPanel());
+        this.sp.revalidate();
+        this.sp.repaint();
     }
     public void showSellerHomePageView(Seller u){
-        cardLayout.show(mainPanel,"sellerHomePageView");
-        sellerView.displaySellerProducts(u.getUsername());
+        this.sp.getContentPane().removeAll();
+        this.sp.getContentPane().add(new SellerHomePageView(this).getMainPanel());
+        this.sp.revalidate();
+        this.sp.repaint();
     }
 }

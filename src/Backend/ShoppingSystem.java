@@ -42,19 +42,7 @@ public class ShoppingSystem {
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(";");
                 if (userData.length == 6) { // Ensure we have exactly 6 data elements
-                    String firstName = userData[0];
-                    String lastName = userData[1];
-                    String username = userData[2];
-                    String password = userData[3];
-                    String email = userData[4];
-                    String accountType = userData[5];
-                    User user = null;
-                    if (accountType.equals("Buyer")) {
-                        user = new Buyer(firstName, lastName, username, password,email);
-                    } else if (accountType.equals("Seller")) {
-                        user = new Seller(firstName, lastName, username, password,email);
-                    }
-
+                    User user = getUser(userData);
                     if (user != null) {
                         this.users.add(user);
                     }
@@ -67,7 +55,21 @@ public class ShoppingSystem {
         }
     }
 
-
+    private User getUser(String[] userData){
+        User user = null;
+        String firstName = userData[0];
+        String lastName = userData[1];
+        String username = userData[2];
+        String password = userData[3];
+        String email = userData[4];
+        String accountType = userData[5];
+        if (accountType.equals("Buyer")) {
+            user = new Buyer(firstName, lastName, username, password,email);
+        } else if (accountType.equals("Seller")) {
+            user = new Seller(firstName, lastName, username, password,email);
+        }
+        return user;
+    }
 
     private void writeUserDataToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {
