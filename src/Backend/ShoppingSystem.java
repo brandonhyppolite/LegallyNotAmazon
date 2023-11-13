@@ -140,7 +140,4 @@ public class ShoppingSystem {
         }
     }
 
-    public ArrayList<Product> getStoreInventory() {
-        return this.storeInventory.getInventory();
-    }
 }

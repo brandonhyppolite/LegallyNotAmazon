@@ -3,6 +3,7 @@ package src.GUI_code.All_Views;
 import src.Backend.ShoppingSystem;
 import src.GUI_code.ViewManager;
 import src.Inventory.Product;
+import src.Inventory.StoreInventory;
 import src.users_code.Seller;
 
 import javax.swing.*;
@@ -26,18 +27,20 @@ public class SellerHomePageView {
     private JButton viewCurrentProductInfoButton;
     private ViewManager vm;
     private ShoppingSystem system;
-
+    private StoreInventory storeInventory;
     private Seller seller;
     public SellerHomePageView(ViewManager v, Seller seller){
         this.vm = v;
         this.seller = seller;
         this.system = ShoppingSystem.getInstance();
+        this.storeInventory = StoreInventory.getInstance();
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 vm.showEntryView();
                 //More functions for saving any changes Seller made
+
             }
         });
         addANewProductButton.addActionListener(new ActionListener() {
@@ -124,7 +127,7 @@ public class SellerHomePageView {
         mainDataPanel.removeAll();
     }
     private JScrollPane drawProductTable() {
-        ArrayList<Product> products = this.seller.getSellerProducts();
+        ArrayList<Product> products = this.storeInventory.getInventory().get(seller);
         int numRows = products.size();
         int numCols = 5;
 
@@ -137,7 +140,7 @@ public class SellerHomePageView {
             productData[i][0] = product.getName();
             productData[i][1] = product.getID();
             productData[i][2] = String.valueOf(product.getQuantity());
-            productData[i][3] = String.valueOf(product.getSellingPrice());
+            productData[i][3] = String.valueOf(product.getInvoicePrice());
             productData[i][4] = String.valueOf(product.getSellingPrice());
         }
 
@@ -200,20 +203,51 @@ public class SellerHomePageView {
         quantity.setPreferredSize(new Dimension(width,height));
 
         JLabel priceLabel = new JLabel("Invoice Price:");
-        JTextField price = new JTextField();
-        price.setPreferredSize(new Dimension(width,height));
+        JTextField invoicePrice = new JTextField();
+        invoicePrice.setPreferredSize(new Dimension(width,height));
 
         JLabel sellingPriceLabel = new JLabel("Selling Price:");
         JTextField sellingPrice = new JTextField();
         sellingPrice.setPreferredSize(new Dimension(width,height));
 
         JButton addProductButton = new JButton("Add Product");
+
+        addProductButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    // Create a new Product using the values from text fields
+                    Product p = new Product(
+                            productName.getText(),
+                            Double.valueOf(invoicePrice.getText()),
+                            Double.valueOf(sellingPrice.getText()),
+                            Integer.valueOf(quantity.getText())
+                    );
+
+                    // Add the product to the seller's list of products
+                    storeInventory.getInventory().get(seller).add(p);
+
+                    // Display a message window indicating that the product has been added
+                    JOptionPane.showMessageDialog(null, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    // Clear the text fields
+                    productName.setText("");
+                    invoicePrice.setText("");
+                    sellingPrice.setText("");
+                    quantity.setText("");
+                } catch (NumberFormatException ex) {
+                    // Handle the case where conversion from text to numbers fails
+                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
         panel.add(productNameLabel);
         panel.add(productName);
         panel.add(quantityLabel);
         panel.add(quantity);
         panel.add(priceLabel);
-        panel.add(price);
+        panel.add(invoicePrice);
         panel.add(sellingPriceLabel);
         panel.add(sellingPrice);
         panel.add(addProductButton);

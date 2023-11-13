@@ -1,9 +1,10 @@
 package src.Inventory;
 
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Product {
+public class Product{
     private String name;
     private double sellingPrice;
     private int quantity;

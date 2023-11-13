@@ -5,16 +5,20 @@ import src.Inventory.Product;
 import java.util.ArrayList;
 
 public class Seller extends User{
-    private ArrayList<Product> sellerProducts;
     private double costs;
     private double revenues;
     private double profits;
 
+
+    //Constructor for brand new seller
     public Seller(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password, email);
-        this.sellerProducts = new ArrayList<>();
+        this.costs = 0;
+        this.revenues = 0;
+        this.profits = 0;
     }
 
+    //Constructor for existing seller that gets read from a text file with values
     public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits) {
         super(firstName, lastName, username, password, email);
         this.costs = costs;
@@ -44,13 +48,5 @@ public class Seller extends User{
 
     public void setProfits(double profits) {
         this.profits = profits;
-    }
-
-    public int getProductSize(){
-        return this.sellerProducts.size();
-    }
-
-    public ArrayList<Product> getSellerProducts(){
-        return sellerProducts;
     }
 }
