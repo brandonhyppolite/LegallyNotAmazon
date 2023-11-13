@@ -13,10 +13,11 @@ public class ShoppingSystem {
     private ArrayList<User> users;
     private static ShoppingSystem instance;
     private static final String USER_DATA_FILE = "src/users.txt";
-
+    private StoreInventory storeInventory;
     private ShoppingSystem() {
         this.users = new ArrayList<>();
         readUserDataFromFile();
+        this.storeInventory = new StoreInventory(this);
         printAllUsers();
     }
 
@@ -137,5 +138,7 @@ public class ShoppingSystem {
             System.out.println(u);
         }
     }
-
+    public StoreInventory getStoreInventory(){
+        return this.storeInventory;
+    }
 }

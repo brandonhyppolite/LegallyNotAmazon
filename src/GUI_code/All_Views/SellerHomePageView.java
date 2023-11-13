@@ -3,7 +3,6 @@ package src.GUI_code.All_Views;
 import src.Backend.ShoppingSystem;
 import src.GUI_code.ViewManager;
 import src.Inventory.Product;
-import src.Inventory.StoreInventory;
 import src.users_code.Seller;
 
 import javax.swing.*;
@@ -26,13 +25,11 @@ public class SellerHomePageView {
     private JButton viewCurrentProductInfoButton;
     private ViewManager vm;
     private ShoppingSystem system;
-    private StoreInventory storeInventory;
     private Seller seller;
     public SellerHomePageView(ViewManager v, Seller seller){
         this.vm = v;
         this.seller = seller;
         this.system = ShoppingSystem.getInstance();
-        this.storeInventory = StoreInventory.getInstance();
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -126,7 +123,19 @@ public class SellerHomePageView {
         mainDataPanel.removeAll();
     }
     private JScrollPane drawProductTable() {
-        ArrayList<Product> products = this.storeInventory.getSellerInventory(seller);
+        ArrayList<Product> products = this.system.getStoreInventory().getSellerInventory(seller);
+
+        // Check if products is null or empty
+        if (products == null || products.isEmpty()) {
+            // Handle the case where there are no products
+            // You can display a message or create an empty table
+            String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
+            String[][] emptyData = new String[][]{{"", "", "", "", ""}};
+            DefaultTableModel emptyModel = new DefaultTableModel(emptyData, columnNames);
+            JTable emptyTable = new JTable(emptyModel);
+            return new JScrollPane(emptyTable);
+        }
+
         int numRows = products.size();
         int numCols = 5;
 
@@ -164,8 +173,7 @@ public class SellerHomePageView {
             updateProductData(row, columnName, data);
         });
 
-        JScrollPane sp = new JScrollPane(table);
-        return sp;
+        return new JScrollPane(table);
     }
 
 
@@ -224,7 +232,7 @@ public class SellerHomePageView {
                     );
 
 
-                    storeInventory.addProductToInventory(seller,p);
+                    system.getStoreInventory().addProductToInventory(seller,p);
 
 
                     JOptionPane.showMessageDialog(null, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);

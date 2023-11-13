@@ -10,21 +10,11 @@ import java.util.HashMap;
 public class StoreInventory {
     private static final String INVENTORY_FILE_PATH = "src/inventory.txt";
     private HashMap<Seller,ArrayList<Product>> inventory;
-
     private ShoppingSystem system;
-    private static StoreInventory instance;
-    private StoreInventory() {
+    public StoreInventory(ShoppingSystem s) {
         this.inventory = new HashMap<>();
-        this.system = ShoppingSystem.getInstance();
+        this.system = s;
         loadInventoryFromFile();
-    }
-
-
-    public static StoreInventory getInstance() {
-        if (instance == null) {
-            instance = new StoreInventory();
-        }
-        return instance;
     }
 
     public HashMap<Seller,ArrayList<Product>> getFullInventory(){
@@ -34,7 +24,7 @@ public class StoreInventory {
     public ArrayList<Product> getSellerInventory(Seller s){
         return this.inventory.get(s);
     }
-    private void loadInventoryFromFile() {
+    public void loadInventoryFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(INVENTORY_FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -63,7 +53,7 @@ public class StoreInventory {
         saveInventoryToFile();
     }
 
-    private void saveInventoryToFile() {
+    public void saveInventoryToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(INVENTORY_FILE_PATH))) {
             for (Seller seller : inventory.keySet()) {
                 for (Product product : this.getSellerInventory(seller)) {
