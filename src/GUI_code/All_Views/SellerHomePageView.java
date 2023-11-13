@@ -7,7 +7,6 @@ import src.Inventory.StoreInventory;
 import src.users_code.Seller;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -127,7 +126,7 @@ public class SellerHomePageView {
         mainDataPanel.removeAll();
     }
     private JScrollPane drawProductTable() {
-        ArrayList<Product> products = this.storeInventory.getInventory().get(seller);
+        ArrayList<Product> products = this.storeInventory.getSellerInventory(seller);
         int numRows = products.size();
         int numCols = 5;
 
@@ -219,18 +218,16 @@ public class SellerHomePageView {
                     // Create a new Product using the values from text fields
                     Product p = new Product(
                             productName.getText(),
-                            Double.valueOf(invoicePrice.getText()),
-                            Double.valueOf(sellingPrice.getText()),
-                            Integer.valueOf(quantity.getText())
+                            Double.parseDouble(invoicePrice.getText()),
+                            Double.parseDouble(sellingPrice.getText()),
+                            Integer.parseInt(quantity.getText())
                     );
 
-                    // Add the product to the seller's list of products
-                    storeInventory.getInventory().get(seller).add(p);
 
-                    // Display a message window indicating that the product has been added
+                    storeInventory.addProductToInventory(seller,p);
+
+
                     JOptionPane.showMessageDialog(null, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-
-                    // Clear the text fields
                     productName.setText("");
                     invoicePrice.setText("");
                     sellingPrice.setText("");

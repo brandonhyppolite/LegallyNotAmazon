@@ -82,9 +82,10 @@ public class Product{
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
-                ", price=" + sellingPrice +
+                ", sellingPrice=" + sellingPrice +
                 ", quantity=" + quantity +
                 ", ID='" + ID + '\'' +
+                ", invoicePrice=" + invoicePrice +
                 '}';
     }
 

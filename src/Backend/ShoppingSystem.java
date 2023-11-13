@@ -12,12 +12,10 @@ import java.util.ArrayList;
 public class ShoppingSystem {
     private ArrayList<User> users;
     private static ShoppingSystem instance;
-    private StoreInventory storeInventory;
     private static final String USER_DATA_FILE = "src/users.txt";
 
     private ShoppingSystem() {
         this.users = new ArrayList<>();
-        this.storeInventory = StoreInventory.getInstance();
         readUserDataFromFile();
         printAllUsers();
     }
