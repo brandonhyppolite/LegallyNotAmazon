@@ -1,7 +1,5 @@
 package src.GUI_code;
 
-import src.Backend.ShoppingSystem;
-
 import javax.swing.*;
 
 public class ShoppingCartApp extends JFrame {
