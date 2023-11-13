@@ -6,6 +6,7 @@ import src.Inventory.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -52,6 +53,12 @@ public class SellerHomePageView {
             }
         });
 
+        salesDataButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showSalesDataPanel();
+            }
+        });
 
 
         setUpMainView();
@@ -63,8 +70,9 @@ public class SellerHomePageView {
     }
 
     public void setUpMainView() {
-        sellerHomePageInfoPanel.setLayout(new GridLayout(0, 1));
-        sellerHomePageInfoPanel.add(mainDataPanel);
+        sellerHomePageInfoPanel.setLayout(new BorderLayout());
+        sellerHomePageInfoPanel.add(buttonPanel,BorderLayout.NORTH);
+        sellerHomePageInfoPanel.add(mainDataPanel,BorderLayout.CENTER);
         welcomeUserLabel.setText("Welcome, " + seller.getUsername() + "!");
 
     }
@@ -100,6 +108,18 @@ public class SellerHomePageView {
         });
     }
 
+    private void showSalesDataPanel(){
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                clearPanels();
+                mainDataPanel.setLayout(new BorderLayout());
+                mainDataPanel.add(drawSalesDataPanel(), BorderLayout.NORTH);
+                mainDataPanel.revalidate();
+                mainDataPanel.repaint();
+            }
+        });
+    }
     private void clearPanels(){
         mainDataPanel.removeAll();
     }
@@ -168,8 +188,8 @@ public class SellerHomePageView {
     }
 
     private JPanel drawAddNewProductPanel() {
-        JPanel panel = new JPanel(new FlowLayout()); // 0 rows means any number of rows, 2 columns
-        int width = 200 ,height = 25;
+        JPanel panel = new JPanel(new FlowLayout());
+        int width = 140 ,height = 25;
 
         JLabel productNameLabel = new JLabel("Product Name:");
         JTextField productName = new JTextField();
@@ -179,7 +199,7 @@ public class SellerHomePageView {
         JTextField quantity = new JTextField();
         quantity.setPreferredSize(new Dimension(width,height));
 
-        JLabel priceLabel = new JLabel("Price:");
+        JLabel priceLabel = new JLabel("Invoice Price:");
         JTextField price = new JTextField();
         price.setPreferredSize(new Dimension(width,height));
 
@@ -202,10 +222,26 @@ public class SellerHomePageView {
     }
 
 
-    private JPanel drawSalesDataPanel(){
-        JPanel panel = new JPanel();
+    private JPanel drawSalesDataPanel() {
+        JPanel panel = new JPanel(new GridLayout(0, 1));
+        int gap = 25;
+        JLabel costs = new JLabel("Costs:");
+        costs.setHorizontalAlignment(JLabel.CENTER);
+        costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
+        JLabel revenue = new JLabel("Revenue:");
+        revenue.setHorizontalAlignment(JLabel.CENTER);
+        revenue.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
+
+        JLabel profits = new JLabel("Profits:");
+        profits.setHorizontalAlignment(JLabel.CENTER);
+        profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
+
+        panel.add(costs);
+        panel.add(revenue);
+        panel.add(profits);
 
         return panel;
     }
+
 }
