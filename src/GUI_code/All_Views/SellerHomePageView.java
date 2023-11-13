@@ -6,7 +6,6 @@ import src.Inventory.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -23,6 +22,7 @@ public class SellerHomePageView {
     private JButton addANewProductButton;
     private JButton logOutButton;
     private JPanel mainDataPanel;
+    private JButton viewCurrentProductInfoButton;
     private ViewManager vm;
     private ShoppingSystem system;
 
@@ -39,56 +39,70 @@ public class SellerHomePageView {
                 //More functions for saving any changes Seller made
             }
         });
+        addANewProductButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showAddNewProductPanel();
+            }
+        });
+        viewCurrentProductInfoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showProductPanel();
+            }
+        });
 
-        displaySellerProducts();
+
+
+        setUpMainView();
+        showProductPanel();
     }
 
     public JPanel getMainPanel(){
         return sellerHomePageMainPanel;
     }
 
-    public void displaySellerProducts() {
+    public void setUpMainView() {
         sellerHomePageInfoPanel.setLayout(new GridLayout(0, 1));
-        setUpProductPanel();
         sellerHomePageInfoPanel.add(mainDataPanel);
         welcomeUserLabel.setText("Welcome, " + seller.getUsername() + "!");
 
     }
 
-    private void setUpProductPanel() {
-        mainDataPanel.removeAll();
-        mainDataPanel.setLayout(new BorderLayout());
-        JLabel label =new JLabel("View/Edit your current product(s) below:");
-        label.setHorizontalAlignment(JLabel.CENTER);
-        mainDataPanel.add(label, BorderLayout.NORTH);
-        mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
-        mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
+    private void showProductPanel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                clearPanels();
+                mainDataPanel.setLayout(new BorderLayout());
+                JLabel label = new JLabel("View/Edit your current product(s) below:");
+                label.setHorizontalAlignment(JLabel.CENTER);
+                mainDataPanel.add(label, BorderLayout.NORTH);
+                mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
+                mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
+                mainDataPanel.revalidate();
+                mainDataPanel.repaint();
+            }
+        });
     }
 
 
-//    private JScrollPane drawProductTable() {
-//        ArrayList<Product> products = this.seller.getSellerProducts();
-//        int numRows = products.size();
-//        int numCols = 5;
-//
-//        // Creating the 2D array dynamically
-//        String[][] productData = new String[numRows][numCols];
-//        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Selling Price ($)"};
-//
-//        for (int i = 0; i < numRows; i++) {
-//            Product product = products.get(i);
-//            productData[i][0] = product.getName();
-//            productData[i][1] = product.getID();
-//            productData[i][2] = String.valueOf(product.getQuantity());
-//            productData[i][3] = String.valueOf(product.getPrice());
-//            productData[i][4] = String.valueOf(product.getPrice());
-//        }
-//
-//        JTable table = new JTable(productData, columnNames);
-//        JScrollPane sp = new JScrollPane(table);
-//        return sp;
-//    }
+    private void showAddNewProductPanel() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                clearPanels();
+                mainDataPanel.setLayout(new BorderLayout());
+                mainDataPanel.add(drawAddNewProductPanel(), BorderLayout.CENTER);
+                mainDataPanel.revalidate();
+                mainDataPanel.repaint();
+            }
+        });
+    }
 
+    private void clearPanels(){
+        mainDataPanel.removeAll();
+    }
     private JScrollPane drawProductTable() {
         ArrayList<Product> products = this.seller.getSellerProducts();
         int numRows = products.size();
@@ -150,6 +164,48 @@ public class SellerHomePageView {
         panel.add(label);
         panel.add(textField);
         panel.add(removeButton);
+        return panel;
+    }
+
+    private JPanel drawAddNewProductPanel() {
+        JPanel panel = new JPanel(new FlowLayout()); // 0 rows means any number of rows, 2 columns
+        int width = 200 ,height = 25;
+
+        JLabel productNameLabel = new JLabel("Product Name:");
+        JTextField productName = new JTextField();
+        productName.setPreferredSize(new Dimension(width,height));
+
+        JLabel quantityLabel = new JLabel("Quantity:");
+        JTextField quantity = new JTextField();
+        quantity.setPreferredSize(new Dimension(width,height));
+
+        JLabel priceLabel = new JLabel("Price:");
+        JTextField price = new JTextField();
+        price.setPreferredSize(new Dimension(width,height));
+
+        JLabel sellingPriceLabel = new JLabel("Selling Price:");
+        JTextField sellingPrice = new JTextField();
+        sellingPrice.setPreferredSize(new Dimension(width,height));
+
+        JButton addProductButton = new JButton("Add Product");
+        panel.add(productNameLabel);
+        panel.add(productName);
+        panel.add(quantityLabel);
+        panel.add(quantity);
+        panel.add(priceLabel);
+        panel.add(price);
+        panel.add(sellingPriceLabel);
+        panel.add(sellingPrice);
+        panel.add(addProductButton);
+
+        return panel;
+    }
+
+
+    private JPanel drawSalesDataPanel(){
+        JPanel panel = new JPanel();
+
+
         return panel;
     }
 }

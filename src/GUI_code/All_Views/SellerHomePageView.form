@@ -2,7 +2,7 @@
 <form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="src.GUI_code.All_Views.SellerHomePageView">
   <grid id="27dc6" binding="sellerHomePageMainPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
     <constraints>
-      <xy x="20" y="20" width="500" height="400"/>
+      <xy x="20" y="20" width="519" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -31,6 +31,12 @@
                 <constraints/>
                 <properties>
                   <text value="View Sales Data"/>
+                </properties>
+              </component>
+              <component id="d60e6" class="javax.swing.JButton" binding="viewCurrentProductInfoButton">
+                <constraints/>
+                <properties>
+                  <text value="View Products"/>
                 </properties>
               </component>
               <component id="e0052" class="javax.swing.JButton" binding="addANewProductButton" default-binding="true">
