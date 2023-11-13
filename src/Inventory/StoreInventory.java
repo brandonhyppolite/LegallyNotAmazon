@@ -7,12 +7,6 @@ public class StoreInventory {
     private static StoreInventory instance;
     private StoreInventory() {
         this.inventory = new ArrayList<>();
-        Product laptop = new Product("Laptop", 1200.0, 10);
-        Product smartphone = new Product("Smartphone", 800.0, 15);
-        Product headphones = new Product("Headphones", 100.0, 20);
-        this.inventory.add(laptop);
-        this.inventory.add(smartphone);
-        this.inventory.add(headphones);
     }
 
     public StoreInventory(ArrayList<Product> inventory) {

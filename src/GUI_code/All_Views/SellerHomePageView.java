@@ -110,15 +110,15 @@ public class SellerHomePageView {
 
         // Creating the 2D array dynamically
         String[][] productData = new String[numRows][numCols];
-        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Selling Price ($)"};
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
 
         for (int i = 0; i < numRows; i++) {
             Product product = products.get(i);
             productData[i][0] = product.getName();
             productData[i][1] = product.getID();
             productData[i][2] = String.valueOf(product.getQuantity());
-            productData[i][3] = String.valueOf(product.getPrice());
-            productData[i][4] = String.valueOf(product.getPrice());
+            productData[i][3] = String.valueOf(product.getSellingPrice());
+            productData[i][4] = String.valueOf(product.getSellingPrice());
         }
 
         DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {

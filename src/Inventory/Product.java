@@ -5,18 +5,19 @@ import java.util.Random;
 
 public class Product {
     private String name;
-    private double price;
+    private double sellingPrice;
     private int quantity;
     private String ID;
-
+    private double invoicePrice;
 
     public Product(String name) {
         this.name = name;
     }
 
-    public Product(String name, double price, int quantity) {
+    public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
         this.name = name;
-        this.price = price;
+        this.invoicePrice = invoicePrice;
+        this.sellingPrice = sellingPrice;
         this.quantity = quantity;
         this.ID = generateProductID();
     }
@@ -29,12 +30,12 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
-        return price;
+    public double getSellingPrice() {
+        return sellingPrice;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setSellingPrice(double sellingPrice) {
+        this.sellingPrice = sellingPrice;
     }
 
     public int getQuantity() {
@@ -64,7 +65,7 @@ public class Product {
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
-                ", price=" + price +
+                ", price=" + sellingPrice +
                 ", quantity=" + quantity +
                 ", ID='" + ID + '\'' +
                 '}';

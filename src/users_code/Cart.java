@@ -29,7 +29,7 @@ public class Cart {
     public double getTotalPrice() {
         double total = 0.0;
         for (Product product : items) {
-            total += product.getPrice();
+            total += product.getSellingPrice();
         }
         return total;
     }
