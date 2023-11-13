@@ -22,12 +22,28 @@ public class Product {
         this.ID = generateProductID();
     }
 
+    public Product(String name, String ID,double invoicePrice, double sellingPrice, int quantity) {
+        this.name = name;
+        this.sellingPrice = sellingPrice;
+        this.quantity = quantity;
+        this.ID = ID;
+        this.invoicePrice = invoicePrice;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getInvoicePrice() {
+        return invoicePrice;
+    }
+
+    public void setInvoicePrice(double invoicePrice) {
+        this.invoicePrice = invoicePrice;
     }
 
     public double getSellingPrice() {
