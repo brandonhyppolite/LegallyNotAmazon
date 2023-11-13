@@ -6,7 +6,8 @@ import src.Inventory.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
-import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,7 +21,7 @@ public class SellerHomePageView {
     private JButton salesDataButton;
     private JButton addANewProductButton;
     private JButton logOutButton;
-    private JPanel productsPanel;
+    private JPanel mainDataPanel;
     private ViewManager vm;
     private ShoppingSystem system;
 
@@ -48,25 +49,50 @@ public class SellerHomePageView {
     public void displaySellerProducts() {
         sellerHomePageInfoPanel.setLayout(new GridLayout(0, 1));
         setUpProductPanel();
-        sellerHomePageInfoPanel.add(productsPanel);
+        sellerHomePageInfoPanel.add(mainDataPanel);
         welcomeUserLabel.setText("Welcome, " + seller.getUsername() + "!");
 
     }
 
-    private void setUpProductPanel(){
-        productsPanel.setLayout(new GridLayout(2,1));
-        productsPanel.add(drawProductTable());
-        productsPanel.add(drawProductRemoval());
+    private void setUpProductPanel() {
+        mainDataPanel.removeAll();
+        mainDataPanel.setLayout(new BorderLayout());
+        mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
+        mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
     }
 
-    private JTable drawProductTable(){
+
+//    private JScrollPane drawProductTable() {
+//        ArrayList<Product> products = this.seller.getSellerProducts();
+//        int numRows = products.size();
+//        int numCols = 5;
+//
+//        // Creating the 2D array dynamically
+//        String[][] productData = new String[numRows][numCols];
+//        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Selling Price ($)"};
+//
+//        for (int i = 0; i < numRows; i++) {
+//            Product product = products.get(i);
+//            productData[i][0] = product.getName();
+//            productData[i][1] = product.getID();
+//            productData[i][2] = String.valueOf(product.getQuantity());
+//            productData[i][3] = String.valueOf(product.getPrice());
+//            productData[i][4] = String.valueOf(product.getPrice());
+//        }
+//
+//        JTable table = new JTable(productData, columnNames);
+//        JScrollPane sp = new JScrollPane(table);
+//        return sp;
+//    }
+
+    private JScrollPane drawProductTable() {
         ArrayList<Product> products = this.seller.getSellerProducts();
         int numRows = products.size();
         int numCols = 5;
 
         // Creating the 2D array dynamically
         String[][] productData = new String[numRows][numCols];
-        String[] columnNames =new String[]{"Name", "ID", "Quantity", "Price ($)", "Selling Price ($)"};
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Selling Price ($)"};
 
         for (int i = 0; i < numRows; i++) {
             Product product = products.get(i);
@@ -77,11 +103,40 @@ public class SellerHomePageView {
             productData[i][4] = String.valueOf(product.getPrice());
         }
 
-        JTable table = new JTable(productData, columnNames);
+        DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Make all cells editable except the ID column
+                return column != 1; // 1 is the index of the ID column
+            }
+        };
+
+        JTable table = new JTable(tableModel);
+
+        table.getModel().addTableModelListener(e -> {
+            int row = e.getFirstRow();
+            int column = e.getColumn();
+            TableModel model = (TableModel) e.getSource();
+            String columnName = model.getColumnName(column);
+            Object data = model.getValueAt(row, column);
+
+            // Add your logic to handle the change, for example, save the data
+            updateProductData(row, columnName, data);
+        });
+
         JScrollPane sp = new JScrollPane(table);
-        productsPanel.add(sp);
-        return table;
+        return sp;
     }
+
+
+    private void updateProductData(int row, String columnName, Object data) {
+        // Add your logic here to update the product data, e.g., save it
+        // You can use the row, columnName, and data parameters to identify the cell that was edited
+        // and update the corresponding Product object in your data model
+        // For simplicity, you can print the changes for now
+        System.out.println("Row: " + row + ", Column: " + columnName + ", Data: " + data);
+    }
+
     private JPanel drawProductRemoval(){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1,3));

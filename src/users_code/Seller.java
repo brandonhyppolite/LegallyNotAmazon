@@ -13,7 +13,7 @@ public class Seller extends User{
     }
 
     private void addProductsTesting(){
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 30; i++) {
             String productName = "Product" + i;
             double productPrice = 10.0 * i; // Replace this with your desired logic for price
             int productQuantity = 20; // Replace this with your desired quantity
