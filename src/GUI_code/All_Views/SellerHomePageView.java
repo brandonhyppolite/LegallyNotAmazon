@@ -6,6 +6,7 @@ import src.Inventory.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -57,6 +58,9 @@ public class SellerHomePageView {
     private void setUpProductPanel() {
         mainDataPanel.removeAll();
         mainDataPanel.setLayout(new BorderLayout());
+        JLabel label =new JLabel("View/Edit your current product(s) below:");
+        label.setHorizontalAlignment(JLabel.CENTER);
+        mainDataPanel.add(label, BorderLayout.NORTH);
         mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
         mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
     }
