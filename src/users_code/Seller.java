@@ -8,11 +8,12 @@ public class Seller extends User{
     private double costs;
     private double revenues;
     private double profits;
-
+    private ArrayList<Product> productsForSale;
 
     //Constructor for brand new seller
     public Seller(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password, email);
+        this.productsForSale = new ArrayList<>();
         this.costs = 0;
         this.revenues = 0;
         this.profits = 0;
@@ -24,6 +25,10 @@ public class Seller extends User{
         this.costs = costs;
         this.revenues = revenues;
         this.profits = profits;
+    }
+
+    public ArrayList<Product> getProductsForSale() {
+        return productsForSale;
     }
 
     public double getCosts() {
