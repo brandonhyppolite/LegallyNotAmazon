@@ -168,7 +168,7 @@ public class SellerHomePageView {
      * @return The scroll pane containing the product table.
      */
     private JScrollPane drawProductTable() {
-        ArrayList<Product> products = this.system.getProductsManager().getItemsFromUser(seller);
+        ArrayList<Product> products = seller.getProductsForSale();
 
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
@@ -231,7 +231,8 @@ public class SellerHomePageView {
      * @return The `Product` object.
      */
     private Product getProductForRow(int row) {
-        return this.system.getProductsManager().getItemsFromUser(this.seller).get(row);
+//        return this.system.getProductsManager().getItemsFromUser(this.seller).get(row);
+        return this.seller.getProductsForSale().get(row);
     }
 
     /**
@@ -326,7 +327,8 @@ public class SellerHomePageView {
                     );
 
 
-                    system.getProductsManager().addProductToUser(seller,p);
+//                    system.getProductsManager().addProductToUser(seller,p);
+                    seller.getProductsForSale().add(p);
                     system.getProductsManager().saveInventoryToFile();
 
                     JOptionPane.showMessageDialog(null, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
