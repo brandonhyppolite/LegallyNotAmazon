@@ -1,6 +1,6 @@
 package src;
 
-import src.GUI_code.ShoppingCartApp;
+import src.Frontend.ShoppingCartApp;
 
 public class Main {
     public static void main(String[] args) {
