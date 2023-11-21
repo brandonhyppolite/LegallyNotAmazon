@@ -250,10 +250,10 @@ public class SellerHomePageView {
                 product.setQuantity((Integer) data);
                 break;
             case "Invoice Price ($)" :
-                product.setInvoicePrice((Double) data);
+
                 break;
             case "Selling Price ($)":
-                product.setSellingPrice((Double) data);
+
                 break;
         }
 
