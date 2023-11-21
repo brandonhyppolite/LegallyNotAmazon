@@ -12,7 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
+import java.util.Iterator;
+import java.util.Locale;
 
 
 /**
@@ -275,19 +276,25 @@ public class SellerHomePageView {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String productID = textField.getText();
-                for(Product p: seller.getProductsForSale()){
-                    if(p.getID().equals(productID)){
-                        seller.getProductsForSale().remove(p);
+                String productID = textField.getText().toUpperCase(Locale.ROOT);
+                Iterator<Product> iterator = seller.getProductsForSale().iterator();
+
+                while (iterator.hasNext()) {
+                    Product p = iterator.next();
+                    if (p.getID().equals(productID)) {
+                        iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
                         JOptionPane.showMessageDialog(null, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                         system.getProductsManager().saveInventoryToFile();
                         showProductPanel();
-                        break;
+                        return; // Exit the loop once the product is found and removed
                     }
                 }
+
+                // If the loop completes and the product is not found
                 JOptionPane.showMessageDialog(null, "Product not Found!", "Failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
+
         panel.add(label);
         panel.add(textField);
         panel.add(removeButton);
