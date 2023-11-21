@@ -43,6 +43,7 @@ public class ProductsManager {
                     System.out.println("Skipping invalid product data: " + line);
                 }
             }
+            System.out.println("Product Manager successfully loaded inventory from file");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -62,6 +63,7 @@ public class ProductsManager {
                     writeProductToFile(writer, buyer.getUsername(), product);
                 }
             }
+            System.out.println("Product Manager successfully saved inventory to file");
         } catch (IOException e) {
             e.printStackTrace();
         }

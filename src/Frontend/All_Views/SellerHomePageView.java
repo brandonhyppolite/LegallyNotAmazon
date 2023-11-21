@@ -128,7 +128,7 @@ public class SellerHomePageView {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
             // Handle the case where there are no products
-            // You can display a message or create an empty table
+            //Create an empty table
             String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
             String[][] emptyData = new String[][]{{"", "", "", "", ""}};
             DefaultTableModel emptyModel = new DefaultTableModel(emptyData, columnNames);
@@ -139,7 +139,7 @@ public class SellerHomePageView {
         int numRows = products.size();
         int numCols = 5;
 
-        // Creating the 2D array dynamically
+
         String[][] productData = new String[numRows][numCols];
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
 
@@ -169,16 +169,17 @@ public class SellerHomePageView {
             String columnName = model.getColumnName(column);
             Object data = model.getValueAt(row, column);
 
-            // Add your logic to handle the change, for example, save the data
+
             Product product = getProductForRow(row);
             updateProductData(product, columnName, data);
+            this.system.getProductsManager().saveInventoryToFile();
         });
 
         return new JScrollPane(table);
     }
 
     private Product getProductForRow(int row) {
-        return this.system.getProductsManager().getItemsFromUser(seller).get(row);
+        return this.system.getProductsManager().getItemsFromUser(this.seller).get(row);
     }
     private void updateProductData(Product product, String columnName, Object data) {
         switch(columnName){
@@ -186,12 +187,16 @@ public class SellerHomePageView {
                 product.setName((String) data);
                 break;
             case "Quantity":
+                product.setQuantity((Integer) data);
                 break;
             case "Invoice Price ($)" :
+                product.setInvoicePrice((Double) data);
                 break;
             case "Selling Price ($)":
+                product.setSellingPrice((Double) data);
                 break;
         }
+
     }
 
     private JPanel drawProductRemoval(){
