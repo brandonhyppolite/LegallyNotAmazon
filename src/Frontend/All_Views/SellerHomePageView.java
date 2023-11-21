@@ -13,6 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
+
+/**
+ * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
+ * It allows Sellers to view, edit, and add products, as well as view sales data.
+ */
 public class SellerHomePageView {
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
@@ -26,6 +32,14 @@ public class SellerHomePageView {
     private final ViewManager vm;
     private final UserManager system;
     private final Seller seller;
+
+
+    /**
+     * Constructs a `SellerHomePageView` with the given `ViewManager` and `Seller`.
+     *
+     * @param v      The `ViewManager` instance.
+     * @param seller The `Seller` for whom the home page is displayed.
+     */
     public SellerHomePageView(ViewManager v, Seller seller){
         this.vm = v;
         this.seller = seller;
@@ -64,10 +78,20 @@ public class SellerHomePageView {
         showProductPanel();
     }
 
+
+    /**
+     * Gets the main panel of the Seller home page.
+     *
+     * @return The main panel.
+     */
     public JPanel getMainPanel(){
         return sellerHomePageMainPanel;
     }
 
+
+    /**
+     * Sets up the main view by configuring the layout and displaying the welcome message.
+     */
     public void setUpMainView() {
         sellerHomePageInfoPanel.setLayout(new BorderLayout());
         sellerHomePageInfoPanel.add(buttonPanel,BorderLayout.NORTH);
@@ -76,6 +100,9 @@ public class SellerHomePageView {
 
     }
 
+    /**
+     * Displays the product panel, allowing Sellers to view and edit their current products.
+     */
     private void showProductPanel() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -93,7 +120,9 @@ public class SellerHomePageView {
         });
     }
 
-
+    /**
+     * Displays the panel for adding a new product.
+     */
     private void showAddNewProductPanel() {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -107,6 +136,10 @@ public class SellerHomePageView {
         });
     }
 
+
+    /**
+     * Displays the sales data panel, showing costs, revenue, and profits.
+     */
     private void showSalesDataPanel(){
         SwingUtilities.invokeLater(new Runnable() {
             @Override
@@ -119,9 +152,21 @@ public class SellerHomePageView {
             }
         });
     }
+
+    /**
+     * Clears the main data panel.
+     */
+
     private void clearPanels(){
         mainDataPanel.removeAll();
     }
+
+
+    /**
+     * Draws the product table to display the Seller's products.
+     *
+     * @return The scroll pane containing the product table.
+     */
     private JScrollPane drawProductTable() {
         ArrayList<Product> products = this.system.getProductsManager().getItemsFromUser(seller);
 
@@ -178,9 +223,24 @@ public class SellerHomePageView {
         return new JScrollPane(table);
     }
 
+
+    /**
+     * Gets the `Product` object associated with the specified row in the product table.
+     *
+     * @param row The row index.
+     * @return The `Product` object.
+     */
     private Product getProductForRow(int row) {
         return this.system.getProductsManager().getItemsFromUser(this.seller).get(row);
     }
+
+    /**
+     * Updates the data of a product based on changes in the product table.
+     *
+     * @param product    The `Product` object to update.
+     * @param columnName The name of the column being updated.
+     * @param data       The new data for the column.
+     */
     private void updateProductData(Product product, String columnName, Object data) {
         switch(columnName){
             case "Name":
@@ -199,6 +259,12 @@ public class SellerHomePageView {
 
     }
 
+
+    /**
+     * Draws the panel for product removal.
+     *
+     * @return The product removal panel.
+     */
     private JPanel drawProductRemoval(){
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(1,3));
@@ -219,6 +285,12 @@ public class SellerHomePageView {
         return panel;
     }
 
+
+    /**
+     * Draws the panel for adding a new product.
+     *
+     * @return The add new product panel.
+     */
     private JPanel drawAddNewProductPanel() {
         JPanel panel = new JPanel(new FlowLayout());
         int width = 140 ,height = 25;
@@ -283,6 +355,12 @@ public class SellerHomePageView {
     }
 
 
+
+    /**
+     * Draws the panel for displaying sales data.
+     *
+     * @return The sales data panel.
+     */
     private JPanel drawSalesDataPanel() {
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;

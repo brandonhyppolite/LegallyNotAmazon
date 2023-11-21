@@ -8,12 +8,23 @@ import src.users_code.User;
 import java.io.*;
 import java.util.ArrayList;
 
-
+/**
+ * The `ProductsManager` class manages product-related operations, including loading and saving inventory to a file,
+ * setting up lists of sellers and buyers, and adding products to users.
+ */
 public class ProductsManager {
     private static final String INVENTORY_FILE_PATH = "src/Saved_Files/inventory.txt";
     private final ArrayList<Seller> sellers;
     private final ArrayList<Buyer> buyers;
     private final UserManager system;
+
+
+    /**
+     * Constructs a `ProductsManager` with the given `UserManager` and a list of users.
+     *
+     * @param s     The `UserManager` instance.
+     * @param users The list of users.
+     */
     public ProductsManager(UserManager s, ArrayList<User> users) {
         this.sellers = new ArrayList<>();
         this.buyers = new ArrayList<>();
@@ -22,6 +33,11 @@ public class ProductsManager {
         loadInventoryFromFile();
     }
 
+
+
+    /**
+     * Loads inventory data from the specified file and adds products to users.
+     */
     public void loadInventoryFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(INVENTORY_FILE_PATH))) {
             String line;
@@ -50,6 +66,10 @@ public class ProductsManager {
     }
 
 
+
+    /**
+     * Saves inventory data to the specified file based on the products owned by sellers and in buyers' shopping carts.
+     */
     public void saveInventoryToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(INVENTORY_FILE_PATH, false))) {
             for (Seller seller : sellers) {
@@ -69,6 +89,15 @@ public class ProductsManager {
         }
     }
 
+
+    /**
+     * Writes product data to the specified writer, including the username of the owner and product details.
+     *
+     * @param writer  The writer to use for writing.
+     * @param username The username of the owner of the product.
+     * @param product  The product to write.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     private void writeProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
         String line = String.format("%s;%s;%s;%s;%s;%s\n",
                 username,
@@ -81,6 +110,13 @@ public class ProductsManager {
     }
 
 
+
+
+    /**
+     * Sets up lists of sellers and buyers based on the provided list of users.
+     *
+     * @param users The list of users.
+     */
     public void setUpLists(ArrayList<User> users){
         for(User user: users){
             if(user instanceof Seller){
@@ -94,6 +130,15 @@ public class ProductsManager {
             }
         }
     }
+
+
+
+    /**
+     * Retrieves a list of products associated with a user (either products for sale or in the shopping cart).
+     *
+     * @param u The user for whom to retrieve the list of products.
+     * @return The list of products associated with the user.
+     */
     public ArrayList<Product> getItemsFromUser(User u){
         if(u instanceof Seller && sellers.contains(u)){
             return ((Seller) u).getProductsForSale();
@@ -104,6 +149,13 @@ public class ProductsManager {
         return null;
     }
 
+
+    /**
+     * Adds a product to the list of products associated with a user.
+     *
+     * @param u The user to whom the product will be added.
+     * @param p The product to add.
+     */
     public void addProductToUser(User u, Product p){
         getItemsFromUser(u).add(p);
     }
