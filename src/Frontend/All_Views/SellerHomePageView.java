@@ -23,9 +23,9 @@ public class SellerHomePageView {
     private JButton logOutButton;
     private JPanel mainDataPanel;
     private JButton viewCurrentProductInfoButton;
-    private ViewManager vm;
-    private UserManager system;
-    private Seller seller;
+    private final ViewManager vm;
+    private final UserManager system;
+    private final Seller seller;
     public SellerHomePageView(ViewManager v, Seller seller){
         this.vm = v;
         this.seller = seller;
@@ -205,6 +205,14 @@ public class SellerHomePageView {
         JLabel label = new JLabel("Enter Product ID to remove:");
         JTextField textField = new JTextField();
         JButton removeButton = new JButton("Remove");
+
+        removeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String productID = textField.getText();
+
+            }
+        });
         panel.add(label);
         panel.add(textField);
         panel.add(removeButton);
