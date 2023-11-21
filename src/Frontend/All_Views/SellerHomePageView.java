@@ -11,6 +11,8 @@ import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
@@ -221,8 +223,49 @@ public class SellerHomePageView {
             this.system.getProductsManager().saveInventoryToFile();
         });
 
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if (SwingUtilities.isRightMouseButton(e)) {
+                    int row = table.rowAtPoint(e.getPoint());
+                    int column = table.columnAtPoint(e.getPoint());
+
+                    // Select the row under the right-clicked point
+                    table.setRowSelectionInterval(row, row);
+
+                    // Show the popup menu
+                    showPopupMenu(table, e.getX(), e.getY());
+                }
+            }
+        });
+
         return new JScrollPane(table);
     }
+
+    private void showPopupMenu(JTable table, int x, int y) {
+        JPopupMenu popupMenu = new JPopupMenu();
+        JMenuItem deleteItem = new JMenuItem("Remove Product");
+
+        deleteItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    // Remove the selected row
+                    Product product = getProductForRow(selectedRow);
+                    seller.getProductsForSale().remove(product);
+                    system.getProductsManager().saveInventoryToFile();
+                    showProductPanel();
+                }
+            }
+        });
+
+        popupMenu.add(deleteItem);
+
+        // Show the popup menu at the specified location
+        popupMenu.show(table, x, y);
+    }
+
 
 
     /**
