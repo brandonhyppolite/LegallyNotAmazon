@@ -170,19 +170,28 @@ public class SellerHomePageView {
             Object data = model.getValueAt(row, column);
 
             // Add your logic to handle the change, for example, save the data
-            updateProductData(row, columnName, data);
+            Product product = getProductForRow(row);
+            updateProductData(product, columnName, data);
         });
 
         return new JScrollPane(table);
     }
 
-
-    private void updateProductData(int row, String columnName, Object data) {
-        // Add your logic here to update the product data, e.g., save it
-        // You can use the row, columnName, and data parameters to identify the cell that was edited
-        // and update the corresponding Product object in your data model
-        // For simplicity, you can print the changes for now
-        System.out.println("Row: " + row + ", Column: " + columnName + ", Data: " + data);
+    private Product getProductForRow(int row) {
+        return this.system.getProductsManager().getItemsFromUser(seller).get(row);
+    }
+    private void updateProductData(Product product, String columnName, Object data) {
+        switch(columnName){
+            case "Name":
+                product.setName((String) data);
+                break;
+            case "Quantity":
+                break;
+            case "Invoice Price ($)" :
+                break;
+            case "Selling Price ($)":
+                break;
+        }
     }
 
     private JPanel drawProductRemoval(){
