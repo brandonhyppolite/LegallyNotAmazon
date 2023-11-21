@@ -225,13 +225,12 @@ public class SellerHomePageView {
 
 
     /**
-     * Gets the `Product` object associated with the specified row in the product table.
+     * Gets the `Product` object associated with the specified row in the product table from Seller.
      *
      * @param row The row index.
      * @return The `Product` object.
      */
     private Product getProductForRow(int row) {
-//        return this.system.getProductsManager().getItemsFromUser(this.seller).get(row);
         return this.seller.getProductsForSale().get(row);
     }
 
@@ -251,10 +250,10 @@ public class SellerHomePageView {
                 product.setQuantity((Integer) data);
                 break;
             case "Invoice Price ($)" :
-                product.setInvoicePrice((Double) data);
+                product.setInvoicePrice(Double.parseDouble((String) data));
                 break;
             case "Selling Price ($)":
-                product.setSellingPrice((Double) data);
+                product.setSellingPrice(Double.parseDouble((String) data));
                 break;
         }
 
@@ -277,7 +276,16 @@ public class SellerHomePageView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String productID = textField.getText();
-
+                for(Product p: seller.getProductsForSale()){
+                    if(p.getID().equals(productID)){
+                        seller.getProductsForSale().remove(p);
+                        JOptionPane.showMessageDialog(null, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        system.getProductsManager().saveInventoryToFile();
+                        showProductPanel();
+                        break;
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Product not Found!", "Failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
         panel.add(label);
@@ -326,8 +334,6 @@ public class SellerHomePageView {
                             Integer.parseInt(quantity.getText())
                     );
 
-
-//                    system.getProductsManager().addProductToUser(seller,p);
                     seller.getProductsForSale().add(p);
                     system.getProductsManager().saveInventoryToFile();
 

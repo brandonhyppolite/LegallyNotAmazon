@@ -1,7 +1,2 @@
-atheek99;iPhone 13;L1ZKT;600.0;750.0;3
-atheek99;AirPods;6OICI;199.99;215.0;23
-atheek99;Redbull 8.4oz (12pk);OD9RS;19.99;21.99;2
-atheek99;Coca Cola 20oz;W8WB8;2.49;2.99;20
-atheek99;dfgfdgdfg;M0U99;4.99;55.99;23
-topgun97;Mountain Dew 12oz;MYY5N;2.99;3.39;20
-topgun97;Razer Naga Gaming Mouse;T58ST;69.99;79.99;10
+atheek99;Red Bull 8oz (24pk);Y7O5;36.99;39.99;4
+atheek99;dsgdsf;4DCS;45.0;78.0;2
