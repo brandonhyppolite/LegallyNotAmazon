@@ -46,7 +46,7 @@ public class SellerHomePageView {
         this.vm = v;
         this.userManager = UserManager.getInstance();
         this.seller = seller;
-       this.seller.setSalesData();
+        this.seller.setSalesData();
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -192,12 +192,12 @@ public class SellerHomePageView {
             productData[i][4] = String.valueOf(product.getSellingPrice());
         }
 
-        JTable table = getjTable(productData, columnNames);
+        JTable table = createSellerTable(productData, columnNames);
 
         return new JScrollPane(table);
     }
 
-    private JTable getjTable(String[][] productData, String[] columnNames) {
+    private JTable createSellerTable(String[][] productData, String[] columnNames) {
         DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
