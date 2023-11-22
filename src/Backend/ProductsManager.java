@@ -131,4 +131,16 @@ public class ProductsManager {
     public void addProductToUser(User u, Product p){
         getItemsFromUser(u).add(p);
     }
+
+    public ArrayList<Product> getAllItemsForSale() {
+        ArrayList<Product> allItemsForSale = new ArrayList<>();
+
+        for (User u : this.userManager.getUsers()) {
+            if (u instanceof Seller) {
+                allItemsForSale.addAll(((Seller) u).getProductsForSale());
+            }
+        }
+
+        return allItemsForSale;
+    }
 }
