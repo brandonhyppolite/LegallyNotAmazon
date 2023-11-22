@@ -23,7 +23,7 @@ public class UserManager {
     private UserManager() {
         this.users = new ArrayList<>();
         readUserDataFromFile();
-        this.productsManager = new ProductsManager(this, this.getUsers());
+        this.productsManager = new ProductsManager(this);
         printAllUsers();
     }
 
@@ -54,7 +54,7 @@ public class UserManager {
     /**
      * Reads user data from the specified file and adds valid users to the user list.
      */
-    private void readUserDataFromFile() {
+    public void readUserDataFromFile() {
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -188,8 +188,8 @@ public class UserManager {
     /**
      * Writes user data to the specified file.
      */
-    private void writeUserDataToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE))) {
+    public void writeUserDataToFile() {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USER_DATA_FILE, false))) {
             for (User user : users) {
                 // Format the user data and write it to the file
                 if (user instanceof Buyer) {

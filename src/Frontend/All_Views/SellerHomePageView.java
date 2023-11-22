@@ -51,6 +51,8 @@ public class SellerHomePageView {
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                seller.setSalesData();
+                userManager.writeUserDataToFile();
                 vm.showEntryView();
                 //More functions for saving any changes Seller made
 
