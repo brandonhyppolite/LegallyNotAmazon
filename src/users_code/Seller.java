@@ -58,9 +58,12 @@ public class Seller extends User{
 
     public void setSalesData(){
         double costs =0.0;
+        double profits = 0.0;
         for(Product p : this.productsForSale){
             costs+= (p.getInvoicePrice() * p.getQuantity());
+            profits+= (p.getSellingPrice() * p.getQuantity());
         }
+        setRevenues(profits);
         setCosts(costs);
         setProfits(getRevenues() - getCosts());
     }
