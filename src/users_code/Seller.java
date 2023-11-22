@@ -14,9 +14,9 @@ public class Seller extends User{
     public Seller(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password, email);
         this.productsForSale = new ArrayList<>();
-        this.costs = 0;
-        this.revenues = 0;
-        this.profits = 0;
+        this.costs = 0.00;
+        this.revenues = 0.00;
+        this.profits = 0.00;
     }
 
     //Constructor for existing seller that gets read from a text file with values
@@ -53,5 +53,14 @@ public class Seller extends User{
 
     public void setProfits(double profits) {
         this.profits = profits;
+    }
+
+    public void setSalesData(){
+        double costs =0.0;
+        for(Product p : this.productsForSale){
+            costs+= (p.getInvoicePrice() * p.getQuantity());
+        }
+        setCosts(costs);
+        setProfits(getRevenues() - getCosts());
     }
 }

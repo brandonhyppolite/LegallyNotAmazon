@@ -33,7 +33,7 @@ public class SellerHomePageView {
     private JPanel mainDataPanel;
     private JButton viewCurrentProductInfoButton;
     private final ViewManager vm;
-    private final UserManager system;
+    private final UserManager userManager;
     private final Seller seller;
 
 
@@ -45,8 +45,9 @@ public class SellerHomePageView {
      */
     public SellerHomePageView(ViewManager v, Seller seller){
         this.vm = v;
+        this.userManager = UserManager.getInstance();
         this.seller = seller;
-        this.system = UserManager.getInstance();
+       this.seller.setSalesData();
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -220,7 +221,7 @@ public class SellerHomePageView {
 
             Product product = getProductForRow(row);
             updateProductData(product, columnName, data);
-            this.system.getProductsManager().saveInventoryToFile();
+            this.userManager.getProductsManager().saveInventoryToFile();
         });
 
         table.addMouseListener(new MouseAdapter() {
@@ -254,7 +255,7 @@ public class SellerHomePageView {
                     // Remove the selected row
                     Product product = getProductForRow(selectedRow);
                     seller.getProductsForSale().remove(product);
-                    system.getProductsManager().saveInventoryToFile();
+                    userManager.getProductsManager().saveInventoryToFile();
                     showProductPanel();
                 }
             }
@@ -326,15 +327,15 @@ public class SellerHomePageView {
                     Product p = iterator.next();
                     if (p.getID().equals(productID)) {
                         iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
-                        JOptionPane.showMessageDialog(null, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                        system.getProductsManager().saveInventoryToFile();
+                        JOptionPane.showMessageDialog(mainDataPanel, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                        userManager.getProductsManager().saveInventoryToFile();
                         showProductPanel();
                         return; // Exit the loop once the product is found and removed
                     }
                 }
 
                 // If the loop completes and the product is not found
-                JOptionPane.showMessageDialog(null, "Product not Found!", "Failure", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(mainDataPanel, "Product not Found!", "Failure", JOptionPane.INFORMATION_MESSAGE);
             }
         });
 
@@ -385,16 +386,16 @@ public class SellerHomePageView {
                     );
 
                     seller.getProductsForSale().add(p);
-                    system.getProductsManager().saveInventoryToFile();
+                    userManager.getProductsManager().saveInventoryToFile();
 
-                    JOptionPane.showMessageDialog(null, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     productName.setText("");
                     invoicePrice.setText("");
                     sellingPrice.setText("");
                     quantity.setText("");
                 } catch (NumberFormatException ex) {
                     // Handle the case where conversion from text to numbers fails
-                    JOptionPane.showMessageDialog(null, "Invalid input. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(mainDataPanel, "Invalid input. Please enter valid numbers.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -422,15 +423,15 @@ public class SellerHomePageView {
     private JPanel drawSalesDataPanel() {
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs:");
+        JLabel costs = new JLabel("Costs: $" + this.seller.getCosts());
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel revenue = new JLabel("Revenue:");
+        JLabel revenue = new JLabel("Revenue: $" + this.seller.getRevenues());
         revenue.setHorizontalAlignment(JLabel.CENTER);
         revenue.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel profits = new JLabel("Profits:");
+        JLabel profits = new JLabel("Profits: $" + this.seller.getProfits());
         profits.setHorizontalAlignment(JLabel.CENTER);
         profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 

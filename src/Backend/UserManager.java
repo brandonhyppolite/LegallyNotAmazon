@@ -196,7 +196,8 @@ public class UserManager {
                 } else if (user instanceof Seller) {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
-                            + user.getEmail() + ";" + "Seller";
+                            + user.getEmail() + ";" + ((Seller) user).getCosts() + ";" + ((Seller) user).getRevenues() + ";"
+                    + ((Seller) user).getProfits() + ";" +"Seller";
                     writer.write(userData);
                     writer.newLine();
                 }

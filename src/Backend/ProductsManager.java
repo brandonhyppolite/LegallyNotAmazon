@@ -16,7 +16,7 @@ public class ProductsManager {
     private static final String INVENTORY_FILE_PATH = "src/Saved_Files/inventory.txt";
     private final ArrayList<Seller> sellers;
     private final ArrayList<Buyer> buyers;
-    private final UserManager system;
+    private final UserManager userManager;
 
 
     /**
@@ -28,7 +28,7 @@ public class ProductsManager {
     public ProductsManager(UserManager s, ArrayList<User> users) {
         this.sellers = new ArrayList<>();
         this.buyers = new ArrayList<>();
-        this.system = s;
+        this.userManager = s;
         this.setUpLists(users);
         loadInventoryFromFile();
     }
@@ -44,7 +44,7 @@ public class ProductsManager {
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
                 if (productData.length == 6) {
-                    User user =  this.system.getUserByUsername(productData[0]);
+                    User user =  this.userManager.getUserByUsername(productData[0]);
 
                     Product product = new Product(
                             productData[1],     // Product Name
