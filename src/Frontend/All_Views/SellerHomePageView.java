@@ -421,6 +421,7 @@ public class SellerHomePageView {
      * @return The sales data panel.
      */
     private JPanel drawSalesDataPanel() {
+        this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
         JLabel costs = new JLabel("Costs: $" + this.seller.getCosts());

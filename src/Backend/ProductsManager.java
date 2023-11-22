@@ -109,9 +109,6 @@ public class ProductsManager {
         writer.write(line);
     }
 
-
-
-
     /**
      * Sets up lists of sellers and buyers based on the provided list of users.
      *

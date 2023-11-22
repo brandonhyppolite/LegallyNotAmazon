@@ -22,6 +22,7 @@ public class Seller extends User{
     //Constructor for existing seller that gets read from a text file with values
     public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits) {
         super(firstName, lastName, username, password, email);
+        this.productsForSale = new ArrayList<>();
         this.costs = costs;
         this.revenues = revenues;
         this.profits = profits;

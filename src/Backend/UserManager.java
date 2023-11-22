@@ -59,14 +59,11 @@ public class UserManager {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(";");
-                if (userData.length == 6) { // Ensure we have exactly 6 data elements
-                    User user = getUser(userData);
-                    if (user != null) {
-                        this.users.add(user);
-                    }
-                } else {
-                    System.out.println("Skipping invalid data: " + line);
+                User user = getUser(userData);
+                if (user != null) {
+                    this.users.add(user);
                 }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,16 +72,24 @@ public class UserManager {
 
     private User getUser(String[] userData){
         User user = null;
-        String firstName = userData[0];
-        String lastName = userData[1];
-        String username = userData[2];
-        String password = userData[3];
-        String email = userData[4];
-        String accountType = userData[5];
-        if (accountType.equals("Buyer")) {
-            user = new Buyer(firstName, lastName, username, password,email);
-        } else if (accountType.equals("Seller")) {
-            user = new Seller(firstName, lastName, username, password,email);
+        String accountType = userData[userData.length-1];
+        if(accountType.equals("Buyer")){
+            String firstName = userData[0];
+            String lastName = userData[1];
+            String username = userData[2];
+            String password = userData[3];
+            String email = userData[4];
+            user = new Buyer(firstName,lastName,username,password,email);
+        }else if(accountType.equals("Seller")){
+            String firstName = userData[0];
+            String lastName = userData[1];
+            String username = userData[2];
+            String password = userData[3];
+            String email = userData[4];
+            double costs = Double.parseDouble(userData[5]);
+            double revenues = Double.parseDouble(userData[6]);
+            double profits = Double.parseDouble(userData[7]);
+            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits);
         }
         return user;
     }
