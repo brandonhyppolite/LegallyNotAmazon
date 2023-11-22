@@ -297,9 +297,9 @@ public class SellerHomePageView {
      * @return The `Product` object.
      */
     private Product getProductForRow(int row) {
-        return this.seller.getProductsForSale().get(row);
-    }
 
+        return this.seller.getProductsForSale().get(row); 
+    }
 
     /**
      * Draws the panel for product removal.
