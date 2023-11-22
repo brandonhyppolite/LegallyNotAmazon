@@ -14,22 +14,16 @@ import java.util.ArrayList;
  */
 public class ProductsManager {
     private static final String INVENTORY_FILE_PATH = "src/Saved_Files/inventory.txt";
-    private final ArrayList<Seller> sellers;
-    private final ArrayList<Buyer> buyers;
-    private final UserManager system;
+    private final UserManager userManager;
 
 
     /**
-     * Constructs a `ProductsManager` with the given `UserManager` and a list of users.
+     * Constructs a `ProductsManager` with the given `UserManager`
      *
-     * @param s     The `UserManager` instance.
-     * @param users The list of users.
+     * @param u     The `UserManager` instance.
      */
-    public ProductsManager(UserManager s, ArrayList<User> users) {
-        this.sellers = new ArrayList<>();
-        this.buyers = new ArrayList<>();
-        this.system = s;
-        this.setUpLists(users);
+    public ProductsManager(UserManager u) {
+        this.userManager = u;
         loadInventoryFromFile();
     }
 
@@ -44,7 +38,7 @@ public class ProductsManager {
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
                 if (productData.length == 6) {
-                    User user =  this.system.getUserByUsername(productData[0]);
+                    User user =  this.userManager.getUserByUsername(productData[0]);
 
                     Product product = new Product(
                             productData[1],     // Product Name
@@ -72,15 +66,15 @@ public class ProductsManager {
      */
     public void saveInventoryToFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(INVENTORY_FILE_PATH, false))) {
-            for (Seller seller : sellers) {
-                for (Product product : seller.getProductsForSale()) {
-                    writeProductToFile(writer, seller.getUsername(), product);
-                }
-            }
-
-            for (Buyer buyer : buyers) {
-                for (Product product : buyer.getShoppingCart()) {
-                    writeProductToFile(writer, buyer.getUsername(), product);
+            for(User u: this.userManager.getUsers()){
+                if(u instanceof Seller){
+                    for(Product p: ((Seller) u).getProductsForSale()){
+                        writeProductToFile(writer, u.getUsername(), p);
+                    }
+                }else if(u instanceof Buyer){
+                    for(Product p: ((Buyer) u).getShoppingCart()){
+                        writeProductToFile(writer, u.getUsername(), p);
+                    }
                 }
             }
             System.out.println("Product Manager successfully saved inventory to file");
@@ -111,28 +105,6 @@ public class ProductsManager {
 
 
 
-
-    /**
-     * Sets up lists of sellers and buyers based on the provided list of users.
-     *
-     * @param users The list of users.
-     */
-    public void setUpLists(ArrayList<User> users){
-        for(User user: users){
-            if(user instanceof Seller){
-                if(!this.sellers.contains(user)){
-                    this.sellers.add((Seller) user);
-                }
-            }else if(user instanceof Buyer){
-                if(!this.buyers.contains(user)){
-                    this.buyers.add((Buyer) user);
-                }
-            }
-        }
-    }
-
-
-
     /**
      * Retrieves a list of products associated with a user (either products for sale or in the shopping cart).
      *
@@ -140,9 +112,9 @@ public class ProductsManager {
      * @return The list of products associated with the user.
      */
     public ArrayList<Product> getItemsFromUser(User u){
-        if(u instanceof Seller && sellers.contains(u)){
+        if(u instanceof Seller && this.userManager.getUsers().contains(u)){
             return ((Seller) u).getProductsForSale();
-        }else if(u instanceof Buyer && buyers.contains(u)){
+        }else if(u instanceof Buyer && userManager.getUsers().contains(u)){
             return (((Buyer) u).getShoppingCart());
         }
         System.out.println("User was unknown class");

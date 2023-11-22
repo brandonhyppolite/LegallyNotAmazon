@@ -45,7 +45,7 @@ public class EntryView {
                     if(u instanceof Seller){
                         vm.showSellerHomePageView((Seller) u);
                     }else if(u instanceof Buyer){
-                        //Showe Buyer View
+                        //Show Buyer View
                     }
                 }else{
                     //Show an Error for logging in
