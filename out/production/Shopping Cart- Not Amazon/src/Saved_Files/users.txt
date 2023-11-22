@@ -1,2 +1,1 @@
-Atheek;Ashkar;atheek99;1234;atheek99@yahoo.com;Seller
-Atheek;Ashkar;topgun97;1234;atheek99@yahoo.com;Seller
+Atheek;Ashkar;atheek99;1234;atheek99@yahoo.com;0.0;0.0;0.0;Seller
