@@ -10,10 +10,10 @@ public class Product{
     private int quantity;
     private String ID;
     private double invoicePrice;
-
+    private String sellerUserName;
     private String description;
-    public Product(String name) {
-        this.name = name;
+    public Product() {
+
     }
 
     public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
@@ -74,6 +74,14 @@ public class Product{
 
     public String getID() {
         return ID;
+    }
+
+    public String getSellerUserName() {
+        return sellerUserName;
+    }
+
+    public void setSellerUserName(String sellerUserName) {
+        this.sellerUserName = sellerUserName;
     }
 
     public void setID(String ID) {

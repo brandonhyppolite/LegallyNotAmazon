@@ -16,7 +16,7 @@ public class ProductFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
-                if (productData.length == 6) {
+                if (productData.length == 7) {
                     User user =  userManager.getUserByUsername(productData[0]);
 
                     Product product = new Product(
@@ -26,7 +26,8 @@ public class ProductFileHandler {
                             Double.parseDouble(productData[4]),  //Product selling Price
                             Integer.parseInt(productData[5])           //Product Quantity
                     );
-
+                    product.setDescription(productData[6]);
+                    product.setSellerUserName(productData[0]);
                     productsManager.addProductToUser(user,product);
                 } else {
                     System.out.println("Skipping invalid product data: " + line);
@@ -71,13 +72,20 @@ public class ProductFileHandler {
      * @throws IOException If an I/O error occurs while writing to the file.
      */
     private static void writeProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
-        String line = String.format("%s;%s;%s;%s;%s;%s\n",
+        String description = null;
+        if(product.getDescription() == null){
+            description = "No Description";
+        }else{
+            description = product.getDescription();
+        }
+        String line = String.format("%s;%s;%s;%s;%s;%s;%s\n",
                 username,
                 product.getName(),
                 product.getID(),
                 product.getInvoicePrice(),
                 product.getSellingPrice(),
-                product.getQuantity());
+                product.getQuantity(),
+                description);
         writer.write(line);
     }
 }

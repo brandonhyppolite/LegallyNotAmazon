@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class BuyerViewDrawer {
@@ -58,6 +59,14 @@ public class BuyerViewDrawer {
             @Override
             public void mouseClicked(MouseEvent e) {
                 showProductDetailsDialog(product);
+            } @Override
+            public void mouseEntered(MouseEvent e) {
+                productBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                productBox.setCursor(Cursor.getDefaultCursor());
             }
         });
 
@@ -74,15 +83,24 @@ public class BuyerViewDrawer {
 
     private static void showProductDetailsDialog(Product product) {
         // Create a panel to display detailed information
-        JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
-        detailsPanel.add(new JLabel("Name: " + product.getName()));
-        detailsPanel.add(new JLabel("Price: $" + product.getSellingPrice()));
-        detailsPanel.add(new JLabel("In stock: " + product.getQuantity()));
-        detailsPanel.add(new JLabel("Desc: " + product.getDescription()));
+        JPanel moreDetails = new JPanel(new GridLayout(0, 1));
+
+        // Format the price using NumberFormat for currency formatting
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        String formattedPrice = currencyFormat.format(product.getSellingPrice());
+
+        // Use HTML for better formatting (line breaks)
+        moreDetails.add(new JLabel("<html><b>Name:</b> " + product.getName() + "</html>"));
+        moreDetails.add(new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>"));
+        moreDetails.add(new JLabel("<html><b>In stock:</b> " + product.getQuantity() + "</html>"));
+        moreDetails.add(new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>"));
+        moreDetails.add(new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>"));
 
         // Show a JOptionPane with detailed information
-        JOptionPane.showMessageDialog(detailsPanel, "Product Details");
+        JOptionPane.showMessageDialog(null, moreDetails, "Product Details", JOptionPane.INFORMATION_MESSAGE);
     }
+
+
 
 
 }
