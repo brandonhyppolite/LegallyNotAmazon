@@ -257,7 +257,7 @@ public class SellerHomePageView {
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
         seller.getProductsForSale().remove(product);
-        userManager.getProductsManager().saveInventoryToFile();
+        userManager.getProductsManager().saveInventory();
         showProductPanel(); // Refresh the product panel after changes
     }
 
@@ -283,7 +283,7 @@ public class SellerHomePageView {
             }
 
             // Save changes to the file or update the table accordingly
-            userManager.getProductsManager().saveInventoryToFile();
+            userManager.getProductsManager().saveInventory();
             showProductPanel(); // Refresh the product panel after changes
         }
     }
@@ -322,7 +322,7 @@ public class SellerHomePageView {
                 if (p.getID().equals(productID)) {
                     iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
                     JOptionPane.showMessageDialog(mainDataPanel, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    userManager.getProductsManager().saveInventoryToFile();
+                    userManager.getProductsManager().saveInventory();
                     showProductPanel();
                     return; // Exit the loop once the product is found and removed
                 }
@@ -377,7 +377,7 @@ public class SellerHomePageView {
                 );
 
                 seller.getProductsForSale().add(p);
-                userManager.getProductsManager().saveInventoryToFile();
+                userManager.getProductsManager().saveInventory();
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 productName.setText("");

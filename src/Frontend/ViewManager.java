@@ -43,7 +43,7 @@ public class ViewManager {
 
     public void showBuyerHomePage(Buyer u) {
         this.sp.getContentPane().removeAll();
-        this.sp.getContentPane().add(new BuyerPageView(this,u).showBuyerHomePage());
+        this.sp.getContentPane().add(new BuyerPageView(this,u).getBuyerPageMainPanel());
         this.sp.revalidate();
         this.sp.repaint();
     }

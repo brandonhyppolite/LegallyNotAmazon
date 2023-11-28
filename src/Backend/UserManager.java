@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class UserManager {
     private final ArrayList<User> users;
     private static UserManager instance;
-    private static final String USER_DATA_FILE = "src/Saved_Files/users.txt";
+    private static final String USER_DATA_FILE = "src/Database/users.txt";
     private final ProductsManager productsManager;
 
     /**
