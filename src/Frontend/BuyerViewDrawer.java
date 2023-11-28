@@ -45,14 +45,14 @@ public class BuyerViewDrawer {
     }
 
     private static JPanel createProductBox(Product product) {
-        JPanel productBox = new JPanel(new GridLayout());
+        JPanel productBox = new JPanel(new BorderLayout());
         productBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
         detailsPanel.add(new JLabel("Name: " + product.getName()));
         detailsPanel.add(new JLabel("Price: $" + product.getSellingPrice()));
         detailsPanel.add(new JLabel("In stock: " + product.getQuantity()));
 
-        productBox.add(detailsPanel, BorderLayout.EAST);
+        productBox.add(detailsPanel, BorderLayout.CENTER);
 
         // Add mouse listener to show more details on click
         productBox.addMouseListener(new MouseAdapter() {
