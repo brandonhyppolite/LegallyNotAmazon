@@ -1,161 +1,29 @@
-package src.Frontend.All_Views;
+package src.Frontend;
 
 import src.Backend.UserManager;
-import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Seller;
+import src.users_code.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
+public class SellerViewDrawer {
 
-/**
- * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
- * It allows Sellers to view, edit, and add products, as well as view sales data.
- */
-public class SellerHomePageView {
-    private JPanel sellerHomePageMainPanel;
-    private JLabel welcomeUserLabel;
-    private JPanel sellerHomePageInfoPanel;
-    private JPanel buttonPanel;
-    private JButton salesDataButton;
-    private JButton addANewProductButton;
-    private JButton logOutButton;
+    private Seller seller;
     private JPanel mainDataPanel;
-    private JButton viewCurrentProductInfoButton;
-    private final ViewManager vm;
-    private final UserManager userManager;
-    private final Seller seller;
-
-
-    /**
-     * Constructs a `SellerHomePageView` with the given `ViewManager` and `Seller`.
-     *
-     * @param v      The `ViewManager` instance.
-     * @param seller The `Seller` for whom the home page is displayed.
-     */
-    public SellerHomePageView(ViewManager v, Seller seller){
-        this.vm = v;
-        this.userManager = UserManager.getInstance();
+    private UserManager userManager;
+    public SellerViewDrawer(Seller seller, JPanel mainDataPanel){
         this.seller = seller;
-        this.seller.setSalesData();
-
-        logOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                seller.setSalesData();
-                userManager.writeUserDataToFile();
-                vm.showEntryView();
-
-            }
-        });
-        addANewProductButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAddNewProductPanel();
-            }
-        });
-        viewCurrentProductInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSellerProducts();
-            }
-        });
-
-        salesDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSalesDataPanel();
-            }
-        });
-
-
-        setUpMainView();
-        showSellerProducts();
+        this.mainDataPanel = mainDataPanel;
+        this.userManager = UserManager.getInstance();
     }
-
-
-    /**
-     * Gets the main panel of the Seller home page.
-     *
-     * @return The main panel.
-     */
-    public JPanel getMainPanel(){
-        return sellerHomePageMainPanel;
-    }
-
-
-    /**
-     * Sets up the main view by configuring the layout and displaying the welcome message.
-     */
-    public void setUpMainView() {
-        sellerHomePageInfoPanel.setLayout(new BorderLayout());
-        sellerHomePageInfoPanel.add(buttonPanel,BorderLayout.NORTH);
-        sellerHomePageInfoPanel.add(mainDataPanel,BorderLayout.CENTER);
-        welcomeUserLabel.setText("Welcome, " + seller.getUsername() + "!");
-
-    }
-
-    /**
-     * Displays the product panel, allowing Sellers to view and edit their current products.
-     */
-    private void showSellerProducts() {
-        SwingUtilities.invokeLater(() -> {
-            clearPanels();
-            mainDataPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Edit your current product(s) below:");
-            label.setHorizontalAlignment(JLabel.CENTER);
-            mainDataPanel.add(label, BorderLayout.NORTH);
-            mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
-            mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
-            mainDataPanel.revalidate();
-            mainDataPanel.repaint();
-        });
-    }
-
-    /**
-     * Displays the panel for adding a new product.
-     */
-    private void showAddNewProductPanel() {
-        SwingUtilities.invokeLater(() -> {
-            clearPanels();
-            mainDataPanel.setLayout(new BorderLayout());
-            mainDataPanel.add(drawAddNewProductPanel(), BorderLayout.CENTER);
-            mainDataPanel.revalidate();
-            mainDataPanel.repaint();
-        });
-    }
-
-
-    /**
-     * Displays the sales data panel, showing costs, revenue, and profits.
-     */
-    private void showSalesDataPanel(){
-        SwingUtilities.invokeLater(() -> {
-            clearPanels();
-            mainDataPanel.setLayout(new BorderLayout());
-            mainDataPanel.add(drawSalesDataPanel(), BorderLayout.NORTH);
-            mainDataPanel.revalidate();
-            mainDataPanel.repaint();
-        });
-    }
-
-    /**
-     * Clears the main data panel.
-     */
-
-    private void clearPanels(){
-        mainDataPanel.removeAll();
-    }
-
 
     /**
      * Draws the product table to display the Seller's products.
@@ -286,7 +154,7 @@ public class SellerHomePageView {
         }
     }
 
-    
+
 
     /**
      * Gets the `Product` object associated with the specified row in the product table from Seller.
@@ -296,7 +164,7 @@ public class SellerHomePageView {
      */
     private Product getProductForRow(int row) {
 
-        return this.seller.getProductsForSale().get(row); 
+        return this.seller.getProductsForSale().get(row);
     }
 
     /**
@@ -456,8 +324,10 @@ public class SellerHomePageView {
 
         return panel;
     }
+
     private void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
-        showSellerProducts();
+        drawProductTable();
     }
+
 }

@@ -1,8 +1,10 @@
 package src.Frontend;
 
+import src.Frontend.All_Views.BuyerPageView;
 import src.Frontend.All_Views.CreateAccountView;
 import src.Frontend.All_Views.EntryView;
 import src.Frontend.All_Views.SellerHomePageView;
+import src.users_code.Buyer;
 import src.users_code.Seller;
 
 public class ViewManager {
@@ -35,6 +37,13 @@ public class ViewManager {
     public void showSellerHomePageView(Seller u){
         this.sp.getContentPane().removeAll();
         this.sp.getContentPane().add(new SellerHomePageView(this,u).getMainPanel());
+        this.sp.revalidate();
+        this.sp.repaint();
+    }
+
+    public void showBuyerHomePage(Buyer u) {
+        this.sp.getContentPane().removeAll();
+        this.sp.getContentPane().add(new BuyerPageView(this,u).getBuyerPageMainPanel());
         this.sp.revalidate();
         this.sp.repaint();
     }

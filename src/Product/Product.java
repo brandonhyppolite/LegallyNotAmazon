@@ -1,4 +1,4 @@
-package src.Inventory;
+package src.Product;
 
 
 
@@ -10,9 +10,10 @@ public class Product{
     private int quantity;
     private String ID;
     private double invoicePrice;
+    private String sellerUserName;
+    private String description;
+    public Product() {
 
-    public Product(String name) {
-        this.name = name;
     }
 
     public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
@@ -59,12 +60,28 @@ public class Product{
         return quantity;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 
     public String getID() {
         return ID;
+    }
+
+    public String getSellerUserName() {
+        return sellerUserName;
+    }
+
+    public void setSellerUserName(String sellerUserName) {
+        this.sellerUserName = sellerUserName;
     }
 
     public void setID(String ID) {

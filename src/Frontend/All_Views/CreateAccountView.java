@@ -46,16 +46,22 @@ public class CreateAccountView {
                 char[] passwordText = password.getPassword();
                 String emailText = email.getText();
 
-                if (firstNameText == "" || lastNameText == "" || usernameText == "" || passwordText.length ==0 || emailText == "" || accountType == "") {
+                if (firstNameText.equals("") || lastNameText.equals("") || usernameText.equals("") || passwordText.length ==0 || emailText.equals("")|| accountType.equals("")) {
                     createAccountWarningLabel.setText("Please fill out all the fields!");
                     createAccountWarningLabel.setForeground(Color.RED);
 
                 } else {
                     String password = String.valueOf(passwordText);
-                    system.createNewUser(firstNameText, lastNameText, usernameText, password, emailText, accountType);
-                    createAccountWarningLabel.setText("Successfully created account! Go back and login!");
-                    createAccountWarningLabel.setForeground(Color.GREEN);
-                    System.out.println(system.getUserByUsername(usernameText).getPassword());
+                    boolean canCreateAccount = system.createNewUser(firstNameText, lastNameText, usernameText, password, emailText, accountType);
+                    if(!canCreateAccount){
+                        createAccountWarningLabel.setText("Username already taken!");
+                        createAccountWarningLabel.setForeground(Color.RED);
+                    }else{
+                        createAccountWarningLabel.setText("Successfully created account! Go back and login!");
+                        createAccountWarningLabel.setForeground(Color.GREEN);
+                        System.out.println(system.getUserByUsername(usernameText).getPassword());
+                    }
+
                 }
             }
         });

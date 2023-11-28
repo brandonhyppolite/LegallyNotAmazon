@@ -1,11 +1,10 @@
 package src.Backend;
 
-import src.Inventory.Product;
+import src.Product.Product;
 import src.users_code.Buyer;
 import src.users_code.Seller;
 import src.users_code.User;
 
-import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +12,6 @@ import java.util.ArrayList;
  * setting up lists of sellers and buyers, and adding products to users.
  */
 public class ProductsManager {
-    private static final String INVENTORY_FILE_PATH = "src/Saved_Files/inventory.txt";
     private final UserManager userManager;
 
 
@@ -24,7 +22,7 @@ public class ProductsManager {
      */
     public ProductsManager(UserManager u) {
         this.userManager = u;
-        loadInventoryFromFile();
+        loadInventory();
     }
 
 
@@ -32,31 +30,8 @@ public class ProductsManager {
     /**
      * Loads inventory data from the specified file and adds products to users.
      */
-    public void loadInventoryFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(INVENTORY_FILE_PATH))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] productData = line.split(";");
-                if (productData.length == 6) {
-                    User user =  this.userManager.getUserByUsername(productData[0]);
-
-                    Product product = new Product(
-                            productData[1],     // Product Name
-                            productData[2], //Product ID
-                            Double.parseDouble(productData[3]), //Product invoice price
-                            Double.parseDouble(productData[4]),  //Product selling Price
-                            Integer.parseInt(productData[5])           //Product Quantity
-                    );
-
-                    addProductToUser(user,product);
-                } else {
-                    System.out.println("Skipping invalid product data: " + line);
-                }
-            }
-            System.out.println("Product Manager successfully loaded inventory from file");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void loadInventory() {
+        ProductFileHandler.loadProductFromFile(this.userManager, this);
     }
 
 
@@ -64,46 +39,9 @@ public class ProductsManager {
     /**
      * Saves inventory data to the specified file based on the products owned by sellers and in buyers' shopping carts.
      */
-    public void saveInventoryToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(INVENTORY_FILE_PATH, false))) {
-            for(User u: this.userManager.getUsers()){
-                if(u instanceof Seller){
-                    for(Product p: ((Seller) u).getProductsForSale()){
-                        writeProductToFile(writer, u.getUsername(), p);
-                    }
-                }else if(u instanceof Buyer){
-                    for(Product p: ((Buyer) u).getShoppingCart()){
-                        writeProductToFile(writer, u.getUsername(), p);
-                    }
-                }
-            }
-            System.out.println("Product Manager successfully saved inventory to file");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void saveInventory() {
+        ProductFileHandler.writeInventoryToFile(this.userManager);
     }
-
-
-    /**
-     * Writes product data to the specified writer, including the username of the owner and product details.
-     *
-     * @param writer  The writer to use for writing.
-     * @param username The username of the owner of the product.
-     * @param product  The product to write.
-     * @throws IOException If an I/O error occurs while writing to the file.
-     */
-    private void writeProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
-        String line = String.format("%s;%s;%s;%s;%s;%s\n",
-                username,
-                product.getName(),
-                product.getID(),
-                product.getInvoicePrice(),
-                product.getSellingPrice(),
-                product.getQuantity());
-        writer.write(line);
-    }
-
-
 
     /**
      * Retrieves a list of products associated with a user (either products for sale or in the shopping cart).
@@ -131,4 +69,33 @@ public class ProductsManager {
     public void addProductToUser(User u, Product p){
         getItemsFromUser(u).add(p);
     }
+
+    public ArrayList<Product> getAllItemsForSale() {
+        ArrayList<Product> allItemsForSale = new ArrayList<>();
+
+        for (User u : this.userManager.getUsers()) {
+            if (u instanceof Seller) {
+                allItemsForSale.addAll(((Seller) u).getProductsForSale());
+            }
+        }
+
+        return allItemsForSale;
+    }
+
+    public ArrayList<Product> getAvailableItems(String searchPhrase) {
+        ArrayList<Product> availableItems = new ArrayList<>();
+
+        for (User u : this.userManager.getUsers()) {
+            if (u instanceof Seller) {
+                for (Product product : ((Seller) u).getProductsForSale()) {
+                    if (product.getName().toLowerCase().contains(searchPhrase.toLowerCase())) {
+                        availableItems.add(product);
+                    }
+                }
+            }
+        }
+
+        return availableItems;
+    }
+
 }

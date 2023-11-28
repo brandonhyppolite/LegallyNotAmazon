@@ -1,6 +1,6 @@
 package src.users_code;
 
-import src.Inventory.Product;
+import src.Product.Product;
 
 import java.util.ArrayList;
 
@@ -8,6 +8,11 @@ public class Seller extends User{
     private double costs;
     private double revenues;
     private double profits;
+
+    private String AccountName;
+    private String BankName;
+    private String RoutingNumber;
+    private String AccountNumber;
     private ArrayList<Product> productsForSale;
 
     //Constructor for brand new seller

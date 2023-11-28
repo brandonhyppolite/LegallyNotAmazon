@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class UserManager {
     private final ArrayList<User> users;
     private static UserManager instance;
-    private static final String USER_DATA_FILE = "src/Saved_Files/users.txt";
+    private static final String USER_DATA_FILE = "src/Database/users.txt";
     private final ProductsManager productsManager;
 
     /**
@@ -104,21 +104,36 @@ public class UserManager {
      * @param email       The email of the user.
      * @param accountType The type of the user account (Buyer or Seller).
      */
-    public void createNewUser(String firstName, String lastName, String username, String password,
+    public boolean createNewUser(String firstName, String lastName, String username, String password,
                               String email, String accountType) {
-        switch (accountType) {
-            case "Buyer":
-                this.users.add(new Buyer(firstName, lastName, username, password, email));
-                writeUserDataToFile();
-                break;
-            case "Seller":
-                this.users.add(new Seller(firstName, lastName, username, password, email));
-                writeUserDataToFile();
-                break;
-            default:
-                System.out.println("Unknown account type");
-                break;
+        if(!isUserNameTaken(username)){
+            switch (accountType) {
+                case "Buyer":
+                    this.users.add(new Buyer(firstName, lastName, username, password, email));
+                    writeUserDataToFile();
+                    break;
+                case "Seller":
+                    this.users.add(new Seller(firstName, lastName, username, password, email));
+                    writeUserDataToFile();
+                    break;
+                default:
+                    System.out.println("Unknown account type");
+                    return false;
+
+            }
+            return true;
         }
+        return false;
+
+    }
+
+    public boolean isUserNameTaken(String username){
+        for(User u: this.users){
+            if(u.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
