@@ -320,11 +320,11 @@ public class SellerHomePageView {
             while (iterator.hasNext()) {
                 Product p = iterator.next();
                 if (p.getID().equals(productID)) {
-                    iterator.remove(); // Use iterator's remove method to avoid ConcurrentModificationException
+                    iterator.remove();
                     JOptionPane.showMessageDialog(mainDataPanel, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                     userManager.getProductsManager().saveInventory();
                     showProductPanel();
-                    return; // Exit the loop once the product is found and removed
+                    return;
                 }
             }
 
@@ -364,8 +364,15 @@ public class SellerHomePageView {
         JTextField sellingPrice = new JTextField();
         sellingPrice.setPreferredSize(new Dimension(width,height));
 
+        JButton addDescription = new JButton("Add Description");
         JButton addProductButton = new JButton("Add Product");
 
+        addDescription.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showEditProductDescriptionPopup();
+            }
+        });
         addProductButton.addActionListener(e -> {
             try {
                 // Create a new Product using the values from text fields
@@ -375,7 +382,7 @@ public class SellerHomePageView {
                         Double.parseDouble(sellingPrice.getText()),
                         Integer.parseInt(quantity.getText())
                 );
-
+                p.setDescription(showEditProductDescriptionPopup());
                 seller.getProductsForSale().add(p);
                 userManager.getProductsManager().saveInventory();
 
@@ -398,13 +405,43 @@ public class SellerHomePageView {
         panel.add(invoicePrice);
         panel.add(sellingPriceLabel);
         panel.add(sellingPrice);
+        panel.add(addDescription);
         panel.add(addProductButton);
 
         return panel;
     }
 
 
+    private String showEditProductDescriptionPopup() {
+        // Create a text area for user input
+        JTextArea textArea = new JTextArea();
 
+        // Create a scroll pane for the text area
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setPreferredSize(new Dimension(300, 150));
+
+        // Show the input dialog with the text area
+        int result = JOptionPane.showOptionDialog(
+                null,
+                scrollPane,
+                "Edit Product Description",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                null,
+                null);
+
+        // Handle the user's choice
+        if (result == JOptionPane.OK_OPTION) {
+            // User clicked OK, handle the input (e.g., save the description)
+            String editedDescription = textArea.getText();
+            // Add logic to save the edited description
+            System.out.println("Edited Description: " + editedDescription);
+            return editedDescription;
+        }
+        // If the user clicked Cancel or closed the dialog, do nothing
+        return "";
+    }
     /**
      * Draws the panel for displaying sales data.
      *

@@ -4,6 +4,8 @@ import src.Product.Product;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class BuyerViewDrawer {
@@ -41,7 +43,7 @@ public class BuyerViewDrawer {
         return scrollPane;
     }
 
-    private static JPanel createProductBox(Product product){
+    private static JPanel createProductBox(Product product) {
         JPanel productBox = new JPanel(new GridLayout());
         productBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
@@ -50,6 +52,14 @@ public class BuyerViewDrawer {
         detailsPanel.add(new JLabel("In stock: " + product.getQuantity()));
 
         productBox.add(detailsPanel, BorderLayout.EAST);
+
+        // Add mouse listener to show more details on click
+        productBox.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                showProductDetailsDialog(product);
+            }
+        });
 
         return productBox;
     }
@@ -61,5 +71,18 @@ public class BuyerViewDrawer {
         noProductsPanel.add(noProductsLabel, BorderLayout.CENTER);
         return noProductsPanel;
     }
+
+    private static void showProductDetailsDialog(Product product) {
+        // Create a panel to display detailed information
+        JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
+        detailsPanel.add(new JLabel("Name: " + product.getName()));
+        detailsPanel.add(new JLabel("Price: $" + product.getSellingPrice()));
+        detailsPanel.add(new JLabel("In stock: " + product.getQuantity()));
+        detailsPanel.add(new JLabel("Desc: " + product.getDescription()));
+
+        // Show a JOptionPane with detailed information
+        JOptionPane.showMessageDialog(detailsPanel, "Product Details");
+    }
+
 
 }

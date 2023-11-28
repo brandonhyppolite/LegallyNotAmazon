@@ -11,6 +11,7 @@ public class Product{
     private String ID;
     private double invoicePrice;
 
+    private String description;
     public Product(String name) {
         this.name = name;
     }
@@ -57,6 +58,14 @@ public class Product{
 
     public int getQuantity() {
         return quantity;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setQuantity(int quantity) {
