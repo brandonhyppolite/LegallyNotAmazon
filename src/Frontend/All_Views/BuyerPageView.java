@@ -39,10 +39,17 @@ public class BuyerPageView {
             public void actionPerformed(ActionEvent e) {
                 String field = searchField.getText();
                 ArrayList<Product> availableItems = userManager.getProductsManager().getAvailableItems(field);
-                BuyerViewDrawer.drawProductListing(mainInfoPanel,availableItems);
+                BuyerViewDrawer.drawProductListing(mainInfoPanel,availableItems, buyer);
             }
         });
         updateInformationButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        cartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -81,7 +88,7 @@ public class BuyerPageView {
     }
 
     private void showProductsForSale(){
-        BuyerViewDrawer.drawProductListing(this.mainInfoPanel,this.userManager.getProductsManager().getAllItemsForSale());
+        BuyerViewDrawer.drawProductListing(this.mainInfoPanel,this.userManager.getProductsManager().getAllItemsForSale(),buyer);
     }
 
 
