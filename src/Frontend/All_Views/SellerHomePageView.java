@@ -2,7 +2,7 @@ package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
 import src.Frontend.ViewManager;
-import src.Inventory.Product;
+import src.Product.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;

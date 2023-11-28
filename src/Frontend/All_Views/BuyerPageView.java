@@ -3,7 +3,7 @@ package src.Frontend.All_Views;
 import src.Backend.UserManager;
 import src.Frontend.BuyerViewDrawer;
 import src.Frontend.ViewManager;
-import src.Inventory.Product;
+import src.Product.Product;
 import src.users_code.Buyer;
 
 import javax.swing.*;

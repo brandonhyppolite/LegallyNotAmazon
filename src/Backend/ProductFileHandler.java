@@ -1,6 +1,6 @@
 package src.Backend;
 
-import src.Inventory.Product;
+import src.Product.Product;
 import src.users_code.Buyer;
 import src.users_code.Seller;
 import src.users_code.User;

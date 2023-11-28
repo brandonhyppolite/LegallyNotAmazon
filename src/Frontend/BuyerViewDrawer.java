@@ -1,6 +1,6 @@
 package src.Frontend;
 
-import src.Inventory.Product;
+import src.Product.Product;
 
 import javax.swing.*;
 import java.awt.*;

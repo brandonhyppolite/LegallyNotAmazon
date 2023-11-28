@@ -1,6 +1,6 @@
 package src.users_code;
 
-import src.Inventory.Product;
+import src.Product.Product;
 
 import java.util.ArrayList;
 

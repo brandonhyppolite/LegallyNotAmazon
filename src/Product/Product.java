@@ -1,4 +1,4 @@
-package src.Inventory;
+package src.Product;
 
 
 
