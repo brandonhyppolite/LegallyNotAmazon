@@ -56,7 +56,7 @@ public class BuyerViewDrawer {
 
     private static JPanel createNoProductsPanel() {
         JPanel noProductsPanel = new JPanel(new BorderLayout());
-        JLabel noProductsLabel = new JLabel("No products to display.");
+        JLabel noProductsLabel = new JLabel("Product(s) unavailable");
         noProductsLabel.setHorizontalAlignment(JLabel.CENTER);
         noProductsPanel.add(noProductsLabel, BorderLayout.CENTER);
         return noProductsPanel;
