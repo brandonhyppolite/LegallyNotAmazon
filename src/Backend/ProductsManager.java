@@ -12,7 +12,6 @@ import java.util.ArrayList;
  * setting up lists of sellers and buyers, and adding products to users.
  */
 public class ProductsManager {
-    private static final String INVENTORY_FILE_PATH = "src/Database/inventory.txt";
     private final UserManager userManager;
 
 
