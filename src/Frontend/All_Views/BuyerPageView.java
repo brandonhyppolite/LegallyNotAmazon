@@ -55,11 +55,14 @@ public class BuyerPageView {
             }
         });
         logOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-            }
-        });
+                    public void actionPerformed(ActionEvent e) {
+                        userManager.writeUserDataToFile();
+                        vm.showEntryView();
+                    }
+                });
+
+
 
 
         setUpMainView();
