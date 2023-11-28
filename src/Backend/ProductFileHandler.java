@@ -72,9 +72,9 @@ public class ProductFileHandler {
      * @throws IOException If an I/O error occurs while writing to the file.
      */
     private static void writeProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
-        String description = null;
+        String description;
         if(product.getDescription() == null){
-            description = "No Description";
+            description = "No Description set";
         }else{
             description = product.getDescription();
         }
