@@ -1,7 +1,6 @@
 package src.Frontend;
 
 import src.Inventory.Product;
-import src.users_code.Buyer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,11 +8,18 @@ import java.util.ArrayList;
 
 public class BuyerViewDrawer {
 
-    public static void drawBuyerHomePage(JPanel mainPanel, ArrayList<Product> productsForSale) {
+    public static void drawProductListing(JPanel mainPanel, ArrayList<Product> productsForSale) {
         SwingUtilities.invokeLater(() -> {
             clearPanels(mainPanel);
-            mainPanel.setLayout(new BorderLayout());
-            mainPanel.add(drawProductsForSale(productsForSale), BorderLayout.CENTER);
+
+            if (productsForSale.isEmpty()) {
+                mainPanel.setLayout(new BorderLayout());
+                mainPanel.add(createNoProductsPanel(), BorderLayout.CENTER);
+            } else {
+                mainPanel.setLayout(new BorderLayout());
+                mainPanel.add(drawProductsForSale(productsForSale), BorderLayout.CENTER);
+            }
+
             mainPanel.revalidate();
             mainPanel.repaint();
         });
@@ -46,6 +52,14 @@ public class BuyerViewDrawer {
         productBox.add(detailsPanel, BorderLayout.EAST);
 
         return productBox;
+    }
+
+    private static JPanel createNoProductsPanel() {
+        JPanel noProductsPanel = new JPanel(new BorderLayout());
+        JLabel noProductsLabel = new JLabel("No products to display.");
+        noProductsLabel.setHorizontalAlignment(JLabel.CENTER);
+        noProductsPanel.add(noProductsLabel, BorderLayout.CENTER);
+        return noProductsPanel;
     }
 
 }

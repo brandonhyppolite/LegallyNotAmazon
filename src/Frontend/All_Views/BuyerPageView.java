@@ -3,11 +3,13 @@ package src.Frontend.All_Views;
 import src.Backend.UserManager;
 import src.Frontend.BuyerViewDrawer;
 import src.Frontend.ViewManager;
+import src.Inventory.Product;
 import src.users_code.Buyer;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class BuyerPageView {
     private JPanel buyerPageMainPanel;
@@ -35,7 +37,9 @@ public class BuyerPageView {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String field = searchField.getText();
+                ArrayList<Product> availableItems = userManager.getProductsManager().getAvailableItems(field);
+                BuyerViewDrawer.drawProductListing(mainInfoPanel,availableItems);
             }
         });
         updateInformationButton.addActionListener(new ActionListener() {
@@ -74,7 +78,7 @@ public class BuyerPageView {
     }
 
     private void showProductsForSale(){
-        BuyerViewDrawer.drawBuyerHomePage(this.mainInfoPanel,this.userManager.getProductsManager().getAllItemsForSale());
+        BuyerViewDrawer.drawProductListing(this.mainInfoPanel,this.userManager.getProductsManager().getAllItemsForSale());
     }
 
 

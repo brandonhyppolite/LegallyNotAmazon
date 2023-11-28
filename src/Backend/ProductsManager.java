@@ -81,4 +81,21 @@ public class ProductsManager {
 
         return allItemsForSale;
     }
+
+    public ArrayList<Product> getAvailableItems(String searchPhrase) {
+        ArrayList<Product> availableItems = new ArrayList<>();
+
+        for (User u : this.userManager.getUsers()) {
+            if (u instanceof Seller) {
+                for (Product product : ((Seller) u).getProductsForSale()) {
+                    if (product.getName().toLowerCase().contains(searchPhrase.toLowerCase())) {
+                        availableItems.add(product);
+                    }
+                }
+            }
+        }
+
+        return availableItems;
+    }
+
 }
