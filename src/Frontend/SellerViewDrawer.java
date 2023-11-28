@@ -16,9 +16,9 @@ import java.util.Locale;
 
 public class SellerViewDrawer {
 
-    private Seller seller;
-    private JPanel mainDataPanel;
-    private UserManager userManager;
+    private final Seller seller;
+    private final JPanel mainDataPanel;
+    private final UserManager userManager;
     public SellerViewDrawer(Seller seller, JPanel mainDataPanel){
         this.seller = seller;
         this.mainDataPanel = mainDataPanel;
