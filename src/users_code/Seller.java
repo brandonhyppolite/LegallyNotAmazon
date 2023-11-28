@@ -8,6 +8,11 @@ public class Seller extends User{
     private double costs;
     private double revenues;
     private double profits;
+
+    private String AccountName;
+    private String BankName;
+    private String RoutingNumber;
+    private String AccountNumber;
     private ArrayList<Product> productsForSale;
 
     //Constructor for brand new seller
