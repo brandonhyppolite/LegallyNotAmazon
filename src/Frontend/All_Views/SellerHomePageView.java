@@ -374,6 +374,7 @@ public class SellerHomePageView {
                         Double.parseDouble(sellingPrice.getText()),
                         Integer.parseInt(quantity.getText())
                 );
+                p.setSellerUserName(seller.getUsername());
                 seller.getProductsForSale().add(p);
                 userManager.getProductsManager().saveInventory();
 
