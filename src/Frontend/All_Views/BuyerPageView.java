@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class BuyerPageView {
@@ -167,7 +168,7 @@ public class BuyerPageView {
         productBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
+                showProductDetails(product);
             } @Override
             public void mouseEntered(MouseEvent e) {
                 productBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -181,6 +182,64 @@ public class BuyerPageView {
 
         return productBox;
     }
+
+    private void showProductDetails(Product product){
+        SwingUtilities.invokeLater(() -> {
+            clearPanels();
+            mainInfoPanel.add(createProductDetailsPanel(product));
+            mainInfoPanel.revalidate();
+            mainInfoPanel.repaint();
+        });
+    }
+
+    private JPanel createProductDetailsPanel(Product product) {
+        // Create a panel to hold detailed information
+        JPanel moreDetails = new JPanel(new GridLayout(0, 1));
+        String searchedField = searchField.getText();
+        // Format the price using NumberFormat for currency formatting
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
+        String formattedPrice = currencyFormat.format(product.getSellingPrice());
+
+        JButton addToCart = new JButton();
+        if (product.getQuantity() <= 0) {
+            addToCart.setText("Out of Stock");
+            addToCart.setEnabled(false);  // Disable button if out of stock
+        } else {
+            addToCart.setText("Add to Cart");
+            addToCart.addActionListener(e -> {
+                Product copy = new Product(product);
+                copy.setQuantity(1);
+                product.setQuantity(product.getQuantity() - 1);
+                buyer.getShoppingCart().add(copy);
+                moreDetails.revalidate();  // Refresh the panel after adding to cart
+            });
+        }
+
+        JButton goBack = new JButton("Back");
+
+        goBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showProductsForSale(searchedField);
+            }
+        });
+        // Use HTML for better formatting (line breaks)
+        JLabel nameLabel = new JLabel("<html><b>Name:</b> " + product.getName() + "</html>");
+        JLabel priceLabel = new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>");
+        JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + product.getQuantity() + "</html>");
+        JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
+        JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
+
+        moreDetails.add(nameLabel);
+        moreDetails.add(priceLabel);
+        moreDetails.add(stockLabel);
+        moreDetails.add(descriptionLabel);
+        moreDetails.add(sellerLabel);
+        moreDetails.add(addToCart);
+        moreDetails.add(goBack);
+        return moreDetails;
+    }
+
 
 
 }
