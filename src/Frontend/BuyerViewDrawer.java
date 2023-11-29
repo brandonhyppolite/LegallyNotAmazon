@@ -34,6 +34,10 @@ public class BuyerViewDrawer {
     public static void drawBuyerCart(JPanel mainPanel, Buyer buyer){
 
     }
+
+    public static void showProductDetailsDialog(JPanel mainPanel){
+
+    }
     public static void clearPanels(JPanel mainPanel){
         mainPanel.removeAll();
     }
@@ -64,7 +68,6 @@ public class BuyerViewDrawer {
         productBox.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                showProductDetailsDialog(product, buyer);
             } @Override
             public void mouseEntered(MouseEvent e) {
                 productBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -87,13 +90,7 @@ public class BuyerViewDrawer {
         return noProductsPanel;
     }
 
-    private static void showProductDetailsDialog(Product product, Buyer buyer) {
-        // Create a JDialog to display detailed information
-        JDialog detailsDialog = new JDialog();
-        detailsDialog.setTitle("Product Details");
-        detailsDialog.setSize(400, 300);
-        detailsDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-
+    private static JPanel createProductDetailsPanel(Product product, Buyer buyer) {
         // Create a panel to hold detailed information
         JPanel moreDetails = new JPanel(new GridLayout(0, 1));
 
@@ -101,27 +98,38 @@ public class BuyerViewDrawer {
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
         String formattedPrice = currencyFormat.format(product.getSellingPrice());
 
-        JButton addToCart = new JButton("Add to cart");
-        addToCart.addActionListener(e -> {
-            if(product.getQuantity() > 0){
-                buyer.getShoppingCart().add(product);
-            }
-        });
+        JButton addToCart = new JButton();
+        if (product.getQuantity() <= 0) {
+            addToCart.setText("Out of Stock");
+            addToCart.setEnabled(false);  // Disable button if out of stock
+        } else {
+            addToCart.setText("Add to Cart");
+            addToCart.addActionListener(e -> {
+                Product copy = new Product(product);
+                copy.setQuantity(1);
+                product.setQuantity(product.getQuantity() - 1);
+                buyer.getShoppingCart().add(copy);
+                moreDetails.revalidate();  // Refresh the panel after adding to cart
+            });
+        }
 
         // Use HTML for better formatting (line breaks)
-        moreDetails.add(new JLabel("<html><b>Name:</b> " + product.getName() + "</html>"));
-        moreDetails.add(new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>"));
-        moreDetails.add(new JLabel("<html><b>In stock:</b> " + product.getQuantity() + "</html>"));
-        moreDetails.add(new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>"));
-        moreDetails.add(new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>"));
+        JLabel nameLabel = new JLabel("<html><b>Name:</b> " + product.getName() + "</html>");
+        JLabel priceLabel = new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>");
+        JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + product.getQuantity() + "</html>");
+        JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
+        JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
+
+        moreDetails.add(nameLabel);
+        moreDetails.add(priceLabel);
+        moreDetails.add(stockLabel);
+        moreDetails.add(descriptionLabel);
+        moreDetails.add(sellerLabel);
         moreDetails.add(addToCart);
 
-        // Add the panel to the dialog
-        detailsDialog.add(moreDetails);
-
-        // Set the dialog to be visible
-        detailsDialog.setVisible(true);
+        return moreDetails;
     }
+
 
 
 
