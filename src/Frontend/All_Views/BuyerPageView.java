@@ -41,8 +41,15 @@ public class BuyerPageView {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String field = searchField.getText();
-                ArrayList<Product> availableItems = userManager.getProductsManager().getAvailableItems(field);
-                BuyerViewDrawer.drawProductListing(mainInfoPanel,availableItems, buyer);
+                showProductsForSale(field);
+            }
+        });
+
+        searchField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String field = searchField.getText();
+                showProductsForSale(field);
             }
         });
         updateInformationButton.addActionListener(new ActionListener() {
@@ -86,13 +93,19 @@ public class BuyerPageView {
 
     private void setUpMainView() {
         welcomeLabel.setText("Welcome, " + buyer.getUsername() + "!");
-        showProductsForSale();
+        showProductsForSale("");
 
     }
 
     //-------- START FOR METHODS FOR DISPLAYING THE PANELS ------------------------------------------------
-    private void showProductsForSale(){
-        ArrayList<Product> productsForSale= this.userManager.getProductsManager().getAllItemsForSale();
+    private void showProductsForSale(String field){
+        ArrayList<Product> productsForSale;
+        if(field.equals("")){
+             productsForSale = this.userManager.getProductsManager().getAllItemsForSale();
+        }else{
+            productsForSale = this.userManager.getProductsManager().getAvailableItems(field);
+        }
+
         SwingUtilities.invokeLater(() -> {
             clearPanels();
 
