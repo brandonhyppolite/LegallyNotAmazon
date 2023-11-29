@@ -21,4 +21,10 @@ public class Buyer extends User{
     public ArrayList<Product> getShoppingCart() {
         return shoppingCart;
     }
+
+    public void addProductToCart(Product product){
+        Product copy = new Product(product);
+        copy.setQuantity(1);
+        this.shoppingCart.add(copy);
+    }
 }

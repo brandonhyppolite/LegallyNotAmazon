@@ -207,11 +207,19 @@ public class BuyerPageView {
         } else {
             addToCart.setText("Add to Cart");
             addToCart.addActionListener(e -> {
-                Product copy = new Product(product);
-                copy.setQuantity(1);
-                product.setQuantity(product.getQuantity() - 1);
-                buyer.getShoppingCart().add(copy);
-                moreDetails.revalidate();  // Refresh the panel after adding to cart
+                if (product.getQuantity() > 0) {
+                    product.setQuantity(product.getQuantity() - 1);
+                    buyer.addProductToCart(product);
+                    moreDetails.revalidate();  // Refresh the panel after adding to cart
+                    moreDetails.repaint();
+
+                    // Show a pop-up message
+                    String message = "Added to cart: " + product.getName();
+                    JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    // Show a pop-up message if the product is out of stock
+                    JOptionPane.showMessageDialog(moreDetails, "Product is out of stock", "Cart", JOptionPane.WARNING_MESSAGE);
+                }
             });
         }
 
