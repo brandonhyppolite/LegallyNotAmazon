@@ -19,7 +19,7 @@ public class Product{
         this.sellingPrice = original.getSellingPrice();
         this.quantity = original.getQuantity();
         this.ID = original.getID();
-        this.invoicePrice = original.getInvoicePrice();
+//        this.invoicePrice = original.getInvoicePrice();
         this.sellerUserName = original.getSellerUserName();
         this.description = original.getDescription();
     }
@@ -128,6 +128,19 @@ public class Product{
         }
 
         return stringBuilder.toString();
+    }
+
+    public boolean equalsByNameIdSellingPrice(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return Objects.equals(name, other.name) &&
+                Double.compare(other.sellingPrice, sellingPrice) == 0 &&
+                Objects.equals(ID, other.ID);
     }
 
     @Override

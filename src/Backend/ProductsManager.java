@@ -98,4 +98,14 @@ public class ProductsManager {
         return availableItems;
     }
 
+    public int getCurrentQuantityOfProductsInCart(Buyer buyer, Product product){
+        int count = 0;
+        for(Product p: buyer.getShoppingCart()){
+            if(p.equalsByNameIdSellingPrice(product)){
+                count++;
+            }
+        }
+        return count;
+    }
+
 }

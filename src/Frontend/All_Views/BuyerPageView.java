@@ -1,7 +1,6 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
-import src.Frontend.BuyerViewDrawer;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Buyer;
@@ -15,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BuyerPageView {
+public class BuyerPageView implements ActionListener{
     private JPanel buyerPageMainPanel;
     private JLabel welcomeLabel;
     private JPanel buyerInfoPanel;
@@ -38,49 +37,25 @@ public class BuyerPageView {
         this.buyer = buyer;
 
 
-        searchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String field = searchField.getText();
-                showProductsForSale(field);
-            }
-        });
-
-        searchField.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String field = searchField.getText();
-                showProductsForSale(field);
-            }
-        });
-        updateInformationButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-
-        cartButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        goToCheckoutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        logOutButton.addActionListener(new ActionListener() {
-
-                    public void actionPerformed(ActionEvent e) {
-                        userManager.writeUserDataToFile();
-                        vm.showEntryView();
-                    }
-                });
+        this.searchButton.setActionCommand("search product");
+        this.searchButton.addActionListener(this::actionPerformed);
 
 
+        this.searchField.setActionCommand("search product");
+        this.searchField.addActionListener(this::actionPerformed);
+
+
+        this.updateInformationButton.setActionCommand("update information");
+        this.updateInformationButton.addActionListener(this::actionPerformed);
+
+        this.cartButton.setActionCommand("view cart");
+        this.cartButton.addActionListener(this::actionPerformed);
+
+        this.goToCheckoutButton.setActionCommand("go to checkout");
+        this.goToCheckoutButton.addActionListener(this::actionPerformed);
+
+        this.logOutButton.setActionCommand("log out");
+        this.logOutButton.addActionListener(this::actionPerformed);
 
 
         setUpMainView();
@@ -101,7 +76,7 @@ public class BuyerPageView {
     //-------- START FOR METHODS FOR DISPLAYING THE PANELS ------------------------------------------------
     private void showProductsForSale(String field){
         ArrayList<Product> productsForSale;
-        if(field.equals("")){
+        if(field.isEmpty()){
              productsForSale = this.userManager.getProductsManager().getAllItemsForSale();
         }else{
             productsForSale = this.userManager.getProductsManager().getAvailableItems(field);
@@ -160,7 +135,9 @@ public class BuyerPageView {
         JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
         detailsPanel.add(new JLabel("Name: " + product.getName()));
         detailsPanel.add(new JLabel("Price: $" + product.getSellingPrice()));
-        detailsPanel.add(new JLabel("In stock: " + product.getQuantity()));
+        int quantity = product.getQuantity() - this.userManager.getProductsManager().
+                getCurrentQuantityOfProductsInCart(this.buyer,product);
+        detailsPanel.add(new JLabel("In stock: " + quantity));
 
         productBox.add(detailsPanel, BorderLayout.CENTER);
 
@@ -199,42 +176,16 @@ public class BuyerPageView {
         // Format the price using NumberFormat for currency formatting
         NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
         String formattedPrice = currencyFormat.format(product.getSellingPrice());
-
-        JButton addToCart = new JButton();
-        if (product.getQuantity() <= 0) {
-            addToCart.setText("Out of Stock");
-            addToCart.setEnabled(false);  // Disable button if out of stock
-        } else {
-            addToCart.setText("Add to Cart");
-            addToCart.addActionListener(e -> {
-                if (product.getQuantity() > 0) {
-                    product.setQuantity(product.getQuantity() - 1);
-                    buyer.addProductToCart(product);
-                    moreDetails.revalidate();  // Refresh the panel after adding to cart
-                    moreDetails.repaint();
-
-                    // Show a pop-up message
-                    String message = "Added to cart: " + product.getName();
-                    JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    // Show a pop-up message if the product is out of stock
-                    JOptionPane.showMessageDialog(moreDetails, "Product is out of stock", "Cart", JOptionPane.WARNING_MESSAGE);
-                }
-            });
-        }
-
+        int quantity = product.getQuantity() - this.userManager.getProductsManager()
+                .getCurrentQuantityOfProductsInCart(this.buyer,product);
+        JButton addToCart = createAddToCartButton(product,moreDetails,quantity);
         JButton goBack = new JButton("Back");
-
-        goBack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showProductsForSale(searchedField);
-            }
-        });
+        goBack.setActionCommand("go back");
+        goBack.addActionListener(this::actionPerformed);
         // Use HTML for better formatting (line breaks)
         JLabel nameLabel = new JLabel("<html><b>Name:</b> " + product.getName() + "</html>");
         JLabel priceLabel = new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>");
-        JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + product.getQuantity() + "</html>");
+        JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + quantity+ "</html>");
         JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
         JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
 
@@ -248,6 +199,45 @@ public class BuyerPageView {
         return moreDetails;
     }
 
+    private JButton createAddToCartButton(Product product, JPanel moreDetails, int quantity) {
+        JButton addToCart = new JButton();
+        if (quantity <= 0) {
+            addToCart.setText("Out of Stock");
+            addToCart.setEnabled(false);  // Disable button if out of stock
+        } else {
+            addToCart.setText("Add to Cart");
+            addToCart.addActionListener(e -> {
+                onAddToCartClicked(product,moreDetails);
+            });
+        }
+        addToCart.setActionCommand("add to cart");
+        return addToCart;
+    }
 
 
+    private void onAddToCartClicked(Product product, JPanel moreDetails){
+            this.buyer.addProductToCart(product);
+            moreDetails.revalidate();
+            String message = "Added to cart: " + product.getName();
+            JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+            showProductsForSale(searchField.getText());
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        switch(command){
+            case "log out":
+                vm.showEntryView();
+                break;
+            case "go back":
+                showProductsForSale(searchField.getText());
+                break;
+            case "search product":
+                String field = searchField.getText();
+                showProductsForSale(field);
+                break;
+            default:
+                System.out.println("Unknown button was clicked");
+        }
+    }
 }
