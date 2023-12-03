@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Buyer extends User{
     private ArrayList<Product> shoppingCart;
     private CreditCard card;
-
+    private String address;
     public Buyer(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password,email);
         this.shoppingCart = new ArrayList<>();
@@ -20,6 +20,14 @@ public class Buyer extends User{
 
     public ArrayList<Product> getShoppingCart() {
         return shoppingCart;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public void addProductToCart(Product product){

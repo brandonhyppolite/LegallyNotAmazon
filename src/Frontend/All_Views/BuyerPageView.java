@@ -115,6 +115,16 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
+
+    private void showUpdateInfo(){
+        SwingUtilities.invokeLater(() -> {
+            clearPanels();
+            mainInfoPanel.setLayout(new BorderLayout());
+            mainInfoPanel.add(drawUpdateInformationPanel(), BorderLayout.CENTER);
+            mainInfoPanel.revalidate();
+            mainInfoPanel.repaint();
+        });
+    }
     private void clearPanels(){
         mainInfoPanel.removeAll();
     }
@@ -238,6 +248,89 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
             showProductsForSale(searchField.getText());
     }
+
+
+
+
+    private JPanel drawUpdateInformationPanel(){
+        JPanel updateInfo = new JPanel();
+        updateInfo.setLayout(new FlowLayout()); // Adjust the layout as needed
+
+        int width = 150 ,height = 25;
+
+        // Labels
+        JLabel usernameLabel = new JLabel("Username:");
+        JLabel passwordLabel = new JLabel("Password:");
+        JLabel emailLabel = new JLabel("Email:");
+        JLabel addressLabel = new JLabel("Address:");
+
+
+        JLabel creditCardAccount = new JLabel("Credit Card Account Number:");
+        JLabel creditCardCVV = new JLabel("Credit Card CVV:");
+        JLabel creditCardExpiration = new JLabel("Credit Card Expiration Date:");
+
+        // TextFields
+        JTextField usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(width,height));
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(width,height));
+        JTextField emailField = new JTextField();
+        emailField.setPreferredSize(new Dimension(width,height));
+        JTextField addressField = new JTextField();
+        addressField.setPreferredSize(new Dimension(width + 50,height));
+        JTextField creditCardAccountField = new JTextField();
+        creditCardAccountField.setPreferredSize(new Dimension(width + 50,height));
+        JTextField creditCardCVVField = new JTextField();
+        creditCardCVVField.setPreferredSize(new Dimension(width + 50,height));
+        JTextField creditCardExpirationField = new JTextField();
+        creditCardExpirationField.setPreferredSize(new Dimension(width + 50,height));
+
+
+        // Update Button
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the update logic here
+                String newUsername = usernameField.getText();
+                char[] newPassword = passwordField.getPassword();
+                String email = emailField.getText();
+                String address = addressField.getText();
+                String creditCardAccount = creditCardAccountField.getText();
+                String creditCardCVV = creditCardCVVField.getText();
+                String creditCardExpiration = creditCardExpirationField.getText();
+
+                // Perform actions with the updated information
+                // ...
+
+                // Clear fields after update if needed
+                usernameField.setText("");
+                passwordField.setText("");
+                creditCardAccountField.setText("");
+            }
+        });
+
+        // Add components to the panel
+        updateInfo.add(usernameLabel);
+        updateInfo.add(usernameField);
+        updateInfo.add(passwordLabel);
+        updateInfo.add(passwordField);
+        updateInfo.add(emailLabel);
+        updateInfo.add(emailField);
+        updateInfo.add(addressLabel);
+        updateInfo.add(addressField);
+        updateInfo.add(creditCardAccount);
+        updateInfo.add(creditCardAccountField);
+        updateInfo.add(creditCardCVV);
+        updateInfo.add(creditCardCVVField);
+        updateInfo.add(creditCardExpiration);
+        updateInfo.add(creditCardExpirationField);
+
+        updateInfo.add(new JLabel()); // Placeholder for spacing
+        updateInfo.add(updateButton);
+
+        return updateInfo;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -255,6 +348,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             case "log out":
                 this.userManager.getProductsManager().saveInventory();
                 this.vm.showEntryView();
+            case "update information":
+                showUpdateInfo();
+                break;
             default:
                 System.out.println("Unknown button was clicked");
         }
