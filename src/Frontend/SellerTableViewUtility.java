@@ -1,10 +1,7 @@
 package src.Frontend;
 
-import src.Frontend.All_Views.SellerActionCallBack;
 import src.Product.Product;
-import src.users_code.Buyer;
 import src.users_code.Seller;
-import src.users_code.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,9 +12,9 @@ import java.util.ArrayList;
 
 public class SellerTableViewUtility {
     private Seller seller;
-    private SellerActionCallBack callback;
+    private UserActionCallBack callback;
 
-    public SellerTableViewUtility(Seller seller, SellerActionCallBack callback) {
+    public SellerTableViewUtility(Seller seller, UserActionCallBack callback) {
         this.seller = seller;
         this.callback = callback;
     }

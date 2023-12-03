@@ -1,6 +1,7 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
+import src.Frontend.UserActionCallBack;
 import src.Frontend.SellerTableViewUtility;
 import src.Frontend.ViewManager;
 import src.Product.Product;
@@ -22,7 +23,7 @@ import java.util.Locale;
  * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
  * It allows Sellers to view, edit, and add products, as well as view sales data.
  */
-public class SellerHomePageView implements SellerActionCallBack{
+public class SellerHomePageView implements UserActionCallBack {
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
     private JPanel sellerHomePageInfoPanel;

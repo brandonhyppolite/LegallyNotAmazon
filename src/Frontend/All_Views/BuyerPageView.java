@@ -1,6 +1,8 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
+import src.Frontend.BuyerTableViewUtility;
+import src.Frontend.UserActionCallBack;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Buyer;
@@ -14,7 +16,7 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
-public class BuyerPageView implements ActionListener{
+public class BuyerPageView implements ActionListener, UserActionCallBack {
     private JPanel buyerPageMainPanel;
     private JLabel welcomeLabel;
     private JPanel buyerInfoPanel;
@@ -31,11 +33,13 @@ public class BuyerPageView implements ActionListener{
     private final ViewManager vm;
     private final Buyer buyer;
     private final UserManager userManager;
+
+    private final BuyerTableViewUtility tableViewUtility;
     public BuyerPageView(ViewManager vm, Buyer buyer){
         this.userManager = UserManager.getInstance();
         this.vm = vm;
         this.buyer = buyer;
-
+        this.tableViewUtility = new BuyerTableViewUtility(this.buyer,this);
 
         this.searchButton.setActionCommand("search product");
         this.searchButton.addActionListener(this::actionPerformed);
@@ -98,7 +102,19 @@ public class BuyerPageView implements ActionListener{
         });
     }
 
-
+    private void showBuyerCart(){
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Selling Price ($)"};
+        SwingUtilities.invokeLater(() -> {
+            clearPanels();
+            mainInfoPanel.setLayout(new BorderLayout());
+            JLabel label = new JLabel("View/Remove your current product(s) below:");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            mainInfoPanel.add(label, BorderLayout.NORTH);
+            mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));
+            mainInfoPanel.revalidate();
+            mainInfoPanel.repaint();
+        });
+    }
     private void clearPanels(){
         mainInfoPanel.removeAll();
     }
@@ -226,9 +242,6 @@ public class BuyerPageView implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch(command){
-            case "log out":
-                vm.showEntryView();
-                break;
             case "go back":
                 showProductsForSale(searchField.getText());
                 break;
@@ -236,8 +249,20 @@ public class BuyerPageView implements ActionListener{
                 String field = searchField.getText();
                 showProductsForSale(field);
                 break;
+            case "view cart":
+                showBuyerCart();
+                break;
+            case "log out":
+                this.userManager.getProductsManager().saveInventory();
+                this.vm.showEntryView();
             default:
                 System.out.println("Unknown button was clicked");
         }
+    }
+
+    @Override
+    public void saveAndRefresh() {
+        this.userManager.getProductsManager().saveInventory();
+        showBuyerCart();
     }
 }
