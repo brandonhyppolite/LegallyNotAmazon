@@ -1,6 +1,7 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
+import src.Frontend.SellerTableViewUtility;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Seller;
@@ -21,7 +22,7 @@ import java.util.Locale;
  * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
  * It allows Sellers to view, edit, and add products, as well as view sales data.
  */
-public class SellerHomePageView {
+public class SellerHomePageView implements SellerActionCallBack{
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
     private JPanel sellerHomePageInfoPanel;
@@ -35,6 +36,7 @@ public class SellerHomePageView {
     private final UserManager userManager;
     private final Seller seller;
 
+    private final SellerTableViewUtility tableViewUtility;
 
     /**
      * Constructs a `SellerHomePageView` with the given `ViewManager` and `Seller`.
@@ -47,6 +49,7 @@ public class SellerHomePageView {
         this.userManager = UserManager.getInstance();
         this.seller = seller;
         this.seller.setSalesData();
+        this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -108,13 +111,15 @@ public class SellerHomePageView {
      * Displays the product panel, allowing Sellers to view and edit their current products.
      */
     private void showSellerProducts() {
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainDataPanel.setLayout(new BorderLayout());
             JLabel label = new JLabel("View/Edit your current product(s) below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainDataPanel.add(label, BorderLayout.NORTH);
-            mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
+//            mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
+            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale(), columnNames));
             mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
             mainDataPanel.revalidate();
             mainDataPanel.repaint();
@@ -457,7 +462,8 @@ public class SellerHomePageView {
 
         return panel;
     }
-    private void saveAndRefresh() {
+    @Override
+    public void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
         showSellerProducts();
     }
