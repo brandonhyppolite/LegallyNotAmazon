@@ -127,4 +127,73 @@ public class BuyerTableViewUtility {
     private Product getProductForRow(int row) {
         return this.buyer.getShoppingCart().get(row);
     }
+
+
+    public JScrollPane createCheckoutTable(ArrayList<Product> products, String[] columnNames) {
+        // Check if products is null or empty
+        if (products == null || products.isEmpty()) {
+            // Handle the case where there are no products
+            // Create an empty table
+            String[][] emptyData = new String[][]{{"", "", "", "", ""}};
+            DefaultTableModel emptyModel = new DefaultTableModel(emptyData, columnNames);
+            JTable emptyTable = new JTable(emptyModel);
+            return new JScrollPane(emptyTable);
+        }
+
+        int numRows = products.size() + 1;
+        int numCols = columnNames.length;
+
+        String[][] productData = new String[numRows][numCols];
+
+        double totalQuantity = 0;
+        double totalPrice = 0;
+
+        for (int i = 0; i < numRows - 1; i++) {
+            Product product = products.get(i);
+            for (int j = 0; j < numCols; j++) {
+                switch (j) {
+                    case 0:
+                        productData[i][j] = product.getName();
+                        break;
+                    case 1:
+                        productData[i][j] = product.getID();
+                        break;
+                    case 2:
+                        productData[i][j] = String.valueOf(product.getQuantity());
+                        totalQuantity += product.getQuantity();
+                        break;
+                    case 3:
+                        productData[i][j] = String.valueOf(product.getSellingPrice());
+                        totalPrice += product.getSellingPrice() * product.getQuantity();
+                        break;
+                    case 4:
+                        productData[i][j] = product.getSellerUserName();
+                        break;
+                }
+            }
+        }
+
+        // Populate the last row with total quantity and total price
+        productData[numRows - 1][1] = "In Total";
+        productData[numRows - 1][2] = String.valueOf(totalQuantity);
+        productData[numRows - 1][3] = String.valueOf(totalPrice);
+
+        JTable table = createBuyerCheckoutTable(productData, columnNames);
+
+        return new JScrollPane(table);
+    }
+
+    private JTable createBuyerCheckoutTable(String[][] productData, String[] columnNames) {
+        DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Make all cells non-editable
+                return false;
+            }
+        };
+
+        JTable table = new JTable((tableModel));
+        return table;
+    }
+
 }

@@ -103,14 +103,29 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     }
 
     private void showBuyerCart(){
-        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Selling Price ($)"};
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)"};
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Remove your current product(s) below:");
+            JLabel label = new JLabel("View/Remove your current product(s) in cart below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainInfoPanel.add(label, BorderLayout.NORTH);
             mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));
+            mainInfoPanel.revalidate();
+            mainInfoPanel.repaint();
+        });
+    }
+
+    private void showCheckout(){
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Seller"};
+        SwingUtilities.invokeLater(() -> {
+            clearPanels();
+            mainInfoPanel.setLayout(new BorderLayout());
+            JLabel label = new JLabel("View your cart below:");
+            label.setHorizontalAlignment(JLabel.CENTER);
+            mainInfoPanel.add(label, BorderLayout.NORTH);
+            mainInfoPanel.add(tableViewUtility.createCheckoutTable(this.buyer.getShoppingCart(), columnNames));
+            mainInfoPanel.add(drawCheckoutPanel(), BorderLayout.SOUTH);
             mainInfoPanel.revalidate();
             mainInfoPanel.repaint();
         });
@@ -314,17 +329,23 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 String creditCardExpiration = creditCardExpirationField.getText();
                 if(!newUsername.equals(userManager.getBuyerAccountInformation(buyer,"username"))){
                     userManager.updateBuyerAccountInformation(buyer,"username",newUsername);
-                } if(!newPassword.isEmpty()){
+                }
+                if(!newPassword.isEmpty()){
                     userManager.updateBuyerAccountInformation(buyer,"password",newPassword);
-                } if(!email.equals(userManager.getBuyerAccountInformation(buyer,"email"))){
+                }
+                if(!email.equals(userManager.getBuyerAccountInformation(buyer,"email"))){
                     userManager.updateBuyerAccountInformation(buyer,"email",email);
-                } if(!address.equals(userManager.getBuyerAccountInformation(buyer,"address"))){
+                }
+                if(!address.equals(userManager.getBuyerAccountInformation(buyer,"address"))){
                     userManager.updateBuyerAccountInformation(buyer,"address",address);
-                } if(!creditCardAccount.equals(userManager.getBuyerAccountInformation(buyer,"creditCardAccount"))){
+                }
+                if(!creditCardAccount.equals(userManager.getBuyerAccountInformation(buyer,"creditCardAccount"))){
                     userManager.updateBuyerAccountInformation(buyer,"creditCardAccount",creditCardAccount);
-                } if(!creditCardCVV.equals(userManager.getBuyerAccountInformation(buyer,"creditCardCVV"))){
+                }
+                if(!creditCardCVV.equals(userManager.getBuyerAccountInformation(buyer,"creditCardCVV"))){
                     userManager.updateBuyerAccountInformation(buyer,"creditCardCVV",creditCardCVV);
-                } if(!creditCardExpiration.equals(userManager.getBuyerAccountInformation(buyer,"creditCardExpiration"))){
+                }
+                if(!creditCardExpiration.equals(userManager.getBuyerAccountInformation(buyer,"creditCardExpiration"))){
                     userManager.updateBuyerAccountInformation(buyer,"creditCardExpiration",creditCardExpiration);
                 }
 
@@ -363,6 +384,20 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         return updateInfo;
     }
 
+
+    private JPanel drawCheckoutPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JButton checkout = new JButton("Checkout");
+        checkout.setActionCommand("checkout");
+        checkout.addActionListener(this);
+
+        panel.add(checkout);
+        return panel;
+    }
+
+
+    //-------- END FOR METHODS FOR CREATING/DRAWING THE PANELS ---------------------------------------------------
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -380,10 +415,15 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             case "log out":
                 this.userManager.writeUserDataToFile();
                 this.userManager.getProductsManager().saveInventory();
-
                 this.vm.showEntryView();
             case "update information":
                 showUpdateInfo();
+                break;
+            case "go to checkout":
+                showCheckout();
+                break;
+
+            case "checkout":
                 break;
             default:
                 System.out.println("Unknown button was clicked");

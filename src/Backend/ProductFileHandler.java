@@ -16,7 +16,7 @@ public class ProductFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
-                if (productData.length == 7) {
+                if (productData.length == 8) {
                     User user =  userManager.getUserByUsername(productData[0]);
 
                     Product product = new Product(
@@ -27,7 +27,7 @@ public class ProductFileHandler {
                             Integer.parseInt(productData[5])           //Product Quantity
                     );
                     product.setDescription(productData[6]);
-                    product.setSellerUserName(productData[0]);
+                    product.setSellerUserName(productData[7]);
                     productsManager.addProductToUser(user,product);
                 } else {
                     System.out.println("Skipping invalid product data: " + line);
@@ -78,14 +78,15 @@ public class ProductFileHandler {
         }else{
             description = product.getDescription();
         }
-        String line = String.format("%s;%s;%s;%s;%s;%s;%s\n",
+        String line = String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
                 username,
                 product.getName(),
                 product.getID(),
                 product.getInvoicePrice(),
                 product.getSellingPrice(),
                 product.getQuantity(),
-                description);
+                description,
+                product.getSellerUserName());
         writer.write(line);
     }
 }
