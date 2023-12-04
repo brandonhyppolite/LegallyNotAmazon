@@ -1,20 +1,16 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
-import src.Frontend.UserActionCallBack;
 import src.Frontend.SellerTableViewUtility;
+import src.Frontend.UserActionCallBack;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -23,7 +19,7 @@ import java.util.Locale;
  * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
  * It allows Sellers to view, edit, and add products, as well as view sales data.
  */
-public class SellerHomePageView implements UserActionCallBack {
+public class SellerHomePageView implements ActionListener,UserActionCallBack {
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
     private JPanel sellerHomePageInfoPanel;
@@ -52,34 +48,21 @@ public class SellerHomePageView implements UserActionCallBack {
         this.seller.setSalesData();
         this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
 
-        logOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                seller.setSalesData();
-                userManager.writeUserDataToFile();
-                vm.showEntryView();
 
-            }
-        });
-        addANewProductButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAddNewProductPanel();
-            }
-        });
-        viewCurrentProductInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSellerProducts();
-            }
-        });
+        logOutButton.setActionCommand("log out");
+        logOutButton.addActionListener(this);
 
-        salesDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSalesDataPanel();
-            }
-        });
+
+        addANewProductButton.setActionCommand("add new product");
+        addANewProductButton.addActionListener(this);
+
+
+        viewCurrentProductInfoButton.setActionCommand("view products");
+        viewCurrentProductInfoButton.addActionListener(this);
+
+
+        salesDataButton.setActionCommand("sales data");
+        salesDataButton.addActionListener(this);
 
 
         setUpMainView();
@@ -297,5 +280,27 @@ public class SellerHomePageView implements UserActionCallBack {
     public void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
         showSellerProducts();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        switch(command){
+            case "add new product":
+                showAddNewProductPanel();
+                break;
+            case "view products":
+                showSellerProducts();
+                break;
+            case "sales data":
+                showSalesDataPanel();
+                break;
+            case "log out":
+                this.seller.setSalesData();
+                this.userManager.writeUserDataToFile();
+                this.vm.showEntryView();
+            default:
+                System.out.println("Unknown button was clicked");
+        }
     }
 }
