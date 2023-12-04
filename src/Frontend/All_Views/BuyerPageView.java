@@ -273,18 +273,30 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         // TextFields
         JTextField usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(width,height));
+        usernameField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"username"));
+
         JPasswordField passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(width,height));
+
         JTextField emailField = new JTextField();
         emailField.setPreferredSize(new Dimension(width,height));
+        emailField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"email"));
+
         JTextField addressField = new JTextField();
         addressField.setPreferredSize(new Dimension(width + 50,height));
+        addressField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"address"));
+
         JTextField creditCardAccountField = new JTextField();
         creditCardAccountField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardAccountField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardAccount"));
+
         JTextField creditCardCVVField = new JTextField();
         creditCardCVVField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardCVVField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardCVV"));
+
         JTextField creditCardExpirationField = new JTextField();
         creditCardExpirationField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardExpirationField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardExpiration"));
 
 
         // Update Button
@@ -300,20 +312,20 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 String creditCardAccount = creditCardAccountField.getText();
                 String creditCardCVV = creditCardCVVField.getText();
                 String creditCardExpiration = creditCardExpirationField.getText();
-                if(!newUsername.isEmpty()){
+                if(!newUsername.equals(userManager.getBuyerAccountInformation(buyer,"username"))){
                     userManager.updateBuyerAccountInformation(buyer,"username",newUsername);
                 } if(!newPassword.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"password",newUsername);
-                } if(!email.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"email",newUsername);
-                } if(!address.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"address",newUsername);
-                } if(!creditCardAccount.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"creditCardAccount",newUsername);
-                } if(!creditCardCVV.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"creditCardCVV",newUsername);
-                } if(!creditCardExpiration.isEmpty()){
-                    userManager.updateBuyerAccountInformation(buyer,"creditCardExpiration",newUsername);
+                    userManager.updateBuyerAccountInformation(buyer,"password",newPassword);
+                } if(!email.equals(userManager.getBuyerAccountInformation(buyer,"email"))){
+                    userManager.updateBuyerAccountInformation(buyer,"email",email);
+                } if(!address.equals(userManager.getBuyerAccountInformation(buyer,"address"))){
+                    userManager.updateBuyerAccountInformation(buyer,"address",address);
+                } if(!creditCardAccount.equals(userManager.getBuyerAccountInformation(buyer,"creditCardAccount"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardAccount",creditCardAccount);
+                } if(!creditCardCVV.equals(userManager.getBuyerAccountInformation(buyer,"creditCardCVV"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardCVV",creditCardCVV);
+                } if(!creditCardExpiration.equals(userManager.getBuyerAccountInformation(buyer,"creditCardExpiration"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardExpiration",creditCardExpiration);
                 }
 
 
@@ -350,6 +362,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
         return updateInfo;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();

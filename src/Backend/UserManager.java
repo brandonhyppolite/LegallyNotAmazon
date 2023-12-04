@@ -79,7 +79,12 @@ public class UserManager {
             String username = userData[2];
             String password = userData[3];
             String email = userData[4];
-            user = new Buyer(firstName,lastName,username,password,email);
+            String address = userData[5];
+            String creditAccountNumber = userData[6];
+            String creditCVV = userData[7];
+            String creditExpiration = userData[8];
+            user = new Buyer(firstName,lastName,username,password,email,address,creditAccountNumber,creditCVV,creditExpiration);
+
         }else if(accountType.equals("Seller")){
             String firstName = userData[0];
             String lastName = userData[1];
@@ -210,7 +215,8 @@ public class UserManager {
                 if (user instanceof Buyer) {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
-                            + user.getEmail() + ";"+ "Buyer";
+                            + user.getEmail() + ";"+ ((Buyer) user).getAddress() + ";" + ((Buyer) user).getCard().getCreditCardNumber() +
+                            ";" + ((Buyer) user).getCard().getCvv() + ";" + ((Buyer) user).getCard().getExpirationDate() + ";"+ "Buyer";
                     writer.write(userData);
                     writer.newLine();
                 } else if (user instanceof Seller) {
@@ -251,9 +257,30 @@ public class UserManager {
                 buyer.getCard().setExpirationDate(newValue);
                 break;
             default:
-                // Handle unknown context or add additional cases as needed
                 System.out.println("Invalid context: " + context);
                 break;
+        }
+    }
+
+    public String getBuyerAccountInformation(Buyer buyer, String context) {
+        switch (context) {
+            case "username":
+                return buyer.getUsername();
+            case "password":
+                return buyer.getPassword();
+            case "email":
+                return buyer.getEmail();
+            case "address":
+                return buyer.getAddress();
+            case "creditCardAccount":
+                return buyer.getCard().getCreditCardNumber();
+            case "creditCardCVV":
+                return buyer.getCard().getCvv();
+            case "creditCardExpiration":
+                return buyer.getCard().getExpirationDate();
+            default:
+                System.out.println("Invalid context: " + context);
+                return null;
         }
     }
 
