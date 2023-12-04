@@ -2,6 +2,7 @@ package src.Product;
 
 
 
+import java.util.Objects;
 import java.util.Random;
 
 public class Product{
@@ -12,9 +13,17 @@ public class Product{
     private double invoicePrice;
     private String sellerUserName;
     private String description;
-    public Product() {
-
+    //Deep Copy Constructor
+    public Product(Product original) {
+        this.name = original.getName();
+        this.sellingPrice = original.getSellingPrice();
+        this.quantity = original.getQuantity();
+        this.ID = original.getID();
+//        this.invoicePrice = original.getInvoicePrice();
+        this.sellerUserName = original.getSellerUserName();
+        this.description = original.getDescription();
     }
+
 
     public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
         this.name = name;
@@ -88,13 +97,14 @@ public class Product{
         this.ID = ID;
     }
 
-    public void sell(int amount){
-        setQuantity(getQuantity() - amount);
-        if(getQuantity() < 0){
-            setQuantity(0);
+    public Product sell(int amount) {
+        Product updatedProduct = new Product(this);  // Create a deep copy
+        updatedProduct.setQuantity(updatedProduct.getQuantity() - amount);
+        if (updatedProduct.getQuantity() < 0) {
+            updatedProduct.setQuantity(0);
         }
+        return updatedProduct;
     }
-
     @Override
     public String toString() {
         return "Product{" +
@@ -119,4 +129,34 @@ public class Product{
 
         return stringBuilder.toString();
     }
+
+    public boolean equalsByNameIdSellingPrice(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return Objects.equals(name, other.name) &&
+                Double.compare(other.sellingPrice, sellingPrice) == 0 &&
+                Objects.equals(ID, other.ID);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Product other = (Product) obj;
+        return Objects.equals(name, other.name) &&
+                Double.compare(other.sellingPrice, sellingPrice) == 0 &&
+                quantity == other.quantity &&
+                Objects.equals(ID, other.ID) &&
+                Double.compare(other.invoicePrice, invoicePrice) == 0;
+    }
+
 }

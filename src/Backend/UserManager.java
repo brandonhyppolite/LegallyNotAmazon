@@ -210,7 +210,7 @@ public class UserManager {
                 if (user instanceof Buyer) {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
-                            + user.getEmail() + ";" + "Buyer";
+                            + user.getEmail() + ";"+ "Buyer";
                     writer.write(userData);
                     writer.newLine();
                 } else if (user instanceof Seller) {

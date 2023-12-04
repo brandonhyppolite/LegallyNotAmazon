@@ -1,6 +1,8 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
+import src.Frontend.UserActionCallBack;
+import src.Frontend.SellerTableViewUtility;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Seller;
@@ -21,7 +23,7 @@ import java.util.Locale;
  * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
  * It allows Sellers to view, edit, and add products, as well as view sales data.
  */
-public class SellerHomePageView {
+public class SellerHomePageView implements UserActionCallBack {
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
     private JPanel sellerHomePageInfoPanel;
@@ -35,6 +37,7 @@ public class SellerHomePageView {
     private final UserManager userManager;
     private final Seller seller;
 
+    private final SellerTableViewUtility tableViewUtility;
 
     /**
      * Constructs a `SellerHomePageView` with the given `ViewManager` and `Seller`.
@@ -47,6 +50,7 @@ public class SellerHomePageView {
         this.userManager = UserManager.getInstance();
         this.seller = seller;
         this.seller.setSalesData();
+        this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
 
         logOutButton.addActionListener(new ActionListener() {
             @Override
@@ -108,13 +112,14 @@ public class SellerHomePageView {
      * Displays the product panel, allowing Sellers to view and edit their current products.
      */
     private void showSellerProducts() {
+        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainDataPanel.setLayout(new BorderLayout());
             JLabel label = new JLabel("View/Edit your current product(s) below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainDataPanel.add(label, BorderLayout.NORTH);
-            mainDataPanel.add(drawProductTable(), BorderLayout.CENTER);
+            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale(), columnNames));
             mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
             mainDataPanel.revalidate();
             mainDataPanel.repaint();
@@ -157,147 +162,6 @@ public class SellerHomePageView {
     }
 
 
-    /**
-     * Draws the product table to display the Seller's products.
-     *
-     * @return The scroll pane containing the product table.
-     */
-    private JScrollPane drawProductTable() {
-        ArrayList<Product> products = seller.getProductsForSale();
-
-        // Check if products is null or empty
-        if (products == null || products.isEmpty()) {
-            // Handle the case where there are no products
-            // Create an empty table
-            String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
-            String[][] emptyData = new String[][]{{"", "", "", "", ""}};
-            DefaultTableModel emptyModel = new DefaultTableModel(emptyData, columnNames);
-            JTable emptyTable = new JTable(emptyModel);
-            return new JScrollPane(emptyTable);
-        }
-
-        int numRows = products.size();
-        int numCols = 5;
-
-        String[][] productData = new String[numRows][numCols];
-        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)"};
-
-        for (int i = 0; i < numRows; i++) {
-            Product product = products.get(i);
-            productData[i][0] = product.getName();
-            productData[i][1] = product.getID();
-            productData[i][2] = String.valueOf(product.getQuantity());
-            productData[i][3] = String.valueOf(product.getInvoicePrice());
-            productData[i][4] = String.valueOf(product.getSellingPrice());
-        }
-
-        JTable table = createSellerTable(productData, columnNames);
-
-        return new JScrollPane(table);
-    }
-
-    private JTable createSellerTable(String[][] productData, String[] columnNames) {
-        DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                // Make all cells non-editable
-                return false;
-            }
-        };
-
-        JTable table = new JTable(tableModel);
-
-        table.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (SwingUtilities.isRightMouseButton(e)) {
-                    int row = table.rowAtPoint(e.getPoint());
-                    int column = table.columnAtPoint(e.getPoint());
-
-                    // Select the row under the right-clicked point
-                    table.setRowSelectionInterval(row, row);
-
-                    // Show the popup menu with options to remove, edit name, quantity, invoice price, and selling price
-                    showPopupMenu(table, e.getX(), e.getY());
-                }
-            }
-        });
-        return table;
-    }
-
-    private void showPopupMenu(JTable table, int x, int y) {
-        int selectedRow = table.getSelectedRow();
-        if (selectedRow != -1) {
-            JPopupMenu popupMenu = new JPopupMenu();
-            JMenuItem removeItem = new JMenuItem("Remove Product");
-            JMenuItem editNameItem = new JMenuItem("Edit Name");
-            JMenuItem editQuantityItem = new JMenuItem("Edit Quantity");
-            JMenuItem editInvoicePriceItem = new JMenuItem("Edit Invoice Price");
-            JMenuItem editSellingPriceItem = new JMenuItem("Edit Selling Price");
-            JMenuItem editProductDescription = new JMenuItem("Edit Description");
-
-            removeItem.addActionListener(e -> removeProduct(selectedRow));
-            editNameItem.addActionListener(e -> editProductAttribute(selectedRow, "Name"));
-            editQuantityItem.addActionListener(e -> editProductAttribute(selectedRow, "Quantity"));
-            editInvoicePriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Invoice Price"));
-            editSellingPriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Selling Price"));
-            editProductDescription.addActionListener(e -> showEditProductDescriptionPopup(getProductForRow(selectedRow)));
-
-            popupMenu.add(removeItem);
-            popupMenu.addSeparator(); // Add separator between remove and edit options
-            popupMenu.add(editNameItem);
-            popupMenu.add(editQuantityItem);
-            popupMenu.add(editInvoicePriceItem);
-            popupMenu.add(editSellingPriceItem);
-            popupMenu.add(editProductDescription);
-
-            // Show the popup menu at the specified location
-            popupMenu.show(table, x, y);
-        }
-    }
-
-    private void removeProduct(int selectedRow) {
-        Product product = getProductForRow(selectedRow);
-        seller.getProductsForSale().remove(product);
-        saveAndRefresh();
-    }
-
-    private void editProductAttribute(int selectedRow, String attributeName) {
-        String inputValue = JOptionPane.showInputDialog("Enter new " + attributeName + ":");
-        if (inputValue != null && !inputValue.isEmpty()) {
-            Product product = getProductForRow(selectedRow);
-
-            switch (attributeName) {
-                case "Name":
-                    product.setName(inputValue);
-                    break;
-                case "Quantity":
-                    product.setQuantity(Integer.parseInt(inputValue));
-                    break;
-                case "Invoice Price":
-                    product.setInvoicePrice(Double.parseDouble(inputValue));
-                    break;
-                case "Selling Price":
-                    product.setSellingPrice(Double.parseDouble(inputValue));
-                    break;
-            }
-
-            saveAndRefresh();
-        }
-    }
-
-    
-
-    /**
-     * Gets the `Product` object associated with the specified row in the product table from Seller.
-     *
-     * @param row The row index.
-     * @return The `Product` object.
-     */
-    private Product getProductForRow(int row) {
-
-        return this.seller.getProductsForSale().get(row); 
-    }
 
     /**
      * Draws the panel for product removal.
@@ -374,6 +238,7 @@ public class SellerHomePageView {
                         Double.parseDouble(sellingPrice.getText()),
                         Integer.parseInt(quantity.getText())
                 );
+                p.setSellerUserName(seller.getUsername());
                 seller.getProductsForSale().add(p);
                 userManager.getProductsManager().saveInventory();
 
@@ -401,34 +266,6 @@ public class SellerHomePageView {
         return panel;
     }
 
-
-    private void showEditProductDescriptionPopup(Product product) {
-        // Create a text area for user input
-        JTextArea textArea = new JTextArea();
-        textArea.setText(product.getDescription());
-        // Create a scroll pane for the text area
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setPreferredSize(new Dimension(300, 150));
-
-        // Show the input dialog with the text area
-        int result = JOptionPane.showOptionDialog(
-                null,
-                scrollPane,
-                "Edit Product Description",
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                null,
-                null);
-
-        // Handle the user's choice
-        if (result == JOptionPane.OK_OPTION) {
-            String text = textArea.getText();
-            product.setDescription(text);
-            System.out.println("Edited Description: " + product.getDescription());
-            saveAndRefresh();
-        }
-    }
     /**
      * Draws the panel for displaying sales data.
      *
@@ -456,7 +293,8 @@ public class SellerHomePageView {
 
         return panel;
     }
-    private void saveAndRefresh() {
+    @Override
+    public void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
         showSellerProducts();
     }
