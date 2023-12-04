@@ -1,5 +1,2 @@
-atheek99;Big Boi;KUG7;19.99;60.0;20;No Description set;atheek99
-atheek99;sdvsdv;EX6M;2.0;5.0;2;No Description set;atheek99
-buyer;Big Boi;KUG7;0.0;60.0;1;No Description set;atheek99
-buyer;Big Boi;KUG7;0.0;60.0;1;No Description set;atheek99
-buyer;sdvsdv;EX6M;0.0;5.0;1;No Description set;atheek99
+atheek99;bor;DXD0;2.0;55.99;20;a really cool product
+buyer;bor;DXD0

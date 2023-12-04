@@ -93,6 +93,10 @@ public class Seller extends User{
         this.profits = profits;
     }
 
+
+    public void addProductForSale(Product p){
+        this.productsForSale.add(p);
+    }
     public void setSalesData(){
         double costs =0.0;
         double profits = 0.0;

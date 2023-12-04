@@ -16,20 +16,25 @@ public class ProductFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
-                if (productData.length == 8) {
-                    User user =  userManager.getUserByUsername(productData[0]);
+                if (productData.length == 7) {
+                    Seller user = (Seller) userManager.getUserByUsername(productData[0]);
+                        Product product = new Product(
+                                productData[1],     // Product Name
+                                productData[2], //Product ID
+                                Double.parseDouble(productData[3]), //Product invoice price
+                                Double.parseDouble(productData[4]),  //Product selling Price
+                                Integer.parseInt(productData[5])           //Product Quantity
+                        );
+                        product.setDescription(productData[6]);
+                        product.setSellerUserName(productData[0]);
+//                        productsManager.addProductToUser(user,product);
+                    user.addProductForSale(product);
 
-                    Product product = new Product(
-                            productData[1],     // Product Name
-                            productData[2], //Product ID
-                            Double.parseDouble(productData[3]), //Product invoice price
-                            Double.parseDouble(productData[4]),  //Product selling Price
-                            Integer.parseInt(productData[5])           //Product Quantity
-                    );
-                    product.setDescription(productData[6]);
-                    product.setSellerUserName(productData[7]);
-                    productsManager.addProductToUser(user,product);
-                } else {
+                } else if(productData.length == 3){
+                    Buyer user = (Buyer) userManager.getUserByUsername(productData[0]);
+//                    productsManager.addProductToUser(user,productsManager.getProductFromSellerByID(productData[2]));
+                    user.addProductToCart(productsManager.getProductFromSellerByID(productData[2]));
+                }else{
                     System.out.println("Skipping invalid product data: " + line);
                 }
             }
@@ -52,7 +57,7 @@ public class ProductFileHandler {
                     }
                 }else if(u instanceof Buyer){
                     for(Product p: ((Buyer) u).getShoppingCart()){
-                        writeProductToFile(writer, u.getUsername(), p);
+                        writeBuyerProductToFile(writer, u.getUsername(), p);
                     }
                 }
             }
@@ -67,7 +72,7 @@ public class ProductFileHandler {
      * Writes product data to the specified writer, including the username of the owner and product details.
      *
      * @param writer  The writer to use for writing.
-     * @param username The username of the owner of the product.
+     * @param username The username to associate the product with.
      * @param product  The product to write.
      * @throws IOException If an I/O error occurs while writing to the file.
      */
@@ -78,15 +83,21 @@ public class ProductFileHandler {
         }else{
             description = product.getDescription();
         }
-        String line = String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
+        String line = String.format("%s;%s;%s;%s;%s;%s;%s\n",
                 username,
                 product.getName(),
                 product.getID(),
                 product.getInvoicePrice(),
                 product.getSellingPrice(),
                 product.getQuantity(),
-                description,
-                product.getSellerUserName());
+                description);
+        writer.write(line);
+    }
+    private static void writeBuyerProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
+        String line = String.format("%s;%s;%s\n",
+                username,
+                product.getName(),
+                product.getID());
         writer.write(line);
     }
 }
