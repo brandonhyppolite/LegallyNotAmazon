@@ -42,24 +42,24 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         this.tableViewUtility = new BuyerTableViewUtility(this.buyer,this);
 
         this.searchButton.setActionCommand("search product");
-        this.searchButton.addActionListener(this::actionPerformed);
+        this.searchButton.addActionListener(this);
 
 
         this.searchField.setActionCommand("search product");
-        this.searchField.addActionListener(this::actionPerformed);
+        this.searchField.addActionListener(this);
 
 
         this.updateInformationButton.setActionCommand("update information");
-        this.updateInformationButton.addActionListener(this::actionPerformed);
+        this.updateInformationButton.addActionListener(this);
 
         this.cartButton.setActionCommand("view cart");
-        this.cartButton.addActionListener(this::actionPerformed);
+        this.cartButton.addActionListener(this);
 
         this.goToCheckoutButton.setActionCommand("go to checkout");
-        this.goToCheckoutButton.addActionListener(this::actionPerformed);
+        this.goToCheckoutButton.addActionListener(this);
 
         this.logOutButton.setActionCommand("log out");
-        this.logOutButton.addActionListener(this::actionPerformed);
+        this.logOutButton.addActionListener(this);
 
 
         setUpMainView();

@@ -8,13 +8,10 @@ public class Seller extends User{
     private double costs;
     private double revenues;
     private double profits;
-
-    private String AccountName;
     private String BankName;
     private String RoutingNumber;
     private String AccountNumber;
     private ArrayList<Product> productsForSale;
-
     //Constructor for brand new seller
     public Seller(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password, email);
@@ -25,16 +22,51 @@ public class Seller extends User{
     }
 
     //Constructor for existing seller that gets read from a text file with values
-    public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits) {
+//    public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits) {
+//        super(firstName, lastName, username, password, email);
+//        this.productsForSale = new ArrayList<>();
+//        this.costs = costs;
+//        this.revenues = revenues;
+//        this.profits = profits;
+//    }
+
+    public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits, String bankName, String routingNumber, String accountNumber) {
         super(firstName, lastName, username, password, email);
         this.productsForSale = new ArrayList<>();
         this.costs = costs;
         this.revenues = revenues;
         this.profits = profits;
+        BankName = bankName;
+        RoutingNumber = routingNumber;
+        AccountNumber = accountNumber;
     }
 
     public ArrayList<Product> getProductsForSale() {
         return productsForSale;
+    }
+
+    public String getBankName() {
+        return BankName;
+    }
+
+    public void setBankName(String bankName) {
+        BankName = bankName;
+    }
+
+    public String getRoutingNumber() {
+        return RoutingNumber;
+    }
+
+    public void setRoutingNumber(String routingNumber) {
+        RoutingNumber = routingNumber;
+    }
+
+    public String getAccountNumber() {
+        return AccountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        AccountNumber = accountNumber;
     }
 
     public double getCosts() {

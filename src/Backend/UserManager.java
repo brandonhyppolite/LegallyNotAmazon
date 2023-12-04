@@ -94,7 +94,10 @@ public class UserManager {
             double costs = Double.parseDouble(userData[5]);
             double revenues = Double.parseDouble(userData[6]);
             double profits = Double.parseDouble(userData[7]);
-            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits);
+            String bankName = userData[8];
+            String accountNumber = userData[9];
+            String routingNumber = userData[10];
+            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits,bankName,accountNumber,routingNumber);
         }
         return user;
     }
@@ -223,7 +226,10 @@ public class UserManager {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
                             + user.getEmail() + ";" + ((Seller) user).getCosts() + ";" + ((Seller) user).getRevenues() + ";"
-                    + ((Seller) user).getProfits() + ";" +"Seller";
+                    + ((Seller) user).getProfits()
+                            + ";" + ((Seller) user).getBankName()+ ";"
+                            + ((Seller) user).getAccountNumber()+ ";" + ((Seller) user).getRoutingNumber() +
+                            ";" +"Seller";
                     writer.write(userData);
                     writer.newLine();
                 }
@@ -278,6 +284,52 @@ public class UserManager {
                 return buyer.getCard().getCvv();
             case "creditCardExpiration":
                 return buyer.getCard().getExpirationDate();
+            default:
+                System.out.println("Invalid context: " + context);
+                return null;
+        }
+    }
+
+    public void updateSellerAccountInformation(Seller seller, String context, String newValue){
+        switch (context) {
+            case "username":
+                seller.setUsername(newValue);
+                break;
+            case "password":
+                seller.setPassword(newValue);
+                break;
+            case "email":
+                seller.setEmail(newValue);
+                break;
+            case "bank name":
+                seller.setBankName(newValue);
+                break;
+            case "account number":
+                seller.setAccountNumber(newValue);
+                break;
+            case "routing number":
+                seller.setRoutingNumber(newValue);
+                break;
+            default:
+                System.out.println("Invalid context: " + context);
+                break;
+        }
+    }
+
+    public String getSellerAccountInformation(Seller seller, String context) {
+        switch (context) {
+            case "username":
+                return seller.getUsername();
+            case "password":
+                return seller.getPassword();
+            case "email":
+                return seller.getEmail();
+            case "bank name":
+                return seller.getBankName();
+            case "account number":
+                return seller.getAccountNumber();
+            case "routing number":
+                return seller.getRoutingNumber();
             default:
                 System.out.println("Invalid context: " + context);
                 return null;
