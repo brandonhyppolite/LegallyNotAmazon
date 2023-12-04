@@ -226,4 +226,36 @@ public class UserManager {
             e.printStackTrace();
         }
     }
+
+    public void updateBuyerAccountInformation(Buyer buyer, String context, String newValue) {
+        switch (context) {
+            case "username":
+                buyer.setUsername(newValue);
+                break;
+            case "password":
+                buyer.setPassword(newValue);
+                break;
+            case "email":
+                buyer.setEmail(newValue);
+                break;
+            case "address":
+                buyer.setAddress(newValue);
+                break;
+            case "creditCardAccount":
+                buyer.getCard().setCreditCardNumber(newValue);
+                break;
+            case "creditCardCVV":
+                buyer.getCard().setCvv(newValue);
+                break;
+            case "creditCardExpiration":
+                buyer.getCard().setExpirationDate(newValue);
+                break;
+            default:
+                // Handle unknown context or add additional cases as needed
+                System.out.println("Invalid context: " + context);
+                break;
+        }
+    }
+
+
 }

@@ -172,7 +172,8 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             @Override
             public void mouseClicked(MouseEvent e) {
                 showProductDetails(product);
-            } @Override
+            }
+            @Override
             public void mouseEntered(MouseEvent e) {
                 productBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
@@ -293,20 +294,38 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             public void actionPerformed(ActionEvent e) {
                 // Handle the update logic here
                 String newUsername = usernameField.getText();
-                char[] newPassword = passwordField.getPassword();
+                String newPassword =    String.valueOf(passwordField.getPassword());
                 String email = emailField.getText();
                 String address = addressField.getText();
                 String creditCardAccount = creditCardAccountField.getText();
                 String creditCardCVV = creditCardCVVField.getText();
                 String creditCardExpiration = creditCardExpirationField.getText();
+                if(!newUsername.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"username",newUsername);
+                } if(!newPassword.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"password",newUsername);
+                } if(!email.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"email",newUsername);
+                } if(!address.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"address",newUsername);
+                } if(!creditCardAccount.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardAccount",newUsername);
+                } if(!creditCardCVV.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardCVV",newUsername);
+                } if(!creditCardExpiration.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardExpiration",newUsername);
+                }
 
-                // Perform actions with the updated information
-                // ...
+
 
                 // Clear fields after update if needed
                 usernameField.setText("");
                 passwordField.setText("");
+                emailField.setText("");
+                addressField.setText("");
                 creditCardAccountField.setText("");
+                creditCardCVVField.setText("");
+                creditCardExpirationField.setText("");
             }
         });
 
@@ -346,7 +365,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 showBuyerCart();
                 break;
             case "log out":
+                this.userManager.writeUserDataToFile();
                 this.userManager.getProductsManager().saveInventory();
+
                 this.vm.showEntryView();
             case "update information":
                 showUpdateInfo();
