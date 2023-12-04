@@ -1,3 +1,2 @@
 atheek99;iPhone 25;NFK1;19.99;499.0;10;No Description set
-newbuyer;iPhone 25;NFK1;0.0;499.0;1;No Description set
-newbuyer;iPhone 25;NFK1;0.0;499.0;1;No Description set
+buyer;iPhone 25;NFK1;0.0;499.0;1;No Description set

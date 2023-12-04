@@ -13,6 +13,8 @@ public class Product{
     private double invoicePrice;
     private String sellerUserName;
     private String description;
+
+
     //Deep Copy Constructor
     public Product(Product original) {
         this.name = original.getName();
@@ -24,7 +26,7 @@ public class Product{
         this.description = original.getDescription();
     }
 
-
+    // Constructor for creating a new Product
     public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
         this.name = name;
         this.invoicePrice = invoicePrice;
@@ -33,6 +35,7 @@ public class Product{
         this.ID = generateProductID();
     }
 
+    //Constructor for reading an existing product from the text file
     public Product(String name, String ID,double invoicePrice, double sellingPrice, int quantity) {
         this.name = name;
         this.sellingPrice = sellingPrice;
