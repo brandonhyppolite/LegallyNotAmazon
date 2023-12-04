@@ -1,20 +1,16 @@
 package src.Frontend.All_Views;
 
 import src.Backend.UserManager;
-import src.Frontend.UserActionCallBack;
 import src.Frontend.SellerTableViewUtility;
+import src.Frontend.UserActionCallBack;
 import src.Frontend.ViewManager;
 import src.Product.Product;
 import src.users_code.Seller;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -23,7 +19,7 @@ import java.util.Locale;
  * The `SellerHomePageView` class represents the graphical user interface for the home page of a Seller.
  * It allows Sellers to view, edit, and add products, as well as view sales data.
  */
-public class SellerHomePageView implements UserActionCallBack {
+public class SellerHomePageView implements ActionListener,UserActionCallBack {
     private JPanel sellerHomePageMainPanel;
     private JLabel welcomeUserLabel;
     private JPanel sellerHomePageInfoPanel;
@@ -33,6 +29,7 @@ public class SellerHomePageView implements UserActionCallBack {
     private JButton logOutButton;
     private JPanel mainDataPanel;
     private JButton viewCurrentProductInfoButton;
+    private JButton updateInformation;
     private final ViewManager vm;
     private final UserManager userManager;
     private final Seller seller;
@@ -52,34 +49,22 @@ public class SellerHomePageView implements UserActionCallBack {
         this.seller.setSalesData();
         this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
 
-        logOutButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                seller.setSalesData();
-                userManager.writeUserDataToFile();
-                vm.showEntryView();
 
-            }
-        });
-        addANewProductButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAddNewProductPanel();
-            }
-        });
-        viewCurrentProductInfoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSellerProducts();
-            }
-        });
+        logOutButton.setActionCommand("log out");
+        logOutButton.addActionListener(this);
 
-        salesDataButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showSalesDataPanel();
-            }
-        });
+
+        addANewProductButton.setActionCommand("add new product");
+        addANewProductButton.addActionListener(this);
+
+
+        viewCurrentProductInfoButton.setActionCommand("view products");
+        viewCurrentProductInfoButton.addActionListener(this);
+
+        updateInformation.setActionCommand("update info");
+        updateInformation.addActionListener(this);
+        salesDataButton.setActionCommand("sales data");
+        salesDataButton.addActionListener(this);
 
 
         setUpMainView();
@@ -139,7 +124,15 @@ public class SellerHomePageView implements UserActionCallBack {
         });
     }
 
-
+    private void showUpdateInfo(){
+        SwingUtilities.invokeLater(() -> {
+            clearPanels();
+            mainDataPanel.setLayout(new BorderLayout());
+            mainDataPanel.add(drawUpdateInformationPanel(), BorderLayout.CENTER);
+            mainDataPanel.revalidate();
+            mainDataPanel.repaint();
+        });
+    }
     /**
      * Displays the sales data panel, showing costs, revenue, and profits.
      */
@@ -293,9 +286,145 @@ public class SellerHomePageView implements UserActionCallBack {
 
         return panel;
     }
+
+
+
+
+    private JPanel drawUpdateInformationPanel(){
+        JPanel updateInfo = new JPanel();
+        updateInfo.setLayout(new FlowLayout()); // Adjust the layout as needed
+
+        int width = 150 ,height = 25;
+
+        // Labels
+        JLabel usernameLabel = new JLabel("Username:");
+        JLabel passwordLabel = new JLabel("Password:");
+        JLabel emailLabel = new JLabel("Email:");
+
+
+        JLabel bankNameLabel = new JLabel("Bank Name:");
+        JLabel accountNumberLabel = new JLabel("Account Number:");
+        JLabel routingNumberLabel = new JLabel("Routing Number:");
+
+        // TextFields
+        JTextField usernameField = new JTextField();
+        usernameField.setPreferredSize(new Dimension(width,height));
+        usernameField.setText(this.userManager.getSellerAccountInformation(this.seller,"username"));
+
+        JPasswordField passwordField = new JPasswordField();
+        passwordField.setPreferredSize(new Dimension(width,height));
+
+        JTextField emailField = new JTextField();
+        emailField.setPreferredSize(new Dimension(width,height));
+        emailField.setText(this.userManager.getSellerAccountInformation(this.seller,"email"));
+
+
+        JTextField bankNameField = new JTextField();
+        bankNameField.setPreferredSize(new Dimension(width + 50,height));
+        bankNameField.setText(this.userManager.getSellerAccountInformation(this.seller,"bank name"));
+
+        JTextField accountNumberField = new JTextField();
+        accountNumberField.setPreferredSize(new Dimension(width + 50,height));
+        accountNumberField.setText(this.userManager.getSellerAccountInformation(this.seller,"account number"));
+
+        JTextField routingNumberField = new JTextField();
+        routingNumberField.setPreferredSize(new Dimension(width + 50,height));
+        routingNumberField.setText(this.userManager.getSellerAccountInformation(this.seller,"routing number"));
+
+
+        // Update Button
+        JButton updateButton = new JButton("Update");
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the update logic here
+                String newUsername = usernameField.getText();
+                String newPassword =    String.valueOf(passwordField.getPassword());
+                String email = emailField.getText();
+                String bankName = bankNameField.getText();
+                String accountNumber = accountNumberField.getText();
+                String routingNumber = routingNumberField.getText();
+                if(!newUsername.equals(userManager.getSellerAccountInformation(seller,"username"))){
+                    userManager.updateSellerAccountInformation(seller,"username",newUsername);
+                }
+                if(!newPassword.isEmpty()){
+                    userManager.updateSellerAccountInformation(seller,"password",newPassword);
+                }
+                if(!email.equals(userManager.getSellerAccountInformation(seller,"email"))){
+                    userManager.updateSellerAccountInformation(seller,"email",email);
+                }
+
+                if(!bankName.equals(userManager.getSellerAccountInformation(seller,"bank name"))){
+                    userManager.updateSellerAccountInformation(seller,"bank name",bankName);
+                }
+                if(!accountNumber.equals(userManager.getSellerAccountInformation(seller,"account number"))){
+                    userManager.updateSellerAccountInformation(seller,"account number",accountNumber);
+                }
+                if(!routingNumber.equals(userManager.getSellerAccountInformation(seller,"routing number"))){
+                    userManager.updateSellerAccountInformation(seller,"routing number",routingNumber);
+                }
+
+
+
+                // Clear fields after update if needed
+                usernameField.setText("");
+                passwordField.setText("");
+                emailField.setText("");
+                bankNameField.setText("");
+                accountNumberField.setText("");
+                routingNumberField.setText("");
+            }
+        });
+
+        // Add components to the panel
+        updateInfo.add(usernameLabel);
+        updateInfo.add(usernameField);
+        updateInfo.add(passwordLabel);
+        updateInfo.add(passwordField);
+        updateInfo.add(emailLabel);
+        updateInfo.add(emailField);
+        updateInfo.add(bankNameLabel);
+        updateInfo.add(bankNameField);
+        updateInfo.add(accountNumberLabel);
+        updateInfo.add(accountNumberField);
+        updateInfo.add(routingNumberLabel);
+        updateInfo.add(routingNumberField);
+
+        updateInfo.add(new JLabel()); // Placeholder for spacing
+        updateInfo.add(updateButton);
+
+        return updateInfo;
+    }
     @Override
     public void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
         showSellerProducts();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+        switch(command){
+            case "add new product":
+                showAddNewProductPanel();
+                break;
+            case "view products":
+                showSellerProducts();
+                break;
+            case "sales data":
+                showSalesDataPanel();
+                break;
+            case "update info":
+                showUpdateInfo();
+                break;
+            case "log out":
+                this.seller.setSalesData();
+                this.userManager.writeUserDataToFile();
+                this.userManager.getProductsManager().saveInventory();
+                this.vm.showEntryView();
+                break;
+            default:
+                System.out.println("Unknown button was clicked");
+        }
     }
 }

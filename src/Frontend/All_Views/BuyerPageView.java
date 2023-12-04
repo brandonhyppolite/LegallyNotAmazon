@@ -42,24 +42,24 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         this.tableViewUtility = new BuyerTableViewUtility(this.buyer,this);
 
         this.searchButton.setActionCommand("search product");
-        this.searchButton.addActionListener(this::actionPerformed);
+        this.searchButton.addActionListener(this);
 
 
         this.searchField.setActionCommand("search product");
-        this.searchField.addActionListener(this::actionPerformed);
+        this.searchField.addActionListener(this);
 
 
         this.updateInformationButton.setActionCommand("update information");
-        this.updateInformationButton.addActionListener(this::actionPerformed);
+        this.updateInformationButton.addActionListener(this);
 
         this.cartButton.setActionCommand("view cart");
-        this.cartButton.addActionListener(this::actionPerformed);
+        this.cartButton.addActionListener(this);
 
         this.goToCheckoutButton.setActionCommand("go to checkout");
-        this.goToCheckoutButton.addActionListener(this::actionPerformed);
+        this.goToCheckoutButton.addActionListener(this);
 
         this.logOutButton.setActionCommand("log out");
-        this.logOutButton.addActionListener(this::actionPerformed);
+        this.logOutButton.addActionListener(this);
 
 
         setUpMainView();
@@ -172,7 +172,8 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             @Override
             public void mouseClicked(MouseEvent e) {
                 showProductDetails(product);
-            } @Override
+            }
+            @Override
             public void mouseEntered(MouseEvent e) {
                 productBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
@@ -272,18 +273,30 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         // TextFields
         JTextField usernameField = new JTextField();
         usernameField.setPreferredSize(new Dimension(width,height));
+        usernameField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"username"));
+
         JPasswordField passwordField = new JPasswordField();
         passwordField.setPreferredSize(new Dimension(width,height));
+
         JTextField emailField = new JTextField();
         emailField.setPreferredSize(new Dimension(width,height));
+        emailField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"email"));
+
         JTextField addressField = new JTextField();
         addressField.setPreferredSize(new Dimension(width + 50,height));
+        addressField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"address"));
+
         JTextField creditCardAccountField = new JTextField();
         creditCardAccountField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardAccountField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardAccount"));
+
         JTextField creditCardCVVField = new JTextField();
         creditCardCVVField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardCVVField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardCVV"));
+
         JTextField creditCardExpirationField = new JTextField();
         creditCardExpirationField.setPreferredSize(new Dimension(width + 50,height));
+        creditCardExpirationField.setText(this.userManager.getBuyerAccountInformation(this.buyer,"creditCardExpiration"));
 
 
         // Update Button
@@ -293,20 +306,38 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             public void actionPerformed(ActionEvent e) {
                 // Handle the update logic here
                 String newUsername = usernameField.getText();
-                char[] newPassword = passwordField.getPassword();
+                String newPassword =    String.valueOf(passwordField.getPassword());
                 String email = emailField.getText();
                 String address = addressField.getText();
                 String creditCardAccount = creditCardAccountField.getText();
                 String creditCardCVV = creditCardCVVField.getText();
                 String creditCardExpiration = creditCardExpirationField.getText();
+                if(!newUsername.equals(userManager.getBuyerAccountInformation(buyer,"username"))){
+                    userManager.updateBuyerAccountInformation(buyer,"username",newUsername);
+                } if(!newPassword.isEmpty()){
+                    userManager.updateBuyerAccountInformation(buyer,"password",newPassword);
+                } if(!email.equals(userManager.getBuyerAccountInformation(buyer,"email"))){
+                    userManager.updateBuyerAccountInformation(buyer,"email",email);
+                } if(!address.equals(userManager.getBuyerAccountInformation(buyer,"address"))){
+                    userManager.updateBuyerAccountInformation(buyer,"address",address);
+                } if(!creditCardAccount.equals(userManager.getBuyerAccountInformation(buyer,"creditCardAccount"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardAccount",creditCardAccount);
+                } if(!creditCardCVV.equals(userManager.getBuyerAccountInformation(buyer,"creditCardCVV"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardCVV",creditCardCVV);
+                } if(!creditCardExpiration.equals(userManager.getBuyerAccountInformation(buyer,"creditCardExpiration"))){
+                    userManager.updateBuyerAccountInformation(buyer,"creditCardExpiration",creditCardExpiration);
+                }
 
-                // Perform actions with the updated information
-                // ...
+
 
                 // Clear fields after update if needed
                 usernameField.setText("");
                 passwordField.setText("");
+                emailField.setText("");
+                addressField.setText("");
                 creditCardAccountField.setText("");
+                creditCardCVVField.setText("");
+                creditCardExpirationField.setText("");
             }
         });
 
@@ -331,6 +362,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
         return updateInfo;
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
@@ -346,7 +378,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 showBuyerCart();
                 break;
             case "log out":
+                this.userManager.writeUserDataToFile();
                 this.userManager.getProductsManager().saveInventory();
+
                 this.vm.showEntryView();
             case "update information":
                 showUpdateInfo();

@@ -1,6 +1,1 @@
-Atheek;Ashkar;atheek99;1234;atheek99@yahoo.com;1499.48;1929.48;430.0;Seller
-1;1;1;1;1;11170.0;56000.0;44830.0;Seller
-testing;testing;testing;123;testing;29.900000000000002;540.0;510.1;Seller
-buyer;buyer;buyer;1;buyer;Buyer
-testing;testing;lmao;1;efvef;Buyer
-2;2;2;2;2;Buyer
+atheek;ashkar;atheek99;1234;atheek99@yahoo.com;5980.0;7980.0;2000.0;Bank of America;234214124124;995787218;Seller

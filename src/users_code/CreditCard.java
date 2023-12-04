@@ -1,16 +1,12 @@
 package src.users_code;
 
-import java.time.LocalDate;
-
 public class CreditCard {
     private String creditCardNumber;
-    private LocalDate expirationDate;
+    private String expirationDate;
     private String cvv;
 
-    public CreditCard(String creditCardNumber, LocalDate expirationDate, String cvv) {
-        this.creditCardNumber = creditCardNumber;
-        this.expirationDate = expirationDate;
-        this.cvv = cvv;
+    public CreditCard() {
+
     }
 
     public String getCreditCardNumber() {
@@ -21,8 +17,12 @@ public class CreditCard {
         this.creditCardNumber = creditCardNumber;
     }
 
-    public LocalDate getExpirationDate() {
+    public String getExpirationDate() {
         return expirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public String getCvv() {

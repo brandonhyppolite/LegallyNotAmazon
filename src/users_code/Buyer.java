@@ -11,6 +11,17 @@ public class Buyer extends User{
     public Buyer(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password,email);
         this.shoppingCart = new ArrayList<>();
+        this.card = new CreditCard();
+    }
+
+    public Buyer(String firstName, String lastName, String username, String password, String email,String address,String creditAccountNumber,String creditCVV, String creditExpiration) {
+        super(firstName, lastName, username, password,email);
+        this.shoppingCart = new ArrayList<>();
+        this.setAddress(address);
+        this.card = new CreditCard();
+        this.card.setCreditCardNumber(creditAccountNumber);
+        this.card.setCvv(creditCVV);
+        this.card.setExpirationDate(creditExpiration);
     }
 
 
@@ -34,5 +45,17 @@ public class Buyer extends User{
         Product copy = new Product(product);
         copy.setQuantity(1);
         this.shoppingCart.add(copy);
+    }
+
+    @Override
+    public String toString() {
+        return "Buyer{" +
+                "username='" + getUsername() + '\'' +
+                ", email='" + getEmail() + '\'' +
+                ", password='" + getPassword() + '\'' +
+                ", firstName='" + getFirstName() + '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", creditCard=" + (card != null ? card.toString() : "null") +
+                '}';
     }
 }
