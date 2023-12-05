@@ -1,1 +1,2 @@
-atheek;ashkar;atheek99;1234;atheek99@yahoo.com;5980.0;7980.0;2000.0;Bank of America;234214124124;995787218;Seller
+atheek;ashkar;atheek99;1234;atheek99@yahoo.com;40.0;1118.0;1078.0;Bank of America;995787218;234214124124;Seller
+buyer;buyer;buyer;1;buyer;19399 big street;3423439;223;05/32;Buyer

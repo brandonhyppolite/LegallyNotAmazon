@@ -43,32 +43,6 @@ public class ProductsManager {
         ProductFileHandler.writeInventoryToFile(this.userManager);
     }
 
-    /**
-     * Retrieves a list of products associated with a user (either products for sale or in the shopping cart).
-     *
-     * @param u The user for whom to retrieve the list of products.
-     * @return The list of products associated with the user.
-     */
-    public ArrayList<Product> getItemsFromUser(User u){
-        if(u instanceof Seller && this.userManager.getUsers().contains(u)){
-            return ((Seller) u).getProductsForSale();
-        }else if(u instanceof Buyer && userManager.getUsers().contains(u)){
-            return (((Buyer) u).getShoppingCart());
-        }
-        System.out.println("User was unknown class");
-        return null;
-    }
-
-
-    /**
-     * Adds a product to the list of products associated with a user.
-     *
-     * @param u The user to whom the product will be added.
-     * @param p The product to add.
-     */
-    public void addProductToUser(User u, Product p){
-        getItemsFromUser(u).add(p);
-    }
 
     public ArrayList<Product> getAllItemsForSale() {
         ArrayList<Product> allItemsForSale = new ArrayList<>();
@@ -106,6 +80,32 @@ public class ProductsManager {
             }
         }
         return count;
+    }
+
+    public Product getProductByID(String id){
+        for(User u: this.userManager.getUsers()){
+            if(u instanceof Seller){
+                for(Product p: ((Seller) u).getProductsForSale()){
+                    if(p.getID().equals(id)){
+                        return p;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Seller getSellerFromProductID(String id){
+        for(User u: this.userManager.getUsers()){
+            if(u instanceof Seller){
+                for(Product p: ((Seller) u).getProductsForSale()){
+                    if(p.getID().equals(id)){
+                        return (Seller) u;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
 }

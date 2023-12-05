@@ -1,9 +1,6 @@
 package src.Frontend;
 
-import src.Frontend.All_Views.BuyerPageView;
-import src.Frontend.All_Views.CreateAccountView;
-import src.Frontend.All_Views.EntryView;
-import src.Frontend.All_Views.SellerHomePageView;
+import src.Frontend.All_Views.*;
 import src.users_code.Buyer;
 import src.users_code.Seller;
 
@@ -34,16 +31,23 @@ public class ViewManager {
         this.sp.revalidate();
         this.sp.repaint();
     }
-    public void showSellerHomePageView(Seller u){
+    public void showSellerHomePageView(Seller seller){
         this.sp.getContentPane().removeAll();
-        this.sp.getContentPane().add(new SellerHomePageView(this,u).getMainPanel());
+        this.sp.getContentPane().add(new SellerHomePageView(this,seller).getMainPanel());
         this.sp.revalidate();
         this.sp.repaint();
     }
 
-    public void showBuyerHomePage(Buyer u) {
+    public void showBuyerHomePage(Buyer buyer) {
         this.sp.getContentPane().removeAll();
-        this.sp.getContentPane().add(new BuyerPageView(this,u).getBuyerPageMainPanel());
+        this.sp.getContentPane().add(new BuyerPageView(this,buyer).getBuyerPageMainPanel());
+        this.sp.revalidate();
+        this.sp.repaint();
+    }
+
+    public void showBuyerCheckoutView(Buyer buyer) {
+        this.sp.getContentPane().removeAll();
+        this.sp.getContentPane().add(new BuyerCheckoutView(this,buyer).getBuyerCheckOutMainPanel());
         this.sp.revalidate();
         this.sp.repaint();
     }

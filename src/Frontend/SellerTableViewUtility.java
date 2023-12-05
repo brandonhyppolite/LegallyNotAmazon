@@ -8,12 +8,12 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class SellerTableViewUtility {
     private Seller seller;
     private UserActionCallBack callback;
-
     public SellerTableViewUtility(Seller seller, UserActionCallBack callback) {
         this.seller = seller;
         this.callback = callback;
@@ -49,10 +49,10 @@ public class SellerTableViewUtility {
                         productData[i][j] = String.valueOf(product.getQuantity());
                         break;
                     case 3:
-                        productData[i][j] = String.valueOf(product.getInvoicePrice());
+                        productData[i][j] = String.format("%.2f", product.getInvoicePrice());
                         break;
                     case 4:
-                        productData[i][j] = String.valueOf(product.getSellingPrice());
+                        productData[i][j] = String.format("%.2f", product.getSellingPrice());
                         break;
                 }
             }
