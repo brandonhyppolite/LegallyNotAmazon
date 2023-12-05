@@ -13,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
 /**
@@ -136,6 +135,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             label.setHorizontalAlignment(JLabel.CENTER);
             mainInfoPanel.add(label, BorderLayout.NORTH);
             mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));
+            mainInfoPanel.add(drawAddProductPanel(),BorderLayout.SOUTH);
             mainInfoPanel.revalidate();
             mainInfoPanel.repaint();
         });
@@ -444,6 +444,35 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         return updateInfo;
     }
 
+    private JPanel drawAddProductPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JLabel enterIDLabel = new JLabel("Enter a product ID to add to cart:");
+        JTextField enterIDField = new JTextField();
+        enterIDField.setPreferredSize(new Dimension(100,25));
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ID = enterIDField.getText();
+                Product product = userManager.getProductsManager().getProductByID(ID);
+                if(product != null){
+                    buyer.addProductToCart(product);
+                    String message = "Added to cart: " + product.getName();
+                    JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+                    cartButton.setText("Cart: $" + String.format("%.2f",buyer.getTotalOnCart()));
+                }else{
+                    String message = "Failed to add to cart! No Product with ID " + ID;
+                    JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        panel.add(enterIDLabel);
+        panel.add(enterIDField);
+        panel.add(addButton);
+        return panel;
+    }
 
     private JPanel drawCheckoutPanel(){
         JPanel panel = new JPanel();
