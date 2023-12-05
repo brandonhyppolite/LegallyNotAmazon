@@ -126,4 +126,16 @@ public class ProductsManager {
         }
    }
 
+   public void updateProductSellerUsernameInBuyers(String old,String newName){
+       for(User u: this.userManager.getUsers()){
+           if(u instanceof Buyer){
+               for(Product p: ((Buyer) u).getShoppingCart()){
+                   if(p.getSellerUserName().equals(old)){
+                       p.setSellerUserName(newName);
+                   }
+               }
+           }
+       }
+   }
+
 }

@@ -330,7 +330,14 @@ public class UserManager {
     public void updateSellerAccountInformation(Seller seller, String context, String newValue){
         switch (context) {
             case "username":
-                seller.setUsername(newValue);
+                String oldName = seller.getUsername();
+                try {
+                    seller.setUsername(newValue);
+                    getProductsManager().updateProductSellerUsernameInBuyers(oldName, seller.getUsername());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                     seller.setUsername(oldName);
+                }
                 break;
             case "password":
                 seller.setPassword(newValue);
