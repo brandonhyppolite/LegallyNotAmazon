@@ -59,12 +59,12 @@ public class TransactionsHandler {
             // Update the seller's product quantity
             seller.getProductsForSale().set(seller.getProductsForSale().indexOf(original),original.sell(1));
             // Update the seller's revenue
-            double revenue = original.getSellingPrice();
+            double revenue = original.getSellingPrice() - original.getInvoicePrice();
             seller.setRevenues(seller.getRevenues() + revenue);
             // Add the product to the list of products to remove from the buyer's shopping cart
             productsToRemove.add(fromBuyer);
             // Update the total amount paid
-            totalPaid += revenue;
+            totalPaid += original.getSellingPrice();
         }
     }
     /**

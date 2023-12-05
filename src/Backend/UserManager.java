@@ -106,10 +106,11 @@ public class UserManager {
             double costs = Double.parseDouble(userData[5]);
             double revenues = Double.parseDouble(userData[6]);
             double profits = Double.parseDouble(userData[7]);
-            String bankName = userData[8];
-            String accountNumber = userData[9];
-            String routingNumber = userData[10];
-            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits,bankName,accountNumber,routingNumber);
+            double totalCosts = Double.parseDouble(userData[8]);
+            String bankName = userData[9];
+            String accountNumber = userData[10];
+            String routingNumber = userData[11];
+            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits,totalCosts,bankName,accountNumber,routingNumber);
         }
         return user;
     }
@@ -243,9 +244,9 @@ public class UserManager {
                 } else if (user instanceof Seller) {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
-                            + user.getEmail() + ";" + ((Seller) user).getCosts() + ";" + ((Seller) user).getRevenues() + ";"
+                            + user.getEmail() + ";" + ((Seller) user).getCostsOfProductsForSale() + ";" + ((Seller) user).getRevenues() + ";"
                     + ((Seller) user).getProfits()
-                            + ";" + ((Seller) user).getBankName()+ ";"
+                            + ";" +((Seller) user).getTotalAcquiredCosts() +";"+ ((Seller) user).getBankName()+ ";"
                             + ((Seller) user).getAccountNumber()+ ";" + ((Seller) user).getRoutingNumber() +
                             ";" +"Seller";
                     writer.write(userData);

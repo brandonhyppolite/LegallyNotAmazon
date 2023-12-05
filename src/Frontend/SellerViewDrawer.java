@@ -3,7 +3,6 @@ package src.Frontend;
 import src.Backend.UserManager;
 import src.Product.Product;
 import src.users_code.Seller;
-import src.users_code.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -337,7 +336,7 @@ public class SellerViewDrawer {
         this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs: $" + this.seller.getCosts());
+        JLabel costs = new JLabel("Costs: $" + this.seller.getCostsOfProductsForSale());
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 

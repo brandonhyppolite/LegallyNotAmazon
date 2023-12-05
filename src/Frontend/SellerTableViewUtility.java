@@ -169,8 +169,7 @@ public class SellerTableViewUtility {
 
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
-        this.seller.getProductsForSale().remove(product);
-
+        this.seller.removeProductFromSale(product);
         callback.saveAndRefresh(product.getID());
     }
 
@@ -184,10 +183,24 @@ public class SellerTableViewUtility {
                     product.setName(inputValue);
                     break;
                 case "Quantity":
-                    product.setQuantity(Integer.parseInt(inputValue));
+                    int oldQuantity = product.getQuantity();
+                    int newQuantity = Integer.parseInt(inputValue);
+
+                    // Update the quantity of the product
+                    product.setQuantity(newQuantity);
+
+                    int difference = newQuantity - oldQuantity;
+
+                    // Update totalAcquiredCosts based on the difference in quantity
+                    double costChange = product.getInvoicePrice() * difference;
+                    this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + costChange);
                     break;
+
                 case "Invoice Price":
+                    double oldPrice = product.getInvoicePrice();
                     product.setInvoicePrice(Double.parseDouble(inputValue));
+                    double differencePrice = product.getInvoicePrice() - oldPrice;
+                    this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + (differencePrice * product.getQuantity()));
                     break;
                 case "Selling Price":
                     product.setSellingPrice(Double.parseDouble(inputValue));

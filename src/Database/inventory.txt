@@ -1,3 +1,0 @@
-test;lol;PRFC;1.99;2.99;2;No Description set
-buyer;lol;PRFC
-buyer;lol;PRFC

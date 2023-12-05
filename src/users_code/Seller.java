@@ -8,7 +8,8 @@ import java.util.ArrayList;
  * The `Seller` class represents a seller user.
  */
 public class Seller extends User{
-    private double costs;
+    private double costsOfProductsForSale;
+    private double totalAcquiredCosts;
     private double revenues;
     private double profits;
     private String BankName;
@@ -28,9 +29,10 @@ public class Seller extends User{
     public Seller(String firstName, String lastName, String username, String password, String email) {
         super(firstName, lastName, username, password, email);
         this.productsForSale = new ArrayList<>();
-        this.costs = 0.00;
+        this.costsOfProductsForSale = 0.00;
         this.revenues = 0.00;
         this.profits = 0.00;
+        this.totalAcquiredCosts = 0.00;
     }
 
     /**
@@ -41,19 +43,20 @@ public class Seller extends User{
      * @param username       The username of the seller.
      * @param password       The password of the seller.
      * @param email          The email of the seller.
-     * @param costs          The costs incurred by the seller.
+     * @param costsOfProductsForSale          The costs incurred by the seller.
      * @param revenues       The revenues earned by the seller.
      * @param profits        The profits made by the seller.
      * @param bankName       The name of the seller's bank.
      * @param routingNumber  The routing number of the seller's bank account.
      * @param accountNumber  The account number of the seller's bank account.
      */
-    public Seller(String firstName, String lastName, String username, String password, String email, double costs, double revenues, double profits, String bankName, String routingNumber, String accountNumber) {
+    public Seller(String firstName, String lastName, String username, String password, String email, double costsOfProductsForSale, double revenues, double profits,double totalAcquiredCosts, String bankName, String routingNumber, String accountNumber) {
         super(firstName, lastName, username, password, email);
         this.productsForSale = new ArrayList<>();
-        this.costs = costs;
+        this.costsOfProductsForSale = costsOfProductsForSale;
         this.revenues = revenues;
         this.profits = profits;
+        this.totalAcquiredCosts = totalAcquiredCosts;
         BankName = bankName;
         RoutingNumber = routingNumber;
         AccountNumber = accountNumber;
@@ -119,16 +122,16 @@ public class Seller extends User{
      *
      * @return The costs incurred.
      */
-    public double getCosts() {
-        return costs;
+    public double getCostsOfProductsForSale() {
+        return costsOfProductsForSale;
     }
     /**
      * Sets the costs incurred by the seller.
      *
-     * @param costs The costs to set.
+     * @param costsOfProductsForSale The costs to set.
      */
-    public void setCosts(double costs) {
-        this.costs = costs;
+    public void setCostsOfProductsForSale(double costsOfProductsForSale) {
+        this.costsOfProductsForSale = costsOfProductsForSale;
     }
     /**
      * Gets the revenues earned by the seller.
@@ -163,6 +166,15 @@ public class Seller extends User{
         this.profits = profits;
     }
 
+
+    public double getTotalAcquiredCosts() {
+        return totalAcquiredCosts;
+    }
+
+    public void setTotalAcquiredCosts(double totalAcquiredCosts) {
+        this.totalAcquiredCosts = totalAcquiredCosts;
+    }
+
     /**
      * Adds a product to the list of products for sale by the seller.
      *
@@ -170,6 +182,11 @@ public class Seller extends User{
      */
     public void addProductForSale(Product p){
         this.productsForSale.add(p);
+        setTotalAcquiredCosts(getTotalAcquiredCosts() + (p.getInvoicePrice()* p.getQuantity()));
+    }
+    public void removeProductFromSale(Product p){
+        this.productsForSale.remove(p);
+        setTotalAcquiredCosts(getTotalAcquiredCosts() - (p.getInvoicePrice()* p.getQuantity()));
     }
     /**
      * Sets the sales data for the seller, including costs and profits.
@@ -179,7 +196,10 @@ public class Seller extends User{
         for(Product p : this.productsForSale){
             costs+= (p.getInvoicePrice() * p.getQuantity());
         }
-        setCosts(costs);
-        setProfits(getRevenues() - getCosts());
+        setCostsOfProductsForSale(costs);
+        if(getRevenues() > 0){
+            setProfits(getRevenues() - getTotalAcquiredCosts());
+        }
+
     }
 }

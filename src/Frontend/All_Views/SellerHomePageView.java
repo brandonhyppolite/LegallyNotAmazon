@@ -231,7 +231,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                         Integer.parseInt(quantity.getText())
                 );
                 p.setSellerUserName(seller.getUsername());
-                seller.getProductsForSale().add(p);
+                seller.addProductForSale(p);
                 userManager.getProductsManager().saveInventory();
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -267,7 +267,11 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs: $" + String.format("%.2f",this.seller.getCosts()));
+        JLabel totalCosts = new JLabel("Total Costs of Acquired Products: $" + String.format("%.2f",this.seller.getTotalAcquiredCosts()));
+        totalCosts.setHorizontalAlignment(JLabel.CENTER);
+        totalCosts.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
+
+        JLabel costs = new JLabel("Costs of goods currently for sale: $" + String.format("%.2f",this.seller.getCostsOfProductsForSale()));
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
@@ -275,15 +279,11 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         revenue.setHorizontalAlignment(JLabel.CENTER);
         revenue.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel profits = new JLabel();
-        if(this.seller.getProfits() > 0){
-            profits.setText("Profits: $" + String.format("%.2f",this.seller.getProfits()));
-        }else{
-            profits.setText("Profits: -$" + String.format("%.2f",this.seller.getProfits() * -1));
-        }
+        JLabel profits = new JLabel("Profits: $" + String.format("%.2f",this.seller.getProfits()));
         profits.setHorizontalAlignment(JLabel.CENTER);
         profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
+        panel.add(totalCosts);
         panel.add(costs);
         panel.add(revenue);
         panel.add(profits);
