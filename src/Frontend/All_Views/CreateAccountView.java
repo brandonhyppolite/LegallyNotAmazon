@@ -7,7 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+/**
+ * The CreateAccountView class is responsible for displaying the create account view in the user interface.
+ */
 public class CreateAccountView {
     private JPanel createAccountMainPanel;
     private JLabel createViewText;
@@ -34,9 +36,16 @@ public class CreateAccountView {
     private UserManager system;
     private ViewManager vm;
 
+    /**
+     * Constructs a CreateAccountView object with the specified ViewManager.
+     *
+     * @param v The ViewManager object.
+     */
     public CreateAccountView(ViewManager v){
         this.vm = v;
         this.system = UserManager.getInstance();
+
+        // ActionListener for the create account button
         createAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -65,13 +74,14 @@ public class CreateAccountView {
                 }
             }
         });
-
+        // ActionListener for the back to login button
         backToLoginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 vm.showEntryView();
             }
         });
+        // ActionListener for the buyer radio button
         buyerRadio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -79,7 +89,7 @@ public class CreateAccountView {
                 System.out.println(accountType);
             }
         });
-
+        // ActionListener for the seller radio button
         sellerRadio.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -89,11 +99,18 @@ public class CreateAccountView {
         });
 
     }
-
+    /**
+     * Returns the main panel of the create account view.
+     *
+     * @return The create account main panel.
+     */
     public JPanel getCreateAccountMainPanel() {
         return createAccountMainPanel;
     }
 
+    /**
+     * Resets the input fields and warning messages in the create account view.
+     */
     public void resetFields() {
         firstName.setText("");
         lastName.setText("");

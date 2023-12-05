@@ -16,6 +16,9 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/**
+ * The BuyerPageView class represents the view for the buyer's page.
+ */
 public class BuyerPageView implements ActionListener, UserActionCallBack {
     private JPanel buyerPageMainPanel;
     private JLabel welcomeLabel;
@@ -35,6 +38,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     private final UserManager userManager;
 
     private final BuyerTableViewUtility tableViewUtility;
+    /**
+     * Constructs a BuyerPageView object with the specified ViewManager and Buyer.
+     *
+     * @param vm    The ViewManager object.
+     * @param buyer The Buyer object.
+     */
     public BuyerPageView(ViewManager vm, Buyer buyer){
         this.userManager = UserManager.getInstance();
         this.vm = vm;
@@ -66,12 +75,18 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         setUpMainView();
 
     }
-
+    /**
+     * Gets the buyer page main panel.
+     *
+     * @return The buyer page main panel.
+     */
     public JPanel getBuyerPageMainPanel(){
         return buyerPageMainPanel;
     }
 
-
+    /**
+     * Sets up the main view.
+     */
     private void setUpMainView() {
         welcomeLabel.setText("Welcome, " + buyer.getUsername() + "!");
         showProductsForSale("");
@@ -79,6 +94,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     }
 
     //-------- START FOR METHODS FOR DISPLAYING THE PANELS ------------------------------------------------
+    /**
+     * Shows the products for sale panel.
+     *
+     * @param field The search field.
+     */
     private void showProductsForSale(String field){
         ArrayList<Product> productsForSale;
         if(field.isEmpty()){
@@ -103,6 +123,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         });
     }
 
+    /**
+     * Shows the buyer's cart panel.
+     */
     private void showBuyerCart(){
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)"};
         SwingUtilities.invokeLater(() -> {
@@ -116,7 +139,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Shows the checkout panel.
+     */
     private void showCheckout(){
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Seller"};
         SwingUtilities.invokeLater(() -> {
@@ -131,7 +156,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Shows the update information panel.
+     */
     private void showUpdateInfo(){
         SwingUtilities.invokeLater(() -> {
             clearPanels();
@@ -141,6 +168,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
+    /**
+     * Clears the panels.
+     */
     private void clearPanels(){
         mainInfoPanel.removeAll();
     }
@@ -152,6 +182,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
 
     //-------- START FOR METHODS FOR CREATING/DRAWING THE PANELS ---------------------------------------------------
+    /**
+     * Draws the products for sale panel.
+     *
+     * @param products The list of products for sale.
+     * @return The scroll pane with the products for sale.
+     */
     private JScrollPane drawProductsForSale(ArrayList<Product> products){
         JPanel productsPanel = new JPanel();
         productsPanel.setLayout(new GridLayout(0,3,10,10));
@@ -163,7 +199,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         return scrollPane;
     }
-
+    /**
+     * Creates the panel for displaying "no products available" message.
+     *
+     * @return The panel with the "no products available" message.
+     */
     private JPanel createNoProductsPanel(){
         JPanel noProductsPanel = new JPanel(new BorderLayout());
         JLabel noProductsLabel = new JLabel("Product(s) unavailable");
@@ -171,6 +211,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         noProductsPanel.add(noProductsLabel, BorderLayout.CENTER);
         return noProductsPanel;
     }
+    /**
+     * Creates a product box panel for displaying product details.
+     *
+     * @param product The product to display.
+     * @return The product box panel.
+     */
     private JPanel createProductBox(Product product){
         JPanel productBox = new JPanel(new BorderLayout());
         productBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -202,7 +248,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
         return productBox;
     }
-
+    /**
+     * Shows the detailed information of a product.
+     *
+     * @param product The product to display details of.
+     */
     private void showProductDetails(Product product){
         SwingUtilities.invokeLater(() -> {
             clearPanels();
@@ -211,7 +261,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Creates a panel to display the detailed information of a product.
+     *
+     * @param product The product to display details of.
+     * @return The panel with the product details.
+     */
     private JPanel createProductDetailsPanel(Product product) {
         // Create a panel to hold detailed information
         JPanel moreDetails = new JPanel(new GridLayout(0, 1));
@@ -264,9 +319,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             showProductsForSale(searchField.getText());
     }
 
-
-
-
+    /**
+     * Draws the update information panel.
+     *
+     * @return The update information panel.
+     */
     private JPanel drawUpdateInformationPanel(){
         JPanel updateInfo = new JPanel();
         updateInfo.setLayout(new FlowLayout()); // Adjust the layout as needed
