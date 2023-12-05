@@ -155,7 +155,8 @@ public class SellerTableViewUtility {
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
         this.seller.getProductsForSale().remove(product);
-        callback.saveAndRefresh();
+
+        callback.saveAndRefresh(product.getID());
     }
 
     private void editProductAttribute(int selectedRow, String attributeName) {

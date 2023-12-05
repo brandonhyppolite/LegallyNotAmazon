@@ -1,5 +1,6 @@
 package src.Frontend.All_Views;
 
+import src.Backend.TransactionsHandler;
 import src.Backend.UserManager;
 import src.Frontend.ViewManager;
 import src.users_code.Buyer;
@@ -118,6 +119,11 @@ public class BuyerCheckoutView implements ActionListener {
                 this.vm.showBuyerHomePage(this.buyer);
                 break;
             case "pay":
+                TransactionsHandler transactionsHandler = new TransactionsHandler();
+                transactionsHandler.handleTransactionsOnBuyer(this.buyer);
+                String message = "You paid: $" + String.format("%.2f", transactionsHandler.getTotalPaid());
+                JOptionPane.showMessageDialog(mainInfoPanel, message, "Payment Information", JOptionPane.INFORMATION_MESSAGE);
+                this.vm.showBuyerHomePage(this.buyer);
                 break;
         }
     }

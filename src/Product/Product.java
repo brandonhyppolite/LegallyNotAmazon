@@ -94,7 +94,12 @@ public class Product{
     }
 
     public Product sell(int amount) {
-        Product updatedProduct = new Product(this);  // Create a deep copy
+        Product updatedProduct = new Product(
+                this.name,
+                this.getID(),
+                this.getInvoicePrice(),
+                this.getSellingPrice(),
+                this.getQuantity());
         updatedProduct.setQuantity(updatedProduct.getQuantity() - amount);
         if (updatedProduct.getQuantity() < 0) {
             updatedProduct.setQuantity(0);

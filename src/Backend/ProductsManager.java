@@ -95,17 +95,12 @@ public class ProductsManager {
         return null;
     }
 
-    public Seller getSellerFromProductID(String id){
+   public void removeProductsFromOtherBuyers(String ID){
         for(User u: this.userManager.getUsers()){
-            if(u instanceof Seller){
-                for(Product p: ((Seller) u).getProductsForSale()){
-                    if(p.getID().equals(id)){
-                        return (Seller) u;
-                    }
-                }
+            if(u instanceof Buyer){
+                ((Buyer) u).getShoppingCart().removeIf(p -> p.getID().equals(ID));
             }
         }
-        return null;
-    }
+   }
 
 }

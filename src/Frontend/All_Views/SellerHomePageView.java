@@ -276,7 +276,12 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         revenue.setHorizontalAlignment(JLabel.CENTER);
         revenue.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel profits = new JLabel("Profits: $" + String.format("%.2f",this.seller.getProfits()));
+        JLabel profits = new JLabel();
+        if(this.seller.getProfits() > 0){
+            profits.setText("Profits: $" + String.format("%.2f",this.seller.getProfits()));
+        }else{
+            profits.setText("Profits: -$" + String.format("%.2f",this.seller.getProfits() * -1));
+        }
         profits.setHorizontalAlignment(JLabel.CENTER);
         profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
@@ -397,6 +402,13 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     }
     @Override
     public void saveAndRefresh() {
+        userManager.getProductsManager().saveInventory();
+        showSellerProducts();
+    }
+
+    @Override
+    public void saveAndRefresh(String ID) {
+        userManager.getProductsManager().removeProductsFromOtherBuyers(ID);
         userManager.getProductsManager().saveInventory();
         showSellerProducts();
     }

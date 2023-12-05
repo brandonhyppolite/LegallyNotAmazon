@@ -435,4 +435,8 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         this.userManager.getProductsManager().saveInventory();
         showBuyerCart();
     }
+
+    @Override
+    public void saveAndRefresh(String ID) {
+    }
 }
