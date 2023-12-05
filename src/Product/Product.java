@@ -2,6 +2,7 @@ package src.Product;
 
 
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Random;
 
@@ -14,14 +15,12 @@ public class Product{
     private String sellerUserName;
     private String description;
 
-
     //Deep Copy Constructor
     public Product(Product original) {
         this.name = original.getName();
         this.sellingPrice = original.getSellingPrice();
         this.quantity = original.getQuantity();
         this.ID = original.getID();
-//        this.invoicePrice = original.getInvoicePrice();
         this.sellerUserName = original.getSellerUserName();
         this.description = original.getDescription();
     }
@@ -29,8 +28,8 @@ public class Product{
     // Constructor for creating a new Product
     public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
         this.name = name;
-        this.invoicePrice = invoicePrice;
-        this.sellingPrice = sellingPrice;
+        this.invoicePrice = roundToTwoDecimalPlaces(invoicePrice);
+        this.sellingPrice = roundToTwoDecimalPlaces(sellingPrice);
         this.quantity = quantity;
         this.ID = generateProductID();
     }
@@ -38,10 +37,10 @@ public class Product{
     //Constructor for reading an existing product from the text file
     public Product(String name, String ID,double invoicePrice, double sellingPrice, int quantity) {
         this.name = name;
-        this.sellingPrice = sellingPrice;
+        this.sellingPrice = roundToTwoDecimalPlaces(sellingPrice);
         this.quantity = quantity;
         this.ID = ID;
-        this.invoicePrice = invoicePrice;
+        this.invoicePrice = roundToTwoDecimalPlaces(invoicePrice);
     }
 
     public String getName() {
@@ -57,7 +56,7 @@ public class Product{
     }
 
     public void setInvoicePrice(double invoicePrice) {
-        this.invoicePrice = invoicePrice;
+        this.invoicePrice = roundToTwoDecimalPlaces(invoicePrice);
     }
 
     public double getSellingPrice() {
@@ -65,7 +64,7 @@ public class Product{
     }
 
     public void setSellingPrice(double sellingPrice) {
-        this.sellingPrice = sellingPrice;
+        this.sellingPrice = roundToTwoDecimalPlaces(sellingPrice);
     }
 
     public int getQuantity() {
@@ -96,10 +95,6 @@ public class Product{
         this.sellerUserName = sellerUserName;
     }
 
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
     public Product sell(int amount) {
         Product updatedProduct = new Product(this);  // Create a deep copy
         updatedProduct.setQuantity(updatedProduct.getQuantity() - amount);
@@ -107,6 +102,10 @@ public class Product{
             updatedProduct.setQuantity(0);
         }
         return updatedProduct;
+    }
+
+    private double roundToTwoDecimalPlaces(double value) {
+        return Math.round(value * 100.0) / 100.0;
     }
     @Override
     public String toString() {

@@ -52,7 +52,7 @@ public class BuyerTableViewUtility {
                         totalQuantity += product.getQuantity();
                         break;
                     case 3:
-                        productData[i][j] = String.valueOf(product.getSellingPrice());
+                        productData[i][j] = String.format("%.2f",product.getSellingPrice());
                         totalPrice += product.getSellingPrice() * product.getQuantity();
                         break;
                 }
@@ -62,7 +62,7 @@ public class BuyerTableViewUtility {
         // Populate the last row with total quantity and total price
         productData[numRows - 1][1] = "In Total";
         productData[numRows - 1][2] = String.valueOf(totalQuantity);
-        productData[numRows - 1][3] = String.valueOf(totalPrice);
+        productData[numRows - 1][3] = String.format("%.2f",totalPrice);
 
         JTable table = createBuyerTable(productData, columnNames);
 
@@ -163,7 +163,7 @@ public class BuyerTableViewUtility {
                         totalQuantity += product.getQuantity();
                         break;
                     case 3:
-                        productData[i][j] = String.valueOf(product.getSellingPrice());
+                        productData[i][j] = String.format("%.2f", product.getSellingPrice());
                         totalPrice += product.getSellingPrice() * product.getQuantity();
                         break;
                     case 4:
@@ -176,7 +176,7 @@ public class BuyerTableViewUtility {
         // Populate the last row with total quantity and total price
         productData[numRows - 1][1] = "In Total";
         productData[numRows - 1][2] = String.valueOf(totalQuantity);
-        productData[numRows - 1][3] = String.valueOf(totalPrice);
+        productData[numRows - 1][3] = String.format("%.2f",totalPrice);
 
         JTable table = createBuyerCheckoutTable(productData, columnNames);
 
@@ -192,8 +192,7 @@ public class BuyerTableViewUtility {
             }
         };
 
-        JTable table = new JTable((tableModel));
-        return table;
+        return new JTable((tableModel));
     }
 
 }

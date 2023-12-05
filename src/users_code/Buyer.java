@@ -46,7 +46,13 @@ public class Buyer extends User{
         copy.setQuantity(1);
         this.shoppingCart.add(copy);
     }
-
+    public double getTotalOnCart(){
+        double total = 0.0;
+        for(Product p: this.shoppingCart){
+            total += p.getSellingPrice();
+        }
+        return total;
+    }
     @Override
     public String toString() {
         return "Buyer{" +

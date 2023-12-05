@@ -268,15 +268,15 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs: $" + this.seller.getCosts());
+        JLabel costs = new JLabel("Costs: $" + String.format("%.2f",this.seller.getCosts()));
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel revenue = new JLabel("Revenue: $" + this.seller.getRevenues());
+        JLabel revenue = new JLabel("Revenue: $" + String.format("%.2f",this.seller.getRevenues()));
         revenue.setHorizontalAlignment(JLabel.CENTER);
         revenue.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
-        JLabel profits = new JLabel("Profits: $" + this.seller.getProfits());
+        JLabel profits = new JLabel("Profits: $" + String.format("%.2f",this.seller.getProfits()));
         profits.setHorizontalAlignment(JLabel.CENTER);
         profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 

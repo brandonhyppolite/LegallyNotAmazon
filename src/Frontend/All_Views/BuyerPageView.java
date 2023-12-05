@@ -175,7 +175,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         productBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         JPanel detailsPanel = new JPanel(new GridLayout(0, 1));
         detailsPanel.add(new JLabel("Name: " + product.getName()));
-        detailsPanel.add(new JLabel("Price: $" + product.getSellingPrice()));
+        detailsPanel.add(new JLabel("Price: $" + String.format("%.2f", product.getSellingPrice())));
         int quantity = product.getQuantity() - this.userManager.getProductsManager().
                 getCurrentQuantityOfProductsInCart(this.buyer,product);
         detailsPanel.add(new JLabel("In stock: " + quantity));
@@ -214,19 +214,17 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     private JPanel createProductDetailsPanel(Product product) {
         // Create a panel to hold detailed information
         JPanel moreDetails = new JPanel(new GridLayout(0, 1));
-        String searchedField = searchField.getText();
-        // Format the price using NumberFormat for currency formatting
-        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance();
-        String formattedPrice = currencyFormat.format(product.getSellingPrice());
+
+        String formattedPrice = String.format("%.2f", product.getSellingPrice());
         int quantity = product.getQuantity() - this.userManager.getProductsManager()
                 .getCurrentQuantityOfProductsInCart(this.buyer,product);
         JButton addToCart = createAddToCartButton(product,moreDetails,quantity);
         JButton goBack = new JButton("Back");
         goBack.setActionCommand("go back");
-        goBack.addActionListener(this::actionPerformed);
+        goBack.addActionListener(this);
         // Use HTML for better formatting (line breaks)
         JLabel nameLabel = new JLabel("<html><b>Name:</b> " + product.getName() + "</html>");
-        JLabel priceLabel = new JLabel("<html><b>Price:</b> " + formattedPrice + "</html>");
+        JLabel priceLabel = new JLabel("<html><b>Price:</b> $" + formattedPrice + "</html>");
         JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + quantity+ "</html>");
         JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
         JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
@@ -424,6 +422,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 break;
 
             case "checkout":
+                this.vm.showBuyerCheckoutView(this.buyer);
                 break;
             default:
                 System.out.println("Unknown button was clicked");
