@@ -1,2 +1,0 @@
-Atheek;Ashkar;atheek99;1234;atheek99@yahoo.com;149.95;0.0;-149.95;null;null;null;Seller
-Big;Boi;buyer;1;buyer;null;null;null;null;Buyer

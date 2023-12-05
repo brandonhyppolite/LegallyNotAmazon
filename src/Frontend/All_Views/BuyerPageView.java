@@ -128,6 +128,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
      */
     private void showBuyerCart(){
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)"};
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
@@ -144,6 +145,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
      */
     private void showCheckout(){
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Seller"};
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
@@ -160,6 +162,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
      * Shows the update information panel.
      */
     private void showUpdateInfo(){
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
@@ -316,6 +319,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             moreDetails.revalidate();
             String message = "Added to cart: " + product.getName();
             JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+            this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
             showProductsForSale(searchField.getText());
     }
 
