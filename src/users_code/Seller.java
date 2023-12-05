@@ -186,18 +186,35 @@ public class Seller extends User{
     }
     public void removeProductFromSale(Product p){
         this.productsForSale.remove(p);
-        setTotalAcquiredCosts(getTotalAcquiredCosts() - (p.getInvoicePrice()* p.getQuantity()));
+        if(this.productsForSale.isEmpty()){
+            resetTotalCosts();
+        }else{
+            setTotalAcquiredCosts(getTotalAcquiredCosts() - (p.getInvoicePrice()* p.getQuantity()));
+        }
+
+    }
+
+    public void resetTotalCosts(){
+        setTotalAcquiredCosts(0);
     }
     /**
      * Sets the sales data for the seller, including costs and profits.
      */
     public void setSalesData(){
-        double costs =0.0;
-        for(Product p : this.productsForSale){
-            costs+= (p.getInvoicePrice() * p.getQuantity());
+        if(this.productsForSale.isEmpty()){
+            setProfits(0);
+            setCostsOfProductsForSale(0);
+            setTotalAcquiredCosts(0);
+            setRevenues(0);
+        }else{
+            double costs =0.0;
+            for(Product p : this.productsForSale){
+                costs+= (p.getInvoicePrice() * p.getQuantity());
+            }
+            setCostsOfProductsForSale(costs);
+            setProfits(getRevenues() - getTotalAcquiredCosts());
         }
-        setCostsOfProductsForSale(costs);
-        setProfits(getRevenues() - getTotalAcquiredCosts());
+
 
 
     }
