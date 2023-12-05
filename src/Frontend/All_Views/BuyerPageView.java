@@ -54,6 +54,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
         this.cartButton.setActionCommand("view cart");
         this.cartButton.addActionListener(this);
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
 
         this.goToCheckoutButton.setActionCommand("go to checkout");
         this.goToCheckoutButton.addActionListener(this);

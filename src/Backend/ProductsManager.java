@@ -44,14 +44,6 @@ public class ProductsManager {
     }
 
 
-    public void addProductToUser(User u, Product p){
-        if(u instanceof Seller){
-            ((Seller) u).addProductForSale(p);
-        } else if (u instanceof Buyer) {
-            ((Buyer) u).addProductToCart(p);
-        }
-    }
-
     public ArrayList<Product> getAllItemsForSale() {
         ArrayList<Product> allItemsForSale = new ArrayList<>();
 
@@ -90,12 +82,25 @@ public class ProductsManager {
         return count;
     }
 
-    public Product getProductFromSellerByID(String id){
+    public Product getProductByID(String id){
         for(User u: this.userManager.getUsers()){
             if(u instanceof Seller){
                 for(Product p: ((Seller) u).getProductsForSale()){
                     if(p.getID().equals(id)){
                         return p;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public Seller getSellerFromProductID(String id){
+        for(User u: this.userManager.getUsers()){
+            if(u instanceof Seller){
+                for(Product p: ((Seller) u).getProductsForSale()){
+                    if(p.getID().equals(id)){
+                        return (Seller) u;
                     }
                 }
             }

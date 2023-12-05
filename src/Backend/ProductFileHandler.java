@@ -31,7 +31,7 @@ public class ProductFileHandler {
 
                 } else if(productData.length == 3){
                     Buyer user = (Buyer) userManager.getUserByUsername(productData[0]);
-                    user.addProductToCart(productsManager.getProductFromSellerByID(productData[2]));
+                    user.addProductToCart(productsManager.getProductByID(productData[2]));
                 }else{
                     System.out.println("Skipping invalid product data: " + line);
                 }

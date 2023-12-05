@@ -1,8 +1,6 @@
 package src.Product;
 
 
-
-import java.text.DecimalFormat;
 import java.util.Objects;
 import java.util.Random;
 
@@ -10,12 +8,12 @@ public class Product{
     private String name;
     private double sellingPrice;
     private int quantity;
-    private String ID;
+    private final String ID;
     private double invoicePrice;
     private String sellerUserName;
     private String description;
 
-    //Deep Copy Constructor
+    //Semi-Deep Copy Constructor
     public Product(Product original) {
         this.name = original.getName();
         this.sellingPrice = original.getSellingPrice();
