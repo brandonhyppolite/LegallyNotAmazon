@@ -4,7 +4,10 @@ package src.Product;
 import java.util.Objects;
 import java.util.Random;
 
-public class Product{
+/**
+ * The `Product` class represents a product with its attributes and methods.
+ */
+public class Product {
     private String name;
     private double sellingPrice;
     private int quantity;
@@ -13,7 +16,11 @@ public class Product{
     private String sellerUserName;
     private String description;
 
-    //Semi-Deep Copy Constructor
+    /**
+     * Semi-Deep Copy Constructor
+     *
+     * @param original The original `Product` object to be copied.
+     */
     public Product(Product original) {
         this.name = original.getName();
         this.sellingPrice = original.getSellingPrice();
@@ -23,8 +30,15 @@ public class Product{
         this.description = original.getDescription();
     }
 
-    // Constructor for creating a new Product
-    public Product(String name, double invoicePrice,double sellingPrice, int quantity) {
+    /**
+     * Constructor for creating a new Product.
+     *
+     * @param name         The name of the product.
+     * @param invoicePrice The invoice price of the product.
+     * @param sellingPrice The selling price of the product.
+     * @param quantity     The quantity of the product.
+     */
+    public Product(String name, double invoicePrice, double sellingPrice, int quantity) {
         this.name = name;
         this.invoicePrice = roundToTwoDecimalPlaces(invoicePrice);
         this.sellingPrice = roundToTwoDecimalPlaces(sellingPrice);
@@ -32,8 +46,16 @@ public class Product{
         this.ID = generateProductID();
     }
 
-    //Constructor for reading an existing product from the text file
-    public Product(String name, String ID,double invoicePrice, double sellingPrice, int quantity) {
+    /**
+     * Constructor for reading an existing product from the text file.
+     *
+     * @param name         The name of the product.
+     * @param ID           The ID of the product.
+     * @param invoicePrice The invoice price of the product.
+     * @param sellingPrice The selling price of the product.
+     * @param quantity     The quantity of the product.
+     */
+    public Product(String name, String ID, double invoicePrice, double sellingPrice, int quantity) {
         this.name = name;
         this.sellingPrice = roundToTwoDecimalPlaces(sellingPrice);
         this.quantity = quantity;
@@ -41,6 +63,7 @@ public class Product{
         this.invoicePrice = roundToTwoDecimalPlaces(invoicePrice);
     }
 
+    // Getters and Setters
     public String getName() {
         return name;
     }
@@ -93,6 +116,12 @@ public class Product{
         this.sellerUserName = sellerUserName;
     }
 
+    /**
+     * Creates a new `Product` object with updated quantity after a sale.
+     *
+     * @param amount The amount of the product to be sold.
+     * @return A new `Product` object with updated quantity.
+     */
     public Product sell(int amount) {
         Product updatedProduct = new Product(this);  // Create a deep copy
         updatedProduct.setQuantity(updatedProduct.getQuantity() - amount);
@@ -102,9 +131,16 @@ public class Product{
         return updatedProduct;
     }
 
+    /**
+     * Rounds a double value to two decimal places.
+     *
+     * @param value The value to be rounded.
+     * @return The rounded value.
+     */
     private double roundToTwoDecimalPlaces(double value) {
         return Math.round(value * 100.0) / 100.0;
     }
+
     @Override
     public String toString() {
         return "Product{" +
@@ -115,8 +151,12 @@ public class Product{
                 ", invoicePrice=" + invoicePrice +
                 '}';
     }
-
-    private String generateProductID(){
+    /**
+     * Generates a random product ID.
+     *
+     * @return The generated product ID.
+     */
+    private String generateProductID() {
         String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuilder stringBuilder = new StringBuilder();
@@ -129,7 +169,12 @@ public class Product{
 
         return stringBuilder.toString();
     }
-
+    /**
+     * Checks if this `Product` is equal to another `Product` based on their name, selling price, and ID.
+     *
+     * @param obj The object to compare with.
+     * @return True if the objects are equal, false otherwise.
+     */
     public boolean equalsByNameIdSellingPrice(Object obj) {
         if (this == obj) {
             return true;
