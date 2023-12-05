@@ -21,4 +21,9 @@ public class ShoppingCartApp extends JFrame {
         this.setVisible(true);
 
     }
+
+    public void shutDown(){
+        this.dispose();
+        System.exit(0);
+    }
 }

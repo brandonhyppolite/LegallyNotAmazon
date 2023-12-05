@@ -1,2 +1,2 @@
-test;test;test;1;t;16.0;0.0;-16.0;16.0;null;null;null;Seller
-test;test;b;1;t;null;null;null;null;Buyer
+test;test;test;1;test;5.0;4.0;-3.0;7.0;null;null;null;Seller
+buyer;buyer;b;1;buyer;null;null;null;null;Buyer

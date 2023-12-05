@@ -81,4 +81,8 @@ public class ViewManager {
         this.sp.revalidate();
         this.sp.repaint();
     }
+
+    public void closeApp(){
+        this.sp.shutDown();
+    }
 }

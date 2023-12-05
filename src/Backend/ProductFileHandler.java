@@ -38,7 +38,6 @@ public class ProductFileHandler {
                         );
                         product.setDescription(productData[6]);
                         product.setSellerUserName(productData[0]);
-                        user.resetTotalCosts();
                     user.addProductForSale(product);
 
                 } else if(productData.length == 3){

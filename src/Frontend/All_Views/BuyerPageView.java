@@ -505,7 +505,8 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             case "log out":
                 this.userManager.writeUserDataToFile();
                 this.userManager.getProductsManager().saveInventory();
-                this.vm.showEntryView();
+//                this.vm.showEntryView();
+                this.vm.closeApp();
             case "update information":
                 showUpdateInfo();
                 break;

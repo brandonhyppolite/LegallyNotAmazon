@@ -231,7 +231,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                         Integer.parseInt(quantity.getText())
                 );
                 p.setSellerUserName(seller.getUsername());
-                seller.addProductForSale(p);
+                seller.addNewProductForSale(p);
                 userManager.getProductsManager().saveInventory();
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
@@ -432,7 +432,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 this.seller.setSalesData();
                 this.userManager.writeUserDataToFile();
                 this.userManager.getProductsManager().saveInventory();
-                this.vm.showEntryView();
+                this.vm.closeApp();
                 break;
             default:
                 System.out.println("Unknown button was clicked");

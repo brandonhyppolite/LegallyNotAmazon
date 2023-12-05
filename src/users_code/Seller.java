@@ -182,6 +182,11 @@ public class Seller extends User{
      */
     public void addProductForSale(Product p){
         this.productsForSale.add(p);
+    }
+
+
+    public void addNewProductForSale(Product p){
+        this.productsForSale.add(p);
         setTotalAcquiredCosts(getTotalAcquiredCosts() + (p.getInvoicePrice()* p.getQuantity()));
     }
     public void removeProductFromSale(Product p){
