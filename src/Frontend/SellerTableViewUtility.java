@@ -11,14 +11,29 @@ import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+/**
+ * The SellerTableViewUtility class is responsible for creating and managing the seller's table view in the user interface.
+ */
 public class SellerTableViewUtility {
     private Seller seller;
     private UserActionCallBack callback;
+    /**
+     * Constructs a SellerTableViewUtility object with the specified seller and callback.
+     *
+     * @param seller   The seller object.
+     * @param callback The callback for user actions.
+     */
     public SellerTableViewUtility(Seller seller, UserActionCallBack callback) {
         this.seller = seller;
         this.callback = callback;
     }
-
+    /**
+     * Creates a scroll pane with a table view of the products.
+     *
+     * @param products    The list of products.
+     * @param columnNames The column names for the table.
+     * @return The scroll pane with the table view.
+     */
     public JScrollPane createTable(ArrayList<Product> products, String[] columnNames) {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {

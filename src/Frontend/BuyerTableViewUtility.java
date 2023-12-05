@@ -9,15 +9,30 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+
+/**
+ * The BuyerTableViewUtility class is responsible for creating and managing the buyer's table view in the user interface.
+ */
 public class BuyerTableViewUtility {
     private Buyer buyer;
     private UserActionCallBack callBack;
-
+    /**
+     * Constructs a BuyerTableViewUtility object with the specified buyer and callback.
+     *
+     * @param buyer   The buyer object.
+     * @param callBack The callback for user actions.
+     */
     public BuyerTableViewUtility(Buyer buyer, UserActionCallBack callBack){
         this.buyer = buyer;
         this.callBack = callBack;
     }
-
+    /**
+     * Creates a scroll pane with a table view of the products.
+     *
+     * @param products    The list of products.
+     * @param columnNames The column names for the table.
+     * @return The scroll pane with the table view.
+     */
     public JScrollPane createTable(ArrayList<Product> products, String[] columnNames) {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
@@ -128,7 +143,13 @@ public class BuyerTableViewUtility {
         return this.buyer.getShoppingCart().get(row);
     }
 
-
+    /**
+     * Creates a scroll pane with a table view of the products in the checkout view.
+     *
+     * @param products    The list of products.
+     * @param columnNames The column names for the table.
+     * @return The scroll pane with the table view.
+     */
     public JScrollPane createCheckoutTable(ArrayList<Product> products, String[] columnNames) {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
@@ -142,7 +163,6 @@ public class BuyerTableViewUtility {
 
         int numRows = products.size() + 1;
         int numCols = columnNames.length;
-
         String[][] productData = new String[numRows][numCols];
 
         double totalQuantity = 0;
