@@ -197,9 +197,8 @@ public class Seller extends User{
             costs+= (p.getInvoicePrice() * p.getQuantity());
         }
         setCostsOfProductsForSale(costs);
-        if(getRevenues() > 0){
-            setProfits(getRevenues() - getTotalAcquiredCosts());
-        }
+        setProfits(getRevenues() - getTotalAcquiredCosts());
+
 
     }
 }
