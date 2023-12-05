@@ -33,6 +33,7 @@ public class BuyerCheckoutView implements ActionListener {
             mainInfoPanel.setLayout(new BorderLayout());
             mainInfoPanel.add(new JLabel("Enter your card information below or press Autofill"),BorderLayout.NORTH);
             mainInfoPanel.add(drawEnterCardInfoPanel(), BorderLayout.CENTER);
+            mainInfoPanel.add(createGoBackButton(),BorderLayout.SOUTH);
             mainInfoPanel.revalidate();
             mainInfoPanel.repaint();
         });
@@ -91,7 +92,6 @@ public class BuyerCheckoutView implements ActionListener {
 
     private JButton createAutoFillButton(JTextField creditCardAccountField, JTextField creditCardCVVField, JTextField creditCardExpirationField) {
         JButton autoFill = new JButton("Autofill");
-        autoFill.setActionCommand("autofill");
 
         autoFill.addActionListener(new ActionListener() {
             @Override
@@ -104,11 +104,20 @@ public class BuyerCheckoutView implements ActionListener {
         return autoFill;
     }
 
+    private JButton createGoBackButton(){
+        JButton back = new JButton("Go Back");
+        back.setActionCommand("go back");
+        back.addActionListener(this);
+        return back;
+    }
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch(command){
-            case "autofill":
+            case "go back":
+                this.vm.showBuyerHomePage(this.buyer);
+                break;
+            case "pay":
                 break;
         }
     }
