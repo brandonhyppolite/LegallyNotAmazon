@@ -454,13 +454,14 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String ID = enterIDField.getText();
+                String ID = enterIDField.getText().toUpperCase();
                 Product product = userManager.getProductsManager().getProductByID(ID);
                 if(product != null){
                     buyer.addProductToCart(product);
                     String message = "Added to cart: " + product.getName();
                     JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
                     cartButton.setText("Cart: $" + String.format("%.2f",buyer.getTotalOnCart()));
+                    showBuyerCart();
                 }else{
                     String message = "Failed to add to cart! No Product with ID " + ID;
                     JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.ERROR_MESSAGE);
