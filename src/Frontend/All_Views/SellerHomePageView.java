@@ -33,7 +33,6 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     private final ViewManager vm;
     private final UserManager userManager;
     private final Seller seller;
-
     private final SellerTableViewUtility tableViewUtility;
 
     /**

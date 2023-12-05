@@ -7,10 +7,21 @@ import src.users_code.User;
 
 import java.io.*;
 
+/**
+ * This class handles the loading and saving of product data to and from a file.
+ */
 public class ProductFileHandler {
+    /**
+     * The path to the inventory file.
+     */
     private static final String INVENTORY_FILE_PATH = "src/Database/inventory.txt";
 
-
+    /**
+     * Loads product data from the specified file.
+     *
+     * @param userManager The user manager to use for loading products.
+     * @param productsManager The products manager to use for loading products.
+     */
     public static void loadProductFromFile(UserManager userManager, ProductsManager productsManager) {
         try (BufferedReader reader = new BufferedReader(new FileReader(INVENTORY_FILE_PATH))) {
             String line;
@@ -91,6 +102,14 @@ public class ProductFileHandler {
                 description);
         writer.write(line);
     }
+    /**
+     * Writes product data to the specified writer, including the username of the owner and product details.
+     *
+     * @param writer  The writer to use for writing.
+     * @param username The username to associate the product with.
+     * @param product  The product to write.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     private static void writeBuyerProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
         String line = String.format("%s;%s;%s\n",
                 username,
