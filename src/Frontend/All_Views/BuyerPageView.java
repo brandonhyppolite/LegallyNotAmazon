@@ -131,7 +131,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Remove your current product(s) in cart below:");
+            JLabel label = new JLabel("View/Remove your current product(s) in cart by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainInfoPanel.add(label, BorderLayout.NORTH);
             mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));

@@ -100,7 +100,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainDataPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Edit your current product(s) below:");
+            JLabel label = new JLabel("View/Edit your current product(s) by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainDataPanel.add(label, BorderLayout.NORTH);
             mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale(), columnNames));
