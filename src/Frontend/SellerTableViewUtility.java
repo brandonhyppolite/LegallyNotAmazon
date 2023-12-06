@@ -126,6 +126,7 @@ public class SellerTableViewUtility {
                 JMenuItem editInvoicePriceItem = new JMenuItem("Edit Invoice Price");
                 JMenuItem editSellingPriceItem = new JMenuItem("Edit Selling Price");
                 JMenuItem editProductDescription = new JMenuItem("Edit Description");
+                JMenuItem editType = new JMenuItem("Edit Type");
 
                 removeItem.addActionListener(e -> removeProduct(selectedRow));
                 editNameItem.addActionListener(e -> editProductAttribute(selectedRow, "Name"));
@@ -134,7 +135,7 @@ public class SellerTableViewUtility {
                 editInvoicePriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Invoice Price"));
                 editSellingPriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Selling Price"));
                 editProductDescription.addActionListener(e -> showEditProductDescriptionPopup(getProductForRow(selectedRow)));
-
+                editType.addActionListener(e ->editProductAttribute(selectedRow,"Type"));
                 popupMenu.add(removeItem);
                 popupMenu.addSeparator(); // Add separator between remove and edit options
                 popupMenu.add(editNameItem);
@@ -143,6 +144,7 @@ public class SellerTableViewUtility {
                 popupMenu.add(editInvoicePriceItem);
                 popupMenu.add(editSellingPriceItem);
                 popupMenu.add(editProductDescription);
+                popupMenu.add(editType);
             }
 
 
@@ -224,6 +226,24 @@ public class SellerTableViewUtility {
                     int quantityToSubtract = Integer.parseInt(inputValue);
                     product = getProductForRow(selectedRow);
                     this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
+                    break;
+                case "Type":
+                    // Show a JComboBox with predefined choices for the product type
+                    String[] typeChoices = {"Grocery", "Electronic", "Apparel", "Misc"};
+                    JComboBox<String> typeDropdown = new JComboBox<>(typeChoices);
+
+                    int result = JOptionPane.showConfirmDialog(
+                            this.table,
+                            typeDropdown,
+                            "Select Type",
+                            JOptionPane.OK_CANCEL_OPTION,
+                            JOptionPane.PLAIN_MESSAGE
+                    );
+
+                    if (result == JOptionPane.OK_OPTION) {
+                        inputValue = (String) typeDropdown.getSelectedItem();
+                        product.setType(inputValue);
+                    }
                     break;
             }
             this.callBack.refreshTable();
