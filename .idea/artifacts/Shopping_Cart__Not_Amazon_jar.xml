@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Shopping Cart- Not Amazon:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Shopping_Cart__Not_Amazon_jar</output-path>
+    <root id="archive" name="Shopping Cart- Not Amazon.jar">
+      <element id="module-output" name="Shopping Cart- Not Amazon" />
+    </root>
+  </artifact>
+</component>

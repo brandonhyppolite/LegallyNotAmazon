@@ -461,7 +461,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
             case "log out":
                 this.seller.setSalesData();
                 saveAndRefresh();
-                this.vm.closeApp();
+                this.vm.showEntryView();
                 break;
             default:
                 System.out.println("Unknown button was clicked");

@@ -505,15 +505,14 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 break;
             case "log out":
                 saveAndRefresh();
-//                this.vm.showEntryView();
-                this.vm.closeApp();
+                this.vm.showEntryView();
+                break;
             case "update information":
                 showUpdateInfo();
                 break;
             case "go to checkout":
                 showCheckout();
                 break;
-
             case "checkout":
                 this.vm.showBuyerCheckoutView(this.buyer);
                 break;
