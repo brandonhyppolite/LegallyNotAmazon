@@ -61,6 +61,8 @@ public class Seller extends User{
         RoutingNumber = routingNumber;
         AccountNumber = accountNumber;
     }
+
+
     /**
      * Gets the list of products for sale by the seller.
      *
@@ -199,6 +201,24 @@ public class Seller extends User{
 
     }
 
+    public void addQuantityToProduct(Product product, int quantityToAdd) {
+        int currentQuantity = product.getQuantity();
+        int newQuantity = currentQuantity + quantityToAdd;
+        product.setQuantity(newQuantity);
+        double costChange = product.getInvoicePrice() * quantityToAdd;
+        this.totalAcquiredCosts += costChange;
+    }
+
+    public void lowerQuantityOfProduct(Product product, int quantityToSubtract) {
+        int currentQuantity = product.getQuantity();
+        int newQuantity = currentQuantity - quantityToSubtract;
+        if (newQuantity < 0) {
+            newQuantity = 0;
+        }
+        product.setQuantity(newQuantity);
+        double costChange = product.getInvoicePrice() * quantityToSubtract;
+        this.totalAcquiredCosts -= costChange;
+    }
     public void resetTotalCosts(){
         setTotalAcquiredCosts(0);
     }

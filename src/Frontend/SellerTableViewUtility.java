@@ -113,14 +113,16 @@ public class SellerTableViewUtility {
 
                 JMenuItem removeItem = new JMenuItem("Remove Product");
                 JMenuItem editNameItem = new JMenuItem("Edit Name");
-                JMenuItem editQuantityItem = new JMenuItem("Edit Quantity");
+                JMenuItem addQuantityItem = new JMenuItem("Add Quantity");
+                JMenuItem lowerQuantityItem = new JMenuItem("Lower Quantity");
                 JMenuItem editInvoicePriceItem = new JMenuItem("Edit Invoice Price");
                 JMenuItem editSellingPriceItem = new JMenuItem("Edit Selling Price");
                 JMenuItem editProductDescription = new JMenuItem("Edit Description");
 
                 removeItem.addActionListener(e -> removeProduct(selectedRow));
                 editNameItem.addActionListener(e -> editProductAttribute(selectedRow, "Name"));
-                editQuantityItem.addActionListener(e -> editProductAttribute(selectedRow, "Quantity"));
+                addQuantityItem.addActionListener(e -> editProductAttribute(selectedRow, "Add Quantity"));
+                lowerQuantityItem.addActionListener(e -> editProductAttribute(selectedRow, "Lower Quantity"));
                 editInvoicePriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Invoice Price"));
                 editSellingPriceItem.addActionListener(e -> editProductAttribute(selectedRow, "Selling Price"));
                 editProductDescription.addActionListener(e -> showEditProductDescriptionPopup(getProductForRow(selectedRow)));
@@ -128,7 +130,8 @@ public class SellerTableViewUtility {
                 popupMenu.add(removeItem);
                 popupMenu.addSeparator(); // Add separator between remove and edit options
                 popupMenu.add(editNameItem);
-                popupMenu.add(editQuantityItem);
+                popupMenu.add(addQuantityItem);
+                popupMenu.add(lowerQuantityItem);
                 popupMenu.add(editInvoicePriceItem);
                 popupMenu.add(editSellingPriceItem);
                 popupMenu.add(editProductDescription);
@@ -195,7 +198,6 @@ public class SellerTableViewUtility {
                     double costChange = product.getInvoicePrice() * difference;
                     this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + costChange);
                     break;
-
                 case "Invoice Price":
                     double oldPrice = product.getInvoicePrice();
                     product.setInvoicePrice(Double.parseDouble(inputValue));
@@ -204,6 +206,16 @@ public class SellerTableViewUtility {
                     break;
                 case "Selling Price":
                     product.setSellingPrice(Double.parseDouble(inputValue));
+                    break;
+                case "Add Quantity":
+                    int quantityToAdd = Integer.parseInt(inputValue);
+                    product = getProductForRow(selectedRow);
+                    this.seller.addQuantityToProduct(product, quantityToAdd);
+                    break;
+                case "Lower Quantity":
+                    int quantityToSubtract = Integer.parseInt(inputValue);
+                    product = getProductForRow(selectedRow);
+                    this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
                     break;
             }
 
