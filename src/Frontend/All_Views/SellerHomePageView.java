@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -216,6 +217,28 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         JTextField sellingPrice = new JTextField();
         sellingPrice.setPreferredSize(new Dimension(width,height));
 
+        JLabel typeLabel = new JLabel("Type:");
+
+        // Predefined values for the dropdown
+        String[] typeChoices = {"Grocery", "Electronic", "Apparel", "Misc"};
+
+        // Create JComboBox with predefined values
+        JComboBox<String> typeDropdown = new JComboBox<>(typeChoices);
+
+        // Set preferred size
+        typeDropdown.setPreferredSize(new Dimension(width, height));
+
+        // Access the selected value
+        AtomicReference<String> selectedType = new AtomicReference<>((String) typeDropdown.getSelectedItem());
+
+        // Add an ActionListener if you want to perform actions when an item is selected
+        typeDropdown.addActionListener(e -> {
+            selectedType.set((String) typeDropdown.getSelectedItem());
+            // Perform actions based on the selected item
+            System.out.println("Selected: " + selectedType);
+        });
+
+
         JButton addProductButton = new JButton("Add Product");
 
 
@@ -230,8 +253,9 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                         Integer.parseInt(quantity.getText())
                 );
                 p.setSellerUserName(seller.getUsername());
+                p.setType(selectedType.get());
                 seller.addNewProductForSale(p);
-//                userManager.getProductsManager().saveInventory();
+
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 productName.setText("");
@@ -252,6 +276,8 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         panel.add(invoicePrice);
         panel.add(sellingPriceLabel);
         panel.add(sellingPrice);
+        panel.add(typeLabel);
+        panel.add(typeDropdown);
         panel.add(addProductButton);
 
         return panel;
