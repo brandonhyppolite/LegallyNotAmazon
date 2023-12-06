@@ -187,68 +187,82 @@ public class SellerTableViewUtility {
     }
 
     private void editProductAttribute(int selectedRow, String attributeName) {
-        String inputValue = JOptionPane.showInputDialog("Enter new " + attributeName + ":");
-        if (inputValue != null && !inputValue.isEmpty()) {
-            Product product = getProductForRow(selectedRow);
+        Product product = getProductForRow(selectedRow);
 
-            switch (attributeName) {
-                case "Name":
-                    product.setName(inputValue);
-                    break;
-                case "Quantity":
-                    int oldQuantity = product.getQuantity();
-                    int newQuantity = Integer.parseInt(inputValue);
+        switch (attributeName) {
+            case "Name":
+            case "Quantity":
+            case "Invoice Price":
+            case "Selling Price":
+            case "Add Quantity":
+            case "Lower Quantity":
+                // Show the initial input dialog for other cases
+                String inputValue = JOptionPane.showInputDialog("Enter new " + attributeName + ":");
+                if (inputValue != null && !inputValue.isEmpty()) {
+                    handleOtherCases(product, attributeName, inputValue);
+                    this.callBack.refreshTable();
+                }
+                break;
+            case "Type":
+                // Show a JComboBox with predefined choices for the product type
+                String[] typeChoices = {"Grocery", "Electronic", "Apparel", "Misc"};
+                JComboBox<String> typeDropdown = new JComboBox<>(typeChoices);
 
-                    // Update the quantity of the product
-                    product.setQuantity(newQuantity);
+                int result = JOptionPane.showConfirmDialog(
+                        this.table,
+                        typeDropdown,
+                        "Select Type",
+                        JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE
+                );
 
-                    int difference = newQuantity - oldQuantity;
-
-                    // Update totalAcquiredCosts based on the difference in quantity
-                    double costChange = product.getInvoicePrice() * difference;
-                    this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + costChange);
-                    break;
-                case "Invoice Price":
-                    double oldPrice = product.getInvoicePrice();
-                    product.setInvoicePrice(Double.parseDouble(inputValue));
-                    double differencePrice = product.getInvoicePrice() - oldPrice;
-                    this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + (differencePrice * product.getQuantity()));
-                    break;
-                case "Selling Price":
-                    product.setSellingPrice(Double.parseDouble(inputValue));
-                    break;
-                case "Add Quantity":
-                    int quantityToAdd = Integer.parseInt(inputValue);
-                    product = getProductForRow(selectedRow);
-                    this.seller.addQuantityToProduct(product, quantityToAdd);
-                    break;
-                case "Lower Quantity":
-                    int quantityToSubtract = Integer.parseInt(inputValue);
-                    product = getProductForRow(selectedRow);
-                    this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
-                    break;
-                case "Type":
-                    // Show a JComboBox with predefined choices for the product type
-                    String[] typeChoices = {"Grocery", "Electronic", "Apparel", "Misc"};
-                    JComboBox<String> typeDropdown = new JComboBox<>(typeChoices);
-
-                    int result = JOptionPane.showConfirmDialog(
-                            this.table,
-                            typeDropdown,
-                            "Select Type",
-                            JOptionPane.OK_CANCEL_OPTION,
-                            JOptionPane.PLAIN_MESSAGE
-                    );
-
-                    if (result == JOptionPane.OK_OPTION) {
-                        inputValue = (String) typeDropdown.getSelectedItem();
-                        product.setType(inputValue);
-                    }
-                    break;
-            }
-            this.callBack.refreshTable();
+                if (result == JOptionPane.OK_OPTION) {
+                    String selectedType = (String) typeDropdown.getSelectedItem();
+                    product.setType(selectedType);
+                    this.callBack.refreshTable();
+                }
+                break;
         }
     }
+
+    private void handleOtherCases(Product product, String attributeName, String inputValue) {
+        switch (attributeName) {
+            case "Name":
+                product.setName(inputValue);
+                break;
+            case "Quantity":
+                int oldQuantity = product.getQuantity();
+                int newQuantity = Integer.parseInt(inputValue);
+
+                // Update the quantity of the product
+                product.setQuantity(newQuantity);
+
+                int difference = newQuantity - oldQuantity;
+
+                // Update totalAcquiredCosts based on the difference in quantity
+                double costChange = product.getInvoicePrice() * difference;
+                this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + costChange);
+                break;
+            case "Invoice Price":
+                double oldPrice = product.getInvoicePrice();
+                product.setInvoicePrice(Double.parseDouble(inputValue));
+                double differencePrice = product.getInvoicePrice() - oldPrice;
+                this.seller.setTotalAcquiredCosts(this.seller.getTotalAcquiredCosts() + (differencePrice * product.getQuantity()));
+                break;
+            case "Selling Price":
+                product.setSellingPrice(Double.parseDouble(inputValue));
+                break;
+            case "Add Quantity":
+                int quantityToAdd = Integer.parseInt(inputValue);
+                this.seller.addQuantityToProduct(product, quantityToAdd);
+                break;
+            case "Lower Quantity":
+                int quantityToSubtract = Integer.parseInt(inputValue);
+                this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
+                break;
+        }
+    }
+
     private Product getProductForRow(int row) {
         return this.seller.getProductsForSale().get(row);
     }
