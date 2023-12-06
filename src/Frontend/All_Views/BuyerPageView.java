@@ -503,8 +503,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 showBuyerCart();
                 break;
             case "log out":
-                this.userManager.writeUserDataToFile();
-                this.userManager.getProductsManager().saveInventory();
+                saveAndRefresh();
 //                this.vm.showEntryView();
                 this.vm.closeApp();
             case "update information":
@@ -524,11 +523,16 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
     @Override
     public void saveAndRefresh() {
+        this.userManager.writeUserDataToFile();
         this.userManager.getProductsManager().saveInventory();
-        showBuyerCart();
     }
 
     @Override
     public void saveAndRefresh(String ID) {
+    }
+
+    @Override
+    public void refreshTable() {
+        showBuyerCart();
     }
 }

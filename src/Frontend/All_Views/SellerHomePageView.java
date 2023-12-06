@@ -46,7 +46,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         this.userManager = UserManager.getInstance();
         this.seller = seller;
         this.seller.setSalesData();
-        this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
+        this.tableViewUtility = new SellerTableViewUtility(this.seller, this);
 
 
         logOutButton.setActionCommand("log out");
@@ -103,7 +103,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
             JLabel label = new JLabel("View/Edit your current product(s) by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainDataPanel.add(label, BorderLayout.NORTH);
-            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale(), columnNames));
+            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale()));
             mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
             mainDataPanel.revalidate();
             mainDataPanel.repaint();
@@ -176,7 +176,6 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 if (p.getID().equals(productID)) {
                     iterator.remove();
                     JOptionPane.showMessageDialog(mainDataPanel, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    saveAndRefresh();
                     return;
                 }
             }
@@ -232,7 +231,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 );
                 p.setSellerUserName(seller.getUsername());
                 seller.addNewProductForSale(p);
-                userManager.getProductsManager().saveInventory();
+//                userManager.getProductsManager().saveInventory();
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 productName.setText("");
@@ -401,14 +400,19 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     }
     @Override
     public void saveAndRefresh() {
+        this.userManager.writeUserDataToFile();
         userManager.getProductsManager().saveInventory();
-        showSellerProducts();
     }
 
     @Override
     public void saveAndRefresh(String ID) {
         userManager.getProductsManager().removeProductsFromOtherBuyers(ID);
         userManager.getProductsManager().saveInventory();
+        showSellerProducts();
+    }
+
+    @Override
+    public void refreshTable() {
         showSellerProducts();
     }
 
@@ -430,8 +434,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 break;
             case "log out":
                 this.seller.setSalesData();
-                this.userManager.writeUserDataToFile();
-                this.userManager.getProductsManager().saveInventory();
+                saveAndRefresh();
                 this.vm.closeApp();
                 break;
             default:
