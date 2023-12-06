@@ -2,9 +2,9 @@
 COP 4331-002
 
 <b>Contributers</b> 
-Atheek Ashkar Z23414318
-Manny Jimenez Z23517458
-Brandon Hype Z
+<br>Atheek Ashkar Z23414318
+<br>Manny Jimenez Z23517458
+<br>Brandon Hype Z
 
  This is our Class Project For OOJ This is a Java Application that utilizes Swing Elements for a shoping cart we called Legally Not Amazon
 
