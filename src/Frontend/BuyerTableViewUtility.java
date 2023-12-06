@@ -16,6 +16,7 @@ import java.util.ArrayList;
 public class BuyerTableViewUtility {
     private Buyer buyer;
     private UserActionCallBack callBack;
+    String[] columnNames;
     /**
      * Constructs a BuyerTableViewUtility object with the specified buyer and callback.
      *
@@ -25,15 +26,15 @@ public class BuyerTableViewUtility {
     public BuyerTableViewUtility(Buyer buyer, UserActionCallBack callBack){
         this.buyer = buyer;
         this.callBack = callBack;
+        this.columnNames = new String[]{"Name", "ID", "Quantity","Price ($)", "Type"};
     }
     /**
      * Creates a scroll pane with a table view of the products.
      *
      * @param products    The list of products.
-     * @param columnNames The column names for the table.
      * @return The scroll pane with the table view.
      */
-    public JScrollPane createTable(ArrayList<Product> products, String[] columnNames) {
+    public JScrollPane createTable(ArrayList<Product> products) {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
             // Handle the case where there are no products
@@ -69,6 +70,9 @@ public class BuyerTableViewUtility {
                     case 3:
                         productData[i][j] = String.format("%.2f",product.getSellingPrice());
                         totalPrice += product.getSellingPrice() * product.getQuantity();
+                        break;
+                    case 4:
+                        productData[i][j] = product.getType();
                         break;
                 }
             }

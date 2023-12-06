@@ -126,7 +126,6 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
      * Shows the buyer's cart panel.
      */
     private void showBuyerCart(){
-        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)"};
         this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
@@ -134,7 +133,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             JLabel label = new JLabel("View/Remove your current product(s) in cart by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainInfoPanel.add(label, BorderLayout.NORTH);
-            mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));
+            mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart()));
             mainInfoPanel.add(drawAddProductPanel(),BorderLayout.SOUTH);
             mainInfoPanel.revalidate();
             mainInfoPanel.repaint();
@@ -286,12 +285,14 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         JLabel priceLabel = new JLabel("<html><b>Price:</b> $" + formattedPrice + "</html>");
         JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + quantity+ "</html>");
         JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
+        JLabel typeLabel = new JLabel("<html><b>Type:</b> " + product.getType() + "</html>");
         JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
 
         moreDetails.add(nameLabel);
         moreDetails.add(priceLabel);
         moreDetails.add(stockLabel);
         moreDetails.add(descriptionLabel);
+        moreDetails.add(typeLabel);
         moreDetails.add(sellerLabel);
         moreDetails.add(addToCart);
         moreDetails.add(goBack);

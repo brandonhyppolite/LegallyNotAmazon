@@ -27,7 +27,7 @@ public class ProductFileHandler {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
-                if (productData.length == 7) {
+                if (productData.length == 8) {
                     Seller user = (Seller) userManager.getUserByUsername(productData[0]);
                         Product product = new Product(
                                 productData[1],     // Product Name
@@ -38,6 +38,7 @@ public class ProductFileHandler {
                         );
                         product.setDescription(productData[6]);
                         product.setSellerUserName(productData[0]);
+                        product.setType(productData[7]);
                     user.addProductForSale(product);
 
                 } else if(productData.length == 3){
@@ -92,14 +93,15 @@ public class ProductFileHandler {
         }else{
             description = product.getDescription();
         }
-        String line = String.format("%s;%s;%s;%s;%s;%s;%s\n",
+        String line = String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
                 username,
                 product.getName(),
                 product.getID(),
                 product.getInvoicePrice(),
                 product.getSellingPrice(),
                 product.getQuantity(),
-                description);
+                description,
+                product.getType());
         writer.write(line);
     }
     /**

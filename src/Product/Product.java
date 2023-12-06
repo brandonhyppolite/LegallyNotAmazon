@@ -29,6 +29,7 @@ public class Product {
         this.ID = original.getID();
         this.sellerUserName = original.getSellerUserName();
         this.description = original.getDescription();
+        this.type = original.getType();
     }
 
     /**
