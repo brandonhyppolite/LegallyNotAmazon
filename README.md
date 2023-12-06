@@ -15,19 +15,25 @@ Brandon Hype Z
 
 <b>Functions</b>
  Here is our version of a minimal functional specification. We have adapted it, extended it, and made it our own. We are using the pc platform and going to use Swing Java Library
-Buyer
-1.A customer logs in with a username and password and a window (frame) opens where he can browse through a list of available products that includes the product name, price, and available quantity.
-2.From this window the customer can select products and add them to the shopping cart or they can click on a product and get the full product description, name, pricing, availability (quantity available), and seller name in a pop-up window.
-3.The customer can add the product to the shopping cart (quantity), depending on availability and remove products when in the shopping cart.
-4.The shopping cart total amount is kept current on the main product browse window next to the cart button. (TOTAL PRICE)
-5.The customer can go to checkout at any time. On the checkout window, the shopping cart can be viewable to check if the information is correct.
-6.At checkout the customer pays for the goods by supplying the credit card or if there is previous card info, the customer can continue to checkout. The application does not arrange for shipping.
-7. Customers can use a search bar to find products instead of using the scroll bar on the home page and look up via name or type (catagory).
-Seller
-1. When the seller logs in, a window opens where the current state of the existing inventory is shown, and is editable specifying product name, invoice price, sell price, the available quantity, and description.
-2. The seller can update the inventory by adding new products - specifying product name, invoice price, sell price, type and by updating the available quantity.
-3. The internal product representation includes ID, type, quantity, invoice price, and selling price. The application must keep track of all costs, revenues and profits. The seller can access this information from the application UI.
-4. Sellers have a section for account information to make sure the profits are going to the right place.
+
+<b>Buyer</b>
+<ol>
+<li>A customer logs in with a username and password and a window (frame) opens where he can browse through a list of available products that includes the product name, price, and available quantity.</li>
+<li>From this window the customer can select products and add them to the shopping cart or they can click on a product and get the full product description, name, pricing, availability (quantity available), and seller name in a pop-up window. </li>
+<li>The customer can add the product to the shopping cart (quantity), depending on availability and remove products when in the shopping cart.</li>
+<li>The shopping cart total amount is kept current on the main product browse window next to the cart button. (TOTAL PRICE) </li>
+<li>The customer can go to checkout at any time. On the checkout window, the shopping cart can be viewable to check if the information is correct. </li>
+<li>At checkout the customer pays for the goods by supplying the credit card or if there is previous card info, the customer can continue to checkout. The application does not arrange for shipping. </li>
+<li>Customers can use a search bar to find products instead of using the scroll bar on the home page and look up via name or type (catagory). </li>
+</ol>
+
+<b>Seller</b>
+<ol>
+<li>When the seller logs in, a window opens where the current state of the existing inventory is shown, and is editable specifying product name, invoice price, sell price, the available quantity, and description. </li>
+<li>The seller can update the inventory by adding new products - specifying product name, invoice price, sell price, type and by updating the available quantity. </li>
+<li>The internal product representation includes ID, type, quantity, invoice price, and selling price. The application must keep track of all costs, revenues and profits. The seller can access this information from the application UI.</li>
+<li>Sellers have a section for account information to make sure the profits are going to the right place. </li>
+</ol>
 
 
 
