@@ -1,5 +1,5 @@
 # LegallyNotAmazon 
-COP 4331-002
+COP 4331-002 Project
 
 <b>Contributers</b> 
 <br>Atheek Ashkar Z23414318
