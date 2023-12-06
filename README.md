@@ -14,7 +14,7 @@ Brandon Hype Z
 3.Click Run 
 
 <b>Functions</b>
- Here is our version of a minimal functional specification. We have adapted it, extended it, and made it our own. We are using the pc platform and going to use Swing Java Library
+ <br>Here is our version of a minimal functional specification. We have adapted it, extended it, and made it our own. We are using the pc platform and going to use Swing Java Library
 
 <b>Buyer</b>
 <ol>
