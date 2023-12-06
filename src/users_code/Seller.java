@@ -35,6 +35,11 @@ public class Seller extends User{
         this.totalAcquiredCosts = 0.00;
     }
 
+    @Override
+    public void clearProducts() {
+        this.productsForSale.clear();
+    }
+
     /**
      * Constructor for creating a new `Seller` object with additional information.
      *

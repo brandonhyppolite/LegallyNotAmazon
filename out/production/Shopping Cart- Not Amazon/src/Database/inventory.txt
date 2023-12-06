@@ -1,1 +1,1 @@
-s;hi;FDD8;2.0;4.0;5;No Description set;Apparel
+test;new product;RO8N;2.0;4.0;4;No Description set;Electronic

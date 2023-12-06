@@ -67,6 +67,7 @@ public class UserManager {
      * Reads user data from the specified file and adds valid users to the user list.
      */
     public void readUserDataFromFile() {
+        clearUserDatabase();
         try (BufferedReader reader = new BufferedReader(new FileReader(USER_DATA_FILE))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -80,6 +81,10 @@ public class UserManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void clearUserDatabase(){
+        this.users.clear();
     }
 
     private User getUser(String[] userData){

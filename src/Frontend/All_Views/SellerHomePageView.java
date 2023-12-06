@@ -427,7 +427,10 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     @Override
     public void saveAndRefresh() {
         this.userManager.writeUserDataToFile();
-        userManager.getProductsManager().saveInventory();
+        this.userManager.getProductsManager().saveInventory();
+        this.userManager.readUserDataFromFile();
+        this.userManager.getProductsManager().loadInventory();
+
     }
 
     @Override

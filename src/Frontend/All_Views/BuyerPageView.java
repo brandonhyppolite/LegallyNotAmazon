@@ -479,7 +479,7 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     private JPanel drawCheckoutPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
-        JButton checkout = new JButton("Checkout");
+        JButton checkout = new JButton("Finish Checkout");
         checkout.setActionCommand("checkout");
         checkout.addActionListener(this);
 
@@ -525,6 +525,8 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     public void saveAndRefresh() {
         this.userManager.writeUserDataToFile();
         this.userManager.getProductsManager().saveInventory();
+        this.userManager.readUserDataFromFile();
+        this.userManager.getProductsManager().loadInventory();
     }
 
     @Override

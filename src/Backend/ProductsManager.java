@@ -31,6 +31,7 @@ public class ProductsManager {
      * Loads inventory data from the specified file and adds products to users.
      */
     public void loadInventory() {
+        clearUsersProductDatabase();
         ProductFileHandler.loadProductFromFile(this.userManager, this);
     }
 
@@ -40,6 +41,12 @@ public class ProductsManager {
      */
     public void saveInventory() {
         ProductFileHandler.writeInventoryToFile(this.userManager);
+    }
+
+    private void clearUsersProductDatabase(){
+        for(User u: this.userManager.getUsers()){
+            u.clearProducts();
+        }
     }
 
     /**

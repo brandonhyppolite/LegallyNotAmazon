@@ -26,6 +26,11 @@ public class Buyer extends User {
         this.card = new CreditCard();
     }
 
+    @Override
+    public void clearProducts() {
+        this.shoppingCart.clear();
+    }
+
     /**
      * Constructor for creating a new `Buyer` object with additional information.
      *
