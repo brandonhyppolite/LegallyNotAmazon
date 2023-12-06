@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 /**
@@ -33,7 +34,6 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     private final ViewManager vm;
     private final UserManager userManager;
     private final Seller seller;
-
     private final SellerTableViewUtility tableViewUtility;
 
     /**
@@ -47,7 +47,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         this.userManager = UserManager.getInstance();
         this.seller = seller;
         this.seller.setSalesData();
-        this.tableViewUtility = new SellerTableViewUtility(this.seller,this);
+        this.tableViewUtility = new SellerTableViewUtility(this.seller, this);
 
 
         logOutButton.setActionCommand("log out");
@@ -101,10 +101,10 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainDataPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Edit your current product(s) below:");
+            JLabel label = new JLabel("View/Edit your current product(s) by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainDataPanel.add(label, BorderLayout.NORTH);
-            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale(), columnNames));
+            mainDataPanel.add(tableViewUtility.createTable(this.seller.getProductsForSale()));
             mainDataPanel.add(drawProductRemoval(), BorderLayout.SOUTH);
             mainDataPanel.revalidate();
             mainDataPanel.repaint();
@@ -177,7 +177,6 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 if (p.getID().equals(productID)) {
                     iterator.remove();
                     JOptionPane.showMessageDialog(mainDataPanel, "Product removed successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    saveAndRefresh();
                     return;
                 }
             }
@@ -218,6 +217,28 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         JTextField sellingPrice = new JTextField();
         sellingPrice.setPreferredSize(new Dimension(width,height));
 
+        JLabel typeLabel = new JLabel("Type:");
+
+        // Predefined values for the dropdown
+        String[] typeChoices = {"Grocery", "Electronic", "Apparel", "Misc"};
+
+        // Create JComboBox with predefined values
+        JComboBox<String> typeDropdown = new JComboBox<>(typeChoices);
+
+        // Set preferred size
+        typeDropdown.setPreferredSize(new Dimension(width, height));
+
+        // Access the selected value
+        AtomicReference<String> selectedType = new AtomicReference<>((String) typeDropdown.getSelectedItem());
+
+        // Add an ActionListener if you want to perform actions when an item is selected
+        typeDropdown.addActionListener(e -> {
+            selectedType.set((String) typeDropdown.getSelectedItem());
+            // Perform actions based on the selected item
+            System.out.println("Selected: " + selectedType);
+        });
+
+
         JButton addProductButton = new JButton("Add Product");
 
 
@@ -232,8 +253,9 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                         Integer.parseInt(quantity.getText())
                 );
                 p.setSellerUserName(seller.getUsername());
-                seller.getProductsForSale().add(p);
-                userManager.getProductsManager().saveInventory();
+                p.setType(selectedType.get());
+                seller.addNewProductForSale(p);
+
 
                 JOptionPane.showMessageDialog(mainDataPanel, "Product added successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
                 productName.setText("");
@@ -254,6 +276,8 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         panel.add(invoicePrice);
         panel.add(sellingPriceLabel);
         panel.add(sellingPrice);
+        panel.add(typeLabel);
+        panel.add(typeDropdown);
         panel.add(addProductButton);
 
         return panel;
@@ -268,7 +292,11 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs: $" + String.format("%.2f",this.seller.getCosts()));
+        JLabel totalCosts = new JLabel("Total Costs of Acquired Products: $" + String.format("%.2f",this.seller.getTotalAcquiredCosts()));
+        totalCosts.setHorizontalAlignment(JLabel.CENTER);
+        totalCosts.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
+
+        JLabel costs = new JLabel("Costs of goods currently for sale: $" + String.format("%.2f",this.seller.getCostsOfProductsForSale()));
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
@@ -280,6 +308,7 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
         profits.setHorizontalAlignment(JLabel.CENTER);
         profits.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
+        panel.add(totalCosts);
         panel.add(costs);
         panel.add(revenue);
         panel.add(profits);
@@ -397,7 +426,19 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
     }
     @Override
     public void saveAndRefresh() {
+        this.userManager.writeUserDataToFile();
         userManager.getProductsManager().saveInventory();
+    }
+
+    @Override
+    public void saveAndRefresh(String ID) {
+        userManager.getProductsManager().removeProductsFromOtherBuyers(ID);
+        userManager.getProductsManager().saveInventory();
+        showSellerProducts();
+    }
+
+    @Override
+    public void refreshTable() {
         showSellerProducts();
     }
 
@@ -419,9 +460,8 @@ public class SellerHomePageView implements ActionListener,UserActionCallBack {
                 break;
             case "log out":
                 this.seller.setSalesData();
-                this.userManager.writeUserDataToFile();
-                this.userManager.getProductsManager().saveInventory();
-                this.vm.showEntryView();
+                saveAndRefresh();
+                this.vm.closeApp();
                 break;
             default:
                 System.out.println("Unknown button was clicked");

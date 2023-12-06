@@ -2,9 +2,14 @@ package src.Frontend;
 
 import javax.swing.*;
 
+/**
+ * The `ShoppingCartApp` class represents the main application window for the shopping cart app.
+ */
 public class ShoppingCartApp extends JFrame {
     private ViewManager viewManager;
-
+    /**
+     * Constructs a `ShoppingCartApp` object.
+     */
     public ShoppingCartApp() {
         this.setTitle("Not Amazon");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -15,5 +20,10 @@ public class ShoppingCartApp extends JFrame {
         this.viewManager.showEntryView();
         this.setVisible(true);
 
+    }
+
+    public void shutDown(){
+        this.dispose();
+        System.exit(0);
     }
 }

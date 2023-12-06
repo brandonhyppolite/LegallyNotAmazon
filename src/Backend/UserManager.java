@@ -11,9 +11,21 @@ import java.util.ArrayList;
  * The `UserManager` class manages user-related operations such as user creation, login, and data persistence.
  */
 public class UserManager {
+    /**
+     * The list of users managed by the `UserManager`.
+     */
     private final ArrayList<User> users;
+    /**
+     * The singleton instance of the `UserManager`.
+     */
     private static UserManager instance;
+    /**
+     * The file path for storing user data.
+     */
     private static final String USER_DATA_FILE = "src/Database/users.txt";
+    /**
+     * The `ProductsManager` associated with this `UserManager`.
+     */
     private final ProductsManager productsManager;
 
     /**
@@ -94,10 +106,11 @@ public class UserManager {
             double costs = Double.parseDouble(userData[5]);
             double revenues = Double.parseDouble(userData[6]);
             double profits = Double.parseDouble(userData[7]);
-            String bankName = userData[8];
-            String accountNumber = userData[9];
-            String routingNumber = userData[10];
-            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits,bankName,accountNumber,routingNumber);
+            double totalCosts = Double.parseDouble(userData[8]);
+            String bankName = userData[9];
+            String accountNumber = userData[10];
+            String routingNumber = userData[11];
+            user = new Seller(firstName,lastName,username,password,email,costs,revenues,profits,totalCosts,bankName,accountNumber,routingNumber);
         }
         return user;
     }
@@ -111,6 +124,7 @@ public class UserManager {
      * @param password    The password of the user.
      * @param email       The email of the user.
      * @param accountType The type of the user account (Buyer or Seller).
+     * @return True if the user is created successfully, false otherwise.
      */
     public boolean createNewUser(String firstName, String lastName, String username, String password,
                               String email, String accountType) {
@@ -134,7 +148,12 @@ public class UserManager {
         return false;
 
     }
-
+    /**
+     * Checks if a username is already taken.
+     *
+     * @param username The username to check.
+     * @return True if the username is already taken, false otherwise.
+     */
     public boolean isUserNameTaken(String username){
         for(User u: this.users){
             if(u.getUsername().equals(username)){
@@ -225,9 +244,9 @@ public class UserManager {
                 } else if (user instanceof Seller) {
                     String userData = user.getFirstName() + ";" + user.getLastName() + ";"
                             + user.getUsername() + ";" + user.getPassword() + ";"
-                            + user.getEmail() + ";" + ((Seller) user).getCosts() + ";" + ((Seller) user).getRevenues() + ";"
+                            + user.getEmail() + ";" + ((Seller) user).getCostsOfProductsForSale() + ";" + ((Seller) user).getRevenues() + ";"
                     + ((Seller) user).getProfits()
-                            + ";" + ((Seller) user).getBankName()+ ";"
+                            + ";" +((Seller) user).getTotalAcquiredCosts() +";"+ ((Seller) user).getBankName()+ ";"
                             + ((Seller) user).getAccountNumber()+ ";" + ((Seller) user).getRoutingNumber() +
                             ";" +"Seller";
                     writer.write(userData);
@@ -238,7 +257,13 @@ public class UserManager {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Updates the account information of a buyer.
+     *
+     * @param buyer    The buyer whose account information to update.
+     * @param context  The context of the account information to update.
+     * @param newValue The new value to set for the account information.
+     */
     public void updateBuyerAccountInformation(Buyer buyer, String context, String newValue) {
         switch (context) {
             case "username":
@@ -267,7 +292,13 @@ public class UserManager {
                 break;
         }
     }
-
+    /**
+     * Gets the account information of a buyer.
+     *
+     * @param buyer   The buyer whose account information to retrieve.
+     * @param context The context of the account information to retrieve.
+     * @return The account information of the buyer in the specified context.
+     */
     public String getBuyerAccountInformation(Buyer buyer, String context) {
         switch (context) {
             case "username":
@@ -289,11 +320,24 @@ public class UserManager {
                 return null;
         }
     }
-
+    /**
+     * Updates the account information of a seller.
+     *
+     * @param seller   The seller whose account information to update.
+     * @param context  The context of the account information to update.
+     * @param newValue The new value to set for the account information.
+     */
     public void updateSellerAccountInformation(Seller seller, String context, String newValue){
         switch (context) {
             case "username":
-                seller.setUsername(newValue);
+                String oldName = seller.getUsername();
+                try {
+                    seller.setUsername(newValue);
+                    getProductsManager().updateProductSellerUsernameInBuyers(oldName, seller.getUsername());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                     seller.setUsername(oldName);
+                }
                 break;
             case "password":
                 seller.setPassword(newValue);
@@ -315,7 +359,13 @@ public class UserManager {
                 break;
         }
     }
-
+    /**
+     * Gets the account information of a seller.
+     *
+     * @param seller  The seller whose account information to retrieve.
+     * @param context The context of the account information to retrieve.
+     * @return The account information of the seller in the specified context.
+     */
     public String getSellerAccountInformation(Seller seller, String context) {
         switch (context) {
             case "username":

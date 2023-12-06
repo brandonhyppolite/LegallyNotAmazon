@@ -3,7 +3,6 @@ package src.Frontend;
 import src.Backend.UserManager;
 import src.Product.Product;
 import src.users_code.Seller;
-import src.users_code.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,10 +14,18 @@ import java.util.Iterator;
 import java.util.Locale;
 
 public class SellerViewDrawer {
-
+    /**
+     * The `SellerViewDrawer` class handles the display and management of the seller's view in the user interface.
+     */
     private final Seller seller;
     private final JPanel mainDataPanel;
     private final UserManager userManager;
+    /**
+     * Constructs a `SellerViewDrawer` object with the specified seller and main data panel.
+     *
+     * @param seller        The seller object.
+     * @param mainDataPanel The main data panel.
+     */
     public SellerViewDrawer(Seller seller, JPanel mainDataPanel){
         this.seller = seller;
         this.mainDataPanel = mainDataPanel;
@@ -63,7 +70,13 @@ public class SellerViewDrawer {
 
         return new JScrollPane(table);
     }
-
+    /**
+     * Creates a JTable for the seller's product data.
+     *
+     * @param productData  The product data.
+     * @param columnNames  The column names.
+     * @return The JTable.
+     */
     private JTable createSellerTable(String[][] productData, String[] columnNames) {
         DefaultTableModel tableModel = new DefaultTableModel(productData, columnNames) {
             @Override
@@ -92,7 +105,13 @@ public class SellerViewDrawer {
         });
         return table;
     }
-
+    /**
+     * Shows the popup menu for the selected row in the product table.
+     *
+     * @param table The JTable.
+     * @param x     The x-coordinate of the mouse click.
+     * @param y     The y-coordinate of the mouse click.
+     */
     private void showPopupMenu(JTable table, int x, int y) {
         int selectedRow = table.getSelectedRow();
         if (selectedRow != -1) {
@@ -123,13 +142,22 @@ public class SellerViewDrawer {
             popupMenu.show(table, x, y);
         }
     }
-
+    /**
+     * Removes the selected product from the seller's products.
+     *
+     * @param selectedRow The selected row in the product table.
+     */
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
         seller.getProductsForSale().remove(product);
         saveAndRefresh();
     }
-
+    /**
+     * Edits the specified attribute of the product at the selected row in the product table.
+     *
+     * @param selectedRow   The selected row in the product table.
+     * @param attributeName The name of the attribute to edit.
+     */
     private void editProductAttribute(int selectedRow, String attributeName) {
         String inputValue = JOptionPane.showInputDialog("Enter new " + attributeName + ":");
         if (inputValue != null && !inputValue.isEmpty()) {
@@ -153,7 +181,6 @@ public class SellerViewDrawer {
             saveAndRefresh();
         }
     }
-
 
 
     /**
@@ -232,7 +259,6 @@ public class SellerViewDrawer {
         JButton addProductButton = new JButton("Add Product");
 
 
-
         addProductButton.addActionListener(e -> {
             try {
                 // Create a new Product using the values from text fields
@@ -269,7 +295,11 @@ public class SellerViewDrawer {
         return panel;
     }
 
-
+    /**
+     * Shows a popup dialog for editing the product description.
+     *
+     * @param product The product to edit the description for.
+     */
     private void showEditProductDescriptionPopup(Product product) {
         // Create a text area for user input
         JTextArea textArea = new JTextArea();
@@ -306,7 +336,7 @@ public class SellerViewDrawer {
         this.seller.setSalesData();
         JPanel panel = new JPanel(new GridLayout(0, 1));
         int gap = 25;
-        JLabel costs = new JLabel("Costs: $" + this.seller.getCosts());
+        JLabel costs = new JLabel("Costs: $" + this.seller.getCostsOfProductsForSale());
         costs.setHorizontalAlignment(JLabel.CENTER);
         costs.setBorder(BorderFactory.createEmptyBorder(gap, 0, gap, 0)); // Add vertical gap
 
@@ -324,7 +354,9 @@ public class SellerViewDrawer {
 
         return panel;
     }
-
+    /**
+     * Saves changes and refreshes the view.
+     */
     private void saveAndRefresh() {
         userManager.getProductsManager().saveInventory();
         drawProductTable();

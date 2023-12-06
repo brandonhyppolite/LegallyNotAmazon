@@ -13,9 +13,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 
+/**
+ * The BuyerPageView class represents the view for the buyer's page.
+ */
 public class BuyerPageView implements ActionListener, UserActionCallBack {
     private JPanel buyerPageMainPanel;
     private JLabel welcomeLabel;
@@ -35,6 +37,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     private final UserManager userManager;
 
     private final BuyerTableViewUtility tableViewUtility;
+    /**
+     * Constructs a BuyerPageView object with the specified ViewManager and Buyer.
+     *
+     * @param vm    The ViewManager object.
+     * @param buyer The Buyer object.
+     */
     public BuyerPageView(ViewManager vm, Buyer buyer){
         this.userManager = UserManager.getInstance();
         this.vm = vm;
@@ -66,12 +74,18 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         setUpMainView();
 
     }
-
+    /**
+     * Gets the buyer page main panel.
+     *
+     * @return The buyer page main panel.
+     */
     public JPanel getBuyerPageMainPanel(){
         return buyerPageMainPanel;
     }
 
-
+    /**
+     * Sets up the main view.
+     */
     private void setUpMainView() {
         welcomeLabel.setText("Welcome, " + buyer.getUsername() + "!");
         showProductsForSale("");
@@ -79,6 +93,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
     }
 
     //-------- START FOR METHODS FOR DISPLAYING THE PANELS ------------------------------------------------
+    /**
+     * Shows the products for sale panel.
+     *
+     * @param field The search field.
+     */
     private void showProductsForSale(String field){
         ArrayList<Product> productsForSale;
         if(field.isEmpty()){
@@ -103,22 +122,29 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         });
     }
 
+    /**
+     * Shows the buyer's cart panel.
+     */
     private void showBuyerCart(){
-        String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)"};
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
-            JLabel label = new JLabel("View/Remove your current product(s) in cart below:");
+            JLabel label = new JLabel("View/Remove your current product(s) in cart by right-clicking below:");
             label.setHorizontalAlignment(JLabel.CENTER);
             mainInfoPanel.add(label, BorderLayout.NORTH);
-            mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart(),columnNames));
+            mainInfoPanel.add(tableViewUtility.createTable(this.buyer.getShoppingCart()));
+            mainInfoPanel.add(drawAddProductPanel(),BorderLayout.SOUTH);
             mainInfoPanel.revalidate();
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Shows the checkout panel.
+     */
     private void showCheckout(){
         String[] columnNames = new String[]{"Name", "ID", "Quantity", "Price ($)", "Seller"};
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
@@ -131,8 +157,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Shows the update information panel.
+     */
     private void showUpdateInfo(){
+        this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
         SwingUtilities.invokeLater(() -> {
             clearPanels();
             mainInfoPanel.setLayout(new BorderLayout());
@@ -141,6 +170,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
+    /**
+     * Clears the panels.
+     */
     private void clearPanels(){
         mainInfoPanel.removeAll();
     }
@@ -152,6 +184,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
 
     //-------- START FOR METHODS FOR CREATING/DRAWING THE PANELS ---------------------------------------------------
+    /**
+     * Draws the products for sale panel.
+     *
+     * @param products The list of products for sale.
+     * @return The scroll pane with the products for sale.
+     */
     private JScrollPane drawProductsForSale(ArrayList<Product> products){
         JPanel productsPanel = new JPanel();
         productsPanel.setLayout(new GridLayout(0,3,10,10));
@@ -163,7 +201,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         return scrollPane;
     }
-
+    /**
+     * Creates the panel for displaying "no products available" message.
+     *
+     * @return The panel with the "no products available" message.
+     */
     private JPanel createNoProductsPanel(){
         JPanel noProductsPanel = new JPanel(new BorderLayout());
         JLabel noProductsLabel = new JLabel("Product(s) unavailable");
@@ -171,6 +213,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         noProductsPanel.add(noProductsLabel, BorderLayout.CENTER);
         return noProductsPanel;
     }
+    /**
+     * Creates a product box panel for displaying product details.
+     *
+     * @param product The product to display.
+     * @return The product box panel.
+     */
     private JPanel createProductBox(Product product){
         JPanel productBox = new JPanel(new BorderLayout());
         productBox.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -202,7 +250,11 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
         return productBox;
     }
-
+    /**
+     * Shows the detailed information of a product.
+     *
+     * @param product The product to display details of.
+     */
     private void showProductDetails(Product product){
         SwingUtilities.invokeLater(() -> {
             clearPanels();
@@ -211,7 +263,12 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             mainInfoPanel.repaint();
         });
     }
-
+    /**
+     * Creates a panel to display the detailed information of a product.
+     *
+     * @param product The product to display details of.
+     * @return The panel with the product details.
+     */
     private JPanel createProductDetailsPanel(Product product) {
         // Create a panel to hold detailed information
         JPanel moreDetails = new JPanel(new GridLayout(0, 1));
@@ -228,12 +285,14 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         JLabel priceLabel = new JLabel("<html><b>Price:</b> $" + formattedPrice + "</html>");
         JLabel stockLabel = new JLabel("<html><b>In stock:</b> " + quantity+ "</html>");
         JLabel descriptionLabel = new JLabel("<html><b>Description:</b> " + product.getDescription() + "</html>");
+        JLabel typeLabel = new JLabel("<html><b>Type:</b> " + product.getType() + "</html>");
         JLabel sellerLabel = new JLabel("<html><b>Seller:</b> " + product.getSellerUserName() + "</html>");
 
         moreDetails.add(nameLabel);
         moreDetails.add(priceLabel);
         moreDetails.add(stockLabel);
         moreDetails.add(descriptionLabel);
+        moreDetails.add(typeLabel);
         moreDetails.add(sellerLabel);
         moreDetails.add(addToCart);
         moreDetails.add(goBack);
@@ -261,12 +320,15 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
             moreDetails.revalidate();
             String message = "Added to cart: " + product.getName();
             JOptionPane.showMessageDialog(moreDetails, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+            this.cartButton.setText("Cart: $" + String.format("%.2f",this.buyer.getTotalOnCart()));
             showProductsForSale(searchField.getText());
     }
 
-
-
-
+    /**
+     * Draws the update information panel.
+     *
+     * @return The update information panel.
+     */
     private JPanel drawUpdateInformationPanel(){
         JPanel updateInfo = new JPanel();
         updateInfo.setLayout(new FlowLayout()); // Adjust the layout as needed
@@ -383,6 +445,36 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
         return updateInfo;
     }
 
+    private JPanel drawAddProductPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new FlowLayout());
+        JLabel enterIDLabel = new JLabel("Enter a product ID to add to cart:");
+        JTextField enterIDField = new JTextField();
+        enterIDField.setPreferredSize(new Dimension(100,25));
+        JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ID = enterIDField.getText().toUpperCase();
+                Product product = userManager.getProductsManager().getProductByID(ID);
+                if(product != null){
+                    buyer.addProductToCart(product);
+                    String message = "Added to cart: " + product.getName();
+                    JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.INFORMATION_MESSAGE);
+                    cartButton.setText("Cart: $" + String.format("%.2f",buyer.getTotalOnCart()));
+                    showBuyerCart();
+                }else{
+                    String message = "Failed to add to cart! No Product with ID " + ID;
+                    JOptionPane.showMessageDialog(mainInfoPanel, message, "Cart", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        panel.add(enterIDLabel);
+        panel.add(enterIDField);
+        panel.add(addButton);
+        return panel;
+    }
 
     private JPanel drawCheckoutPanel(){
         JPanel panel = new JPanel();
@@ -412,9 +504,9 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
                 showBuyerCart();
                 break;
             case "log out":
-                this.userManager.writeUserDataToFile();
-                this.userManager.getProductsManager().saveInventory();
-                this.vm.showEntryView();
+                saveAndRefresh();
+//                this.vm.showEntryView();
+                this.vm.closeApp();
             case "update information":
                 showUpdateInfo();
                 break;
@@ -432,7 +524,16 @@ public class BuyerPageView implements ActionListener, UserActionCallBack {
 
     @Override
     public void saveAndRefresh() {
+        this.userManager.writeUserDataToFile();
         this.userManager.getProductsManager().saveInventory();
+    }
+
+    @Override
+    public void saveAndRefresh(String ID) {
+    }
+
+    @Override
+    public void refreshTable() {
         showBuyerCart();
     }
 }

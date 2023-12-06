@@ -1,2 +1,2 @@
-atheek99;bor;DXD0;2.0;55.9;20;a really cool product
-buyer;bor;DXD0
+s;hi;FDD8;2.0;4.0;5;No Description set;Apparel
+b;hi;FDD8

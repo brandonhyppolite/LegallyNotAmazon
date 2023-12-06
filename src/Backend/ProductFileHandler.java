@@ -7,16 +7,27 @@ import src.users_code.User;
 
 import java.io.*;
 
+/**
+ * This class handles the loading and saving of product data to and from a file.
+ */
 public class ProductFileHandler {
+    /**
+     * The path to the inventory file.
+     */
     private static final String INVENTORY_FILE_PATH = "src/Database/inventory.txt";
 
-
+    /**
+     * Loads product data from the specified file.
+     *
+     * @param userManager The user manager to use for loading products.
+     * @param productsManager The products manager to use for loading products.
+     */
     public static void loadProductFromFile(UserManager userManager, ProductsManager productsManager) {
         try (BufferedReader reader = new BufferedReader(new FileReader(INVENTORY_FILE_PATH))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] productData = line.split(";");
-                if (productData.length == 7) {
+                if (productData.length == 8) {
                     Seller user = (Seller) userManager.getUserByUsername(productData[0]);
                         Product product = new Product(
                                 productData[1],     // Product Name
@@ -27,6 +38,7 @@ public class ProductFileHandler {
                         );
                         product.setDescription(productData[6]);
                         product.setSellerUserName(productData[0]);
+                        product.setType(productData[7]);
                     user.addProductForSale(product);
 
                 } else if(productData.length == 3){
@@ -81,16 +93,25 @@ public class ProductFileHandler {
         }else{
             description = product.getDescription();
         }
-        String line = String.format("%s;%s;%s;%s;%s;%s;%s\n",
+        String line = String.format("%s;%s;%s;%s;%s;%s;%s;%s\n",
                 username,
                 product.getName(),
                 product.getID(),
                 product.getInvoicePrice(),
                 product.getSellingPrice(),
                 product.getQuantity(),
-                description);
+                description,
+                product.getType());
         writer.write(line);
     }
+    /**
+     * Writes product data to the specified writer, including the username of the owner and product details.
+     *
+     * @param writer  The writer to use for writing.
+     * @param username The username to associate the product with.
+     * @param product  The product to write.
+     * @throws IOException If an I/O error occurs while writing to the file.
+     */
     private static void writeBuyerProductToFile(BufferedWriter writer, String username, Product product) throws IOException {
         String line = String.format("%s;%s;%s\n",
                 username,

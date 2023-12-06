@@ -35,7 +35,6 @@ public class ProductsManager {
     }
 
 
-
     /**
      * Saves inventory data to the specified file based on the products owned by sellers and in buyers' shopping carts.
      */
@@ -43,7 +42,11 @@ public class ProductsManager {
         ProductFileHandler.writeInventoryToFile(this.userManager);
     }
 
-
+    /**
+     * Retrieves all items available for sale from all sellers.
+     *
+     * @return An ArrayList of all items available for sale.
+     */
     public ArrayList<Product> getAllItemsForSale() {
         ArrayList<Product> allItemsForSale = new ArrayList<>();
 
@@ -55,7 +58,12 @@ public class ProductsManager {
 
         return allItemsForSale;
     }
-
+    /**
+     * Retrieves available items that match the given search phrase.
+     *
+     * @param searchPhrase The search phrase to match.
+     * @return An ArrayList of available items that match the search phrase.
+     */
     public ArrayList<Product> getAvailableItems(String searchPhrase) {
         ArrayList<Product> availableItems = new ArrayList<>();
 
@@ -71,7 +79,13 @@ public class ProductsManager {
 
         return availableItems;
     }
-
+    /**
+     * Gets the current quantity of a product in the shopping cart of a buyer.
+     *
+     * @param buyer   The buyer object.
+     * @param product The product object.
+     * @return The current quantity of the product in the buyer's shopping cart.
+     */
     public int getCurrentQuantityOfProductsInCart(Buyer buyer, Product product){
         int count = 0;
         for(Product p: buyer.getShoppingCart()){
@@ -81,7 +95,12 @@ public class ProductsManager {
         }
         return count;
     }
-
+    /**
+     * Retrieves a product by its ID.
+     *
+     * @param id The ID of the product.
+     * @return The product with the specified ID, or null if not found.
+     */
     public Product getProductByID(String id){
         for(User u: this.userManager.getUsers()){
             if(u instanceof Seller){
@@ -94,18 +113,29 @@ public class ProductsManager {
         }
         return null;
     }
-
-    public Seller getSellerFromProductID(String id){
+    /**
+     * Removes products from the shopping carts of all buyers except the one who purchased the product.
+     *
+     * @param ID The ID of the product to be removed.
+     */
+   public void removeProductsFromOtherBuyers(String ID){
         for(User u: this.userManager.getUsers()){
-            if(u instanceof Seller){
-                for(Product p: ((Seller) u).getProductsForSale()){
-                    if(p.getID().equals(id)){
-                        return (Seller) u;
-                    }
-                }
+            if(u instanceof Buyer){
+                ((Buyer) u).getShoppingCart().removeIf(p -> p.getID().equals(ID));
             }
         }
-        return null;
-    }
+   }
+
+   public void updateProductSellerUsernameInBuyers(String old,String newName){
+       for(User u: this.userManager.getUsers()){
+           if(u instanceof Buyer){
+               for(Product p: ((Buyer) u).getShoppingCart()){
+                   if(p.getSellerUserName().equals(old)){
+                       p.setSellerUserName(newName);
+                   }
+               }
+           }
+       }
+   }
 
 }
