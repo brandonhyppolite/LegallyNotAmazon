@@ -1,7 +1,10 @@
 package src.Frontend;
 
+import src.Backend.UserManager;
+import src.Frontend.All_Views.SellerHomePageView;
 import src.Product.Product;
 import src.users_code.Seller;
+import src.users_code.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -16,33 +19,37 @@ import java.util.ArrayList;
  */
 public class SellerTableViewUtility {
     private Seller seller;
-    private UserActionCallBack callback;
+    private UserManager userManager;
+    private JTable table;
+    String[] columnNames;
+    private UserActionCallBack callBack;
     /**
      * Constructs a SellerTableViewUtility object with the specified seller and callback.
      *
-     * @param seller   The seller object.
-     * @param callback The callback for user actions.
+     * @param seller   The seller object.`
      */
-    public SellerTableViewUtility(Seller seller, UserActionCallBack callback) {
+    public SellerTableViewUtility(Seller seller, UserActionCallBack callBack) {
         this.seller = seller;
-        this.callback = callback;
+        this.userManager = UserManager.getInstance();
+        this.callBack = callBack;
+        this.columnNames = new String[]{"Name", "ID", "Quantity", "Invoice Price ($)", "Selling Price ($)", "Type"};
     }
     /**
      * Creates a scroll pane with a table view of the products.
      *
      * @param products    The list of products.
-     * @param columnNames The column names for the table.
+     *
      * @return The scroll pane with the table view.
      */
-    public JScrollPane createTable(ArrayList<Product> products, String[] columnNames) {
+    public JScrollPane createTable(ArrayList<Product> products) {
         // Check if products is null or empty
         if (products == null || products.isEmpty()) {
             // Handle the case where there are no products
             // Create an empty table
             String[][] emptyData = new String[][]{{"", "", "", "", ""}};
             DefaultTableModel emptyModel = new DefaultTableModel(emptyData, columnNames);
-            JTable emptyTable = new JTable(emptyModel);
-            return new JScrollPane(emptyTable);
+            this.table= new JTable(emptyModel);
+            return new JScrollPane(this.table);
         }
 
         int numRows = products.size();
@@ -69,12 +76,13 @@ public class SellerTableViewUtility {
                     case 4:
                         productData[i][j] = String.format("%.2f", product.getSellingPrice());
                         break;
+                    case 5:
+                        productData[i][j] = product.getType();
                 }
             }
         }
 
-        JTable table = createSellerTable(productData, columnNames);
-
+       this.table = createSellerTable(productData, columnNames);
         return new JScrollPane(table);
     }
 
@@ -166,14 +174,14 @@ public class SellerTableViewUtility {
             String text = textArea.getText();
             product.setDescription(text);
             System.out.println("Edited Description: " + product.getDescription());
-            callback.saveAndRefresh();
         }
     }
 
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
         this.seller.removeProductFromSale(product);
-        callback.saveAndRefresh(product.getID());
+        userManager.getProductsManager().removeProductsFromOtherBuyers(product.getID());
+        this.callBack.refreshTable();
     }
 
     private void editProductAttribute(int selectedRow, String attributeName) {
@@ -218,8 +226,6 @@ public class SellerTableViewUtility {
                     this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
                     break;
             }
-
-            callback.saveAndRefresh();
         }
     }
     private Product getProductForRow(int row) {

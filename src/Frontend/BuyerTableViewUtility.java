@@ -136,7 +136,7 @@ public class BuyerTableViewUtility {
     private void removeProduct(int selectedRow) {
         Product product = getProductForRow(selectedRow);
         this.buyer.getShoppingCart().remove(product);
-        this.callBack.saveAndRefresh();
+        this.callBack.refreshTable();
     }
 
     private Product getProductForRow(int row) {

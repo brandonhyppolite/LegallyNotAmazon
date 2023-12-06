@@ -15,4 +15,6 @@ public interface UserActionCallBack {
      * @param ID The ID associated with the action.
      */
     void saveAndRefresh(String ID);
+
+    void refreshTable();
 }

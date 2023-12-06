@@ -15,6 +15,7 @@ public class Product {
     private double invoicePrice;
     private String sellerUserName;
     private String description;
+    private String type;
 
     /**
      * Semi-Deep Copy Constructor
@@ -98,6 +99,14 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public void setQuantity(int quantity) {
