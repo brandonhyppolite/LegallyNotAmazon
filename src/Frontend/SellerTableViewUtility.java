@@ -18,11 +18,11 @@ import java.util.ArrayList;
  * The SellerTableViewUtility class is responsible for creating and managing the seller's table view in the user interface.
  */
 public class SellerTableViewUtility {
-    private Seller seller;
-    private UserManager userManager;
+    private final Seller seller;
+    private final UserManager userManager;
     private JTable table;
     String[] columnNames;
-    private UserActionCallBack callBack;
+    private final UserActionCallBack callBack;
     /**
      * Constructs a SellerTableViewUtility object with the specified seller and callback.
      *
@@ -226,6 +226,7 @@ public class SellerTableViewUtility {
                     this.seller.lowerQuantityOfProduct(product, quantityToSubtract);
                     break;
             }
+            this.callBack.refreshTable();
         }
     }
     private Product getProductForRow(int row) {
